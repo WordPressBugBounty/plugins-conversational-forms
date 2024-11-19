@@ -64,6 +64,18 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
         </ul>
 
 </div>
+<?php
+	$promotion_img =  WFBCORE_URL . "assets/images/blackfriday.jpg";
+    ?>
+    <div data-dismiss-type="qcbot-feedback-notice" class="is-dismissible qcbot-feedback" style="background: #151618">
+        <div class="">
+            
+            <div class="qc-review-text" >
+            <a href="https://www.wpbot.pro/pricing/" target="_blank">
+                <img src="<?php echo esc_url($promotion_img); ?>" alt=""></a>
+            </div>
+        </div>
+    </div>
 <div class="qcld_header_buttons">
 	<button class="button button-primary ajax-trigger wfb-new-form-button"
 			data-request="start_new_form"
@@ -199,6 +211,7 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 		<h2><?php esc_html_e( 'What is the Command to trigger the specific form intent in Chatbot?', 'qcformbuilder-forms' ); ?></h2>
 		<p><?php esc_html_e( 'During form creation you have to provide the ChatBot Command for the form. You will find the field under', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"Form Settings"', 'qcformbuilder-forms' ); ?></b> <?php esc_html_e( 'tab. If you write the command in chatbot window the conversational form will be started.', 'qcformbuilder-forms' ); ?></p>
 	</div>
+	
 	
 	</div>
 	<div id="qcformbuilder-forms-admin-page-right">

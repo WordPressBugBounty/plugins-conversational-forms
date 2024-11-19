@@ -3,8 +3,8 @@ Contributors: quantumcloud
 Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
-Tested up to: 6.5
-Stable tag: 1.3.6
+Tested up to: 6.7
+Stable tag: 1.3.8
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
@@ -15,12 +15,13 @@ ChatBot for WordPress WPBot Addon. Build conversational forms for ChatBot for Le
 
 ChatBot for WordPress WPBot now supports creating Conversational forms natively from the WordPress backend. Use this Free Conversational <strong>form builder</strong> AddOn to build dynamic forms for a native WordPress ChatBot experience without any 3rd party integrations. Use this form builder for <strong>Lead Generation</strong> and to build <strong>contact forms</strong>, <strong>booking forms</strong>, <strong>surveys</strong>, and any type of custom forms and <strong>collect data from your users</strong>.
 
-> 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | <strong>Upgrade to [ChatBot for WordPress - WPBot Pro!](https://www.wpbot.pro/)</strong> | [Live Demo](https://www.wpbot.pro/)  
+> 🚀 <strong>Upgrade to [ChatBot for WordPress - WPBot Pro](https://www.wpbot.pro/) now!</strong>
+> 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | [Live Demo](https://www.wpbot.pro/)  
 
 Conversational form submissions and Lead Generations from the ChatBot will be emailed to you once user reaches the end of the form or conversation. Create conversational forms for ChatBot easily with a simple drag and drop conversational form builder for the ChatBot for WordPress WPBot.
 
 <strong>This is an addon for the ChatBot for WordPress - WPBot. Please install the WPBot ChatBot first. </strong>
-> 🚀 Download the [ChatBot for WordPress WPBot Free](https://wordpress.org/plugins/chatbot/)
+> 🚀 Download the [Free ChatBot for WordPress WPBot](https://wordpress.org/plugins/chatbot/)
 
 The forms you create with the visual conversational form builder will be available as conversations inside the ChatBot and accessed through the Start menu. Replace your static forms with an interactive ChatBot experience!
 
@@ -106,6 +107,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.3.8 =
+# Black Friday Sale
 
 = 1.3.6 =
 # UI Update

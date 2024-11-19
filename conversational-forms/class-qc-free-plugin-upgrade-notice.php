@@ -5,9 +5,9 @@
  * Last Updated On: 05-24-2017
  *******************************************/
 
-if( !class_exists('QcPluginUpgradeToProNotice') )
+if( !class_exists('QcPluginUpgradeToProNoticeconversational') )
 {
-	class QcPluginUpgradeToProNotice {
+	class QcPluginUpgradeToProNoticeconversational {
 		
 		//Public variables, these can be overrides using instance callback
 
@@ -75,13 +75,13 @@ if( !class_exists('QcPluginUpgradeToProNotice') )
 		 * Like Active, Edit etc.
 		 * Ofcourse, in plugin.php page
 		 *******************************/
-		function hook_with_plugin_action_links(){
+		function hook_with_plugin_conversational_action_links(){
 			
 			$this->plugin_slug_plus_file = $this->plugin_slug .'/'. $this->plugin_main_file;
 			
 			if( $this->show_with_action_links && $this->plugin_slug_plus_file != "" )
 			{
-				add_action( 'plugin_action_links_' . $this->plugin_slug_plus_file, array(&$this, 'func_show_upgrade_link_with_action_links'), 95 );
+				add_action( 'plugin_action_links_' . $this->plugin_slug_plus_file, array(&$this, 'func_show_conversational_upgrade_link_with_action_links'), 95 );
 			}
 			else
 			{
@@ -94,7 +94,7 @@ if( !class_exists('QcPluginUpgradeToProNotice') )
 		 * Callback function for the above hook
 		 * used inside hook_with_plugin_action_links
 		 *******************************/
-		function func_show_upgrade_link_with_action_links( $links )
+		function func_show_conversational_upgrade_link_with_action_links( $links )
 		{
 			$links = array_merge( $links, array(
 				'<a title="'.$this->link_text.'" class="'.$this->link_class.'" style="font-weight: bold; color: '.$this->link_color.';" href="' . esc_url( $this->upgrade_link ) . '" target="'.$this->link_target.'">' . __( $this->link_text, 'quantumcloud' ) . '</a>'
@@ -190,7 +190,7 @@ if( !class_exists('QcPluginUpgradeToProNotice') )
  * appropriate worker/callback
  *******************************/
  
-$instance_bot23 = new QcPluginUpgradeToProNotice();
+$instance_bot23 = new QcPluginUpgradeToProNoticeconversational();
 
 if( is_admin() )
 { 
@@ -210,7 +210,7 @@ if( is_admin() )
 
 	if( $instance_bot23->check_if_plugin_page() )
 	{
-		$instance_bot23->hook_with_plugin_action_links();
+		$instance_bot23->hook_with_plugin_conversational_action_links();
 		$instance_bot23->hook_with_plugin_meta_links();
 	}
 	

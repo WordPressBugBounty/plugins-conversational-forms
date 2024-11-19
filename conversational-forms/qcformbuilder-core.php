@@ -1,12 +1,16 @@
 <?php
-/**
- * Plugin Name: Conversational Forms for Lead Generation, Collect information with WPBot
+/*
+ * Plugin Name: ChatBot Conversational Forms for Lead Generation
  * Plugin URI: https://wordpress.org/plugins/conversational-forms
- * Description: An easy to create conversational form builder for the WPBot ChatBot plugin.
- * Author: ChatBot - WPBot
- * Version: 1.3.6
- * Author URI: https://www.wpbot.pro/
+ * Description: ChatBot Conversational Forms for Lead Generation
+ * Author: ChatBot for WordPress - WPBot
+ * @author    QuantumCloud
+ * Version: 1.3.8
  * Donate link: https://www.wpbot.pro/
+ * @author    QuantumCloud
+ * Author URI: https://www.wpbot.pro/
+ * Requires at least: 4.6
+ * Tested up to: 6.7
  * Text Domain: conversational-form-builder
 */
 
@@ -60,7 +64,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 } else {
 	define('WFBCORE_PATH', plugin_dir_path(__FILE__));
 	define('WFBCORE_URL', plugin_dir_url(__FILE__));
-	define( 'WFBCORE_VER', '1.0.0' );
+	define( 'WFBCORE_VER', '1.3.7' );
 	define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
 	define('WFBCORE_BASENAME', plugin_basename(__FILE__));
 
@@ -227,11 +231,11 @@ if(!function_exists('qcld_condition_check')){
 	}
 }
 
-//add_action( 'admin_notices', 'qcld_condition_promotion_notice');
+add_action( 'admin_notices', 'qcld_condition_promotion_notice');
 function qcld_condition_promotion_notice(){
     $promotion_img =  WFBCORE_URL . "assets/images/blackfriday.jpg";
     ?>
-    <div data-dismiss-type="qcbot-feedback-notice" class="notice is-dismissible qcbot-feedback" style="background: #000">
+    <div data-dismiss-type="qcbot-feedback-notice" class="notice is-dismissible qcbot-feedback" style="background: #151618">
         <div class="">
             
             <div class="qc-review-text" >
