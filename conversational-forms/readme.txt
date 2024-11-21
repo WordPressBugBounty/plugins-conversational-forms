@@ -4,7 +4,7 @@ Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
@@ -107,6 +107,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.3.9 =
+# Fixed an issue with the banner
 
 = 1.3.8 =
 # Black Friday Sale

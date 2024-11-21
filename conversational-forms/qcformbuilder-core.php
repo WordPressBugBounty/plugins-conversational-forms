@@ -5,7 +5,7 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.3.8
+ * Version: 1.3.9
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
@@ -230,17 +230,18 @@ if(!function_exists('qcld_condition_check')){
 		return $result;
 	}
 }
-
-add_action( 'admin_notices', 'qcld_condition_promotion_notice');
+if( ( !empty($_GET['page']) && $_GET['page'] == 'qcformbuilder-form-wpbot') ){
+	add_action( 'admin_notices', 'qcld_condition_promotion_notice');
+}
 function qcld_condition_promotion_notice(){
     $promotion_img =  WFBCORE_URL . "assets/images/blackfriday.jpg";
     ?>
     <div data-dismiss-type="qcbot-feedback-notice" class="notice is-dismissible qcbot-feedback" style="background: #151618">
         <div class="">
-            
             <div class="qc-review-text" >
-            <a href="https://www.wpbot.pro/pricing/" target="_blank">
-                <img src="<?php echo esc_url($promotion_img); ?>" alt=""></a>
+            	<a href="https://www.wpbot.pro/pricing/" target="_blank">
+                	<img src="<?php echo esc_url($promotion_img); ?>" alt="promotion_img">
+				</a>
             </div>
         </div>
     </div>
