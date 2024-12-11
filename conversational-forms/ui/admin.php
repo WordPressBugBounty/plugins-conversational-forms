@@ -67,15 +67,15 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 <?php
 	$promotion_img =  WFBCORE_URL . "assets/images/blackfriday.jpg";
     ?>
-    <div data-dismiss-type="qcbot-feedback-notice" class="is-dismissible qcbot-feedback" style="background: #151618">
+    <!-- <div data-dismiss-type="qcbot-feedback-notice" class="is-dismissible qcbot-feedback" style="background: #151618">
         <div class="">
             
             <div class="qc-review-text" >
             <a href="https://www.wpbot.pro/pricing/" target="_blank">
-                <img src="<?php echo esc_url($promotion_img); ?>" alt=""></a>
+                <img src="<?php // echo esc_url($promotion_img); ?>" alt=""></a>
             </div>
         </div>
-    </div>
+    </div> -->
 <div class="qcld_header_buttons">
 	<button class="button button-primary ajax-trigger wfb-new-form-button"
 			data-request="start_new_form"
