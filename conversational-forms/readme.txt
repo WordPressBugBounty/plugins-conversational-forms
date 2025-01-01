@@ -4,7 +4,7 @@ Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 1.4.0
+Stable tag: 1.4.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
@@ -15,6 +15,7 @@ ChatBot for WordPress WPBot Addon. Build conversational forms for ChatBot for Le
 
 ChatBot for WordPress WPBot now supports creating Conversational forms natively from the WordPress backend. Use this Free Conversational <strong>form builder</strong> AddOn to build dynamic forms for a native WordPress ChatBot experience without any 3rd party integrations. Use this form builder for <strong>Lead Generation</strong> and to build <strong>contact forms</strong>, <strong>booking forms</strong>, <strong>surveys</strong>, and any type of custom forms and <strong>collect data from your users</strong>.
 
+> 🚀 Get the <strong>FREE [ChatBot for WordPress - WPBot](https://wordpress.org/plugins/chatbot/)</strong>
 > 🚀 <strong>Upgrade to [ChatBot for WordPress - WPBot Pro](https://www.wpbot.pro/) now!</strong>
 > 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | [Live Demo](https://www.wpbot.pro/)  
 
@@ -107,6 +108,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.4.2 =
+# New year sale
 
 = 1.4.0 =
 # End BF sale
