@@ -34,7 +34,6 @@ class Qcformbuilder_Forms_Render_Modals {
 	 * @return string
 	 */
 	public static function modal_form( $atts, $content, $is_revision = false ) {
-
 		if ( empty( $atts[ 'id' ] ) ) {
 			return $content;
 		}
@@ -164,9 +163,9 @@ class Qcformbuilder_Forms_Render_Modals {
 		$title = sprintf( __( 'Click to open the form %s in a modal', 'qcformbuilder-forms' ), $form[ 'name' ] );
 		if ( ! empty( $atts[ 'type' ] ) && $atts[ 'type' ] == 'button' ) {
 			$tag_atts .= sprintf( 'data-remodal-target="%1s"', $modal_id );
-			return sprintf( '<button class="qcformbuilder-forms-modal" %s title="%s">%s</button>', $tag_atts, $title, $content );
+			return sprintf( '<button class="qcformbuilder-forms-modal" %s title="%s">%s</button>',esc_attr( $tag_atts), esc_attr($title), $content );
 		} else {
-			return sprintf( '<a href="%s" class="qcformbuilder-forms-modal" %s title="%s">%s</a>', '#' . $modal_id, $tag_atts, esc_attr( $title ), $content );
+			return sprintf( '<a href="%s" class="qcformbuilder-forms-modal" %s title="%s">%s</a>', '#' . $modal_id, esc_attr($tag_atts), esc_attr( $title ), $content );
 		}
 	}
 
