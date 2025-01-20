@@ -5,7 +5,7 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.4.3
+ * Version: 1.4.4
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
@@ -13,6 +13,7 @@
  * Tested up to: 6.7
  * Text Domain: conversational-form-builder
 */
+
 
 
 // If this file is called directly, abort.
@@ -64,7 +65,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 } else {
 	define('WFBCORE_PATH', plugin_dir_path(__FILE__));
 	define('WFBCORE_URL', plugin_dir_url(__FILE__));
-	define( 'WFBCORE_VER', '1.4.3' );
+	define( 'WFBCORE_VER', '1.4.4' );
 	define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
 	define('WFBCORE_BASENAME', plugin_basename(__FILE__));
 
@@ -231,7 +232,7 @@ if(!function_exists('qcld_condition_check')){
 	}
 }
 if( ( !empty($_GET['page']) && $_GET['page'] == 'qcformbuilder-form-wpbot') ){
-	add_action( 'admin_notices', 'qcld_condition_promotion_notice');
+//	add_action( 'admin_notices', 'qcld_condition_promotion_notice');
 }
 function qcld_condition_promotion_notice(){
     $promotion_img =  WFBCORE_URL . "assets/images/newyear24-wpbot.jpg";
