@@ -3,8 +3,8 @@ Contributors: quantumcloud
 Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
-Tested up to: 6.7
-Stable tag: 1.4.4
+Tested up to: 6.8
+Stable tag: 1.4.5
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
@@ -35,7 +35,7 @@ The forms you create with the visual conversational form builder will be availab
 * Create forms with a visual drag and drop form builder
 * Add text fields, single option selection or multiple option selection with checkboxes
 * Add HTML contents inside the conversational forms for ChatBot
-* Create conversational form or just conversation using the HTML element
+* Create conversational form or just conversations using the HTML element
 * eMail conversations to the admin at the end of conversation
 * Set different recipient email addresses for different conversation forms
 
@@ -108,6 +108,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.4.5 =
+# Fixed conflicting issues with pro plugin
 
 = 1.4.4 =
 # End sale

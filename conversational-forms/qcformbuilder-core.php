@@ -5,12 +5,12 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.4.4
+ * Version: 1.4.5
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
  * Requires at least: 4.6
- * Tested up to: 6.7
+ * Tested up to: 6.8
  * Text Domain: conversational-form-builder
 */
 
@@ -63,12 +63,21 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 	add_shortcode('qcformbuilder_form_modal', 'qcformbuilder_forms_fallback_shortcode');
 	add_action('admin_notices', 'qcformbuilder_forms_wp_version_nag');
 } else {
-	define('WFBCORE_PATH', plugin_dir_path(__FILE__));
-	define('WFBCORE_URL', plugin_dir_url(__FILE__));
-	define( 'WFBCORE_VER', '1.4.4' );
-	define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
-	define('WFBCORE_BASENAME', plugin_basename(__FILE__));
-
+	if ( ! defined('WFBCORE_PATH') ) {
+		define('WFBCORE_PATH', plugin_dir_path(__FILE__));
+	}
+	if ( ! defined('WFBCORE_URL') ) {
+		define('WFBCORE_URL', plugin_dir_url(__FILE__));
+	}
+	if ( ! defined('WFBCORE_VER') ) {
+		define( 'WFBCORE_VER', '1.4.5' );
+	}
+	if ( ! defined('WFBCORE_EXTEND_URL') ) {
+		define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
+	}
+	if ( ! defined('WFBCORE_BASENAME') ) {
+		define('WFBCORE_BASENAME', plugin_basename(__FILE__));
+	}
 	/**
 	 * Qcformbuilder Forms DB version
 	 *
@@ -76,7 +85,9 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 	 *
 	 * PLEASE keep this an integer
 	 */
-	define('WFB_DB', 8);
+	if ( ! defined('WFB_DB') ) {
+		define('WFB_DB', 8);
+	}
 
 	// init internals of CF
 	include_once WFBCORE_PATH . 'classes/core.php';
@@ -88,6 +99,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 
 	// load system
 	add_action('plugins_loaded', 'qcformbuilder_forms_load', 0);
+	if( !function_exists('qcformbuilder_forms_load')){
 	function qcformbuilder_forms_load()
 	{
 		include_once WFBCORE_PATH . 'classes/autoloader.php';
@@ -141,6 +153,8 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		add_action('qcformbuilder_forms_v2_init', 'qcformbuilder_forms_v2_container_setup' );
 		qcformbuilder_forms_get_v2_container();
 	}
+	}
+
 
 	add_action('plugins_loaded', [ 'Qcformbuilder_Forms', 'get_instance' ]);
 
@@ -167,15 +181,18 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
  *
  * @return string
  */
-function qcformbuilder_forms_fallback_shortcode()
-{
-	if ( current_user_can('edit_posts') ) {
-		return esc_html__('Your version of WordPress or PHP is incompatible with Qcformbuilder Forms.', 'qcformbuilder-forms');
+if( ! function_exists('qcformbuilder_forms_fallback_shortcode') ){
+	function qcformbuilder_forms_fallback_shortcode()
+	{
+		if ( current_user_can('edit_posts') ) {
+			return esc_html__('Your version of WordPress or PHP is incompatible with Qcformbuilder Forms.', 'qcformbuilder-forms');
+		}
+
+		return esc_html__('Form could not be loaded. Contact the site administrator.', 'qcformbuilder-forms');
+
 	}
-
-	return esc_html__('Form could not be loaded. Contact the site administrator.', 'qcformbuilder-forms');
-
 }
+
 
 if(!function_exists('qc_get_first_field')){
 	function qc_get_first_field($array){
