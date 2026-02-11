@@ -10,7 +10,7 @@
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
  * Requires at least: 4.6
- * Tested up to: 6.8
+ * Tested up to: 6.9
  * Text Domain: conversational-form-builder
 */
 
