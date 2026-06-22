@@ -1,22 +1,24 @@
-=== ChatBot Conversational Forms  ===
+=== WPBot - ChatBot Conversational Forms  ===
 Contributors: quantumcloud
 Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
-Tested up to: 6.9
-Stable tag: 1.4.6
+Tested up to: 7.0
+Stable tag: 1.4.7
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
 
-ChatBot for WordPress WPBot Addon. Build conversational forms for ChatBot for Lead Generation & more inside the WPBot ChatBot.
+AI ChatBot for WordPress WPBot addon to Build conversational Forms. Generate Leads, Create Forms inside ChatBot. Contact forms, booking forms & more
 
 == Description ==
 
-ChatBot for WordPress WPBot now supports creating Conversational forms natively from the WordPress backend. Use this Free Conversational <strong>form builder</strong> AddOn to build dynamic forms for a native WordPress ChatBot experience without any 3rd party integrations. Use this form builder for <strong>Lead Generation</strong> and to build <strong>contact forms</strong>, <strong>booking forms</strong>, <strong>surveys</strong>, and any type of custom forms and <strong>collect data from your users</strong>.
+= AI ChatBot for WordPress WPBot addon to Build conversational Forms =
 
-> 🚀 Get the <strong>FREE [ChatBot for WordPress - WPBot](https://wordpress.org/plugins/chatbot/)</strong>
-> 🚀 <strong>Upgrade to [ChatBot for WordPress - WPBot Pro](https://www.wpbot.pro/) now!</strong>
+WPBot - AI ChatBot for WordPress now supports creating Conversational forms natively from the WordPress backend. Use this Free Conversational <strong>form builder</strong> AddOn to build dynamic forms for a native WordPress ChatBot experience without any 3rd party integrations or AI. Use this form builder for <strong>Lead Generation</strong> and to build <strong>contact forms</strong>, <strong>booking forms</strong>, <strong>surveys</strong>, and any type of custom forms and <strong>collect data from your users</strong>.
+
+> 🚀 Get the <strong>FREE [AI ChatBot for WordPress - WPBot](https://wordpress.org/plugins/chatbot/)</strong>
+> 🚀 <strong>Upgrade to the #1 [ChatBot for WordPress - WPBot Pro](https://www.wpbot.pro/) now!</strong>
 > 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | [Live Demo](https://www.wpbot.pro/)  
 
 Conversational form submissions and Lead Generations from the ChatBot will be emailed to you once user reaches the end of the form or conversation. Create conversational forms for ChatBot easily with a simple drag and drop conversational form builder for the ChatBot for WordPress WPBot.
@@ -60,12 +62,44 @@ The forms you create with the visual conversational form builder will be availab
 * Create system command to initiate form for ChatBot
 * Add form to the ChatBot Start Menu
 
-> 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | [Live Demo](https://www.wpbot.pro/) | <strong>[Upgrade to ChatBot Pro!](https://www.wpbot.pro/pricing/)</strong>
+<strong>Key Benefits of the WPBot Conversational Form Builder Pro for ChatBot</strong>
+
+📈 Maximize Lead Generation & Conversion Rates
+Static forms are conversion killers. By replacing boring, traditional landing page forms with an interactive WordPress chatbot experience, you keep users actively engaged. A conversational flow guides visitors naturally through questions, significantly reducing form abandonment and sky-rocketing your site's conversion rates.
+
+👑 Code-Free Setup with a Visual Drag-and-Drop Builder
+Skip the complex setups and expensive developer fees. The intuitive visual drag-and-drop conversational form builder allows you to create highly dynamic chat flows instantly. You can easily arrange text fields, checkboxes, and date-time pickers without touching a single line of code.
+
+⚡ Rapid Deployment with 12 Pre-Built Form Templates
+Get your ChatBot up and running in minutes. The plugin features 12 ready-to-use form templates designed for top e-commerce and business use cases. Instantly deploy:
+
+Interactive Contact & Feedback Forms
+
+Dynamic Surveys & Appointment Requests
+
+Advanced Calculators (BMR, Room Area etc.)
+
+🧩 Native WordPress Integration (No Third-Party Latency)
+Unlike other chatbot plugins that rely on slow external APIs, this addon builds forms natively inside the WordPress backend. This zero-dependency architecture keeps your website’s page-load speeds lightning-fast—a critical ranking factor for Google SEO.
+
+🔀 Create Hyper-Personalized User Journeys with Conditional Logic
+Deliver a custom user experience using unlimited conditional fields and variables. The chatbot intelligently adapts its questions in real-time based on the user's previous answers. This dynamic logic ensures users only see relevant fields, making data collection feel like a natural human conversation.
+
+📧 Saved Entries & Instant Email Alerts
+Form submissions from your ChatBot are emailed to the Admins and also saved in the WordPress dashboard
+
+💾 Secure Data Logging & Seamless CSV Exporting
+Never lose a valuable customer inquiry. Every submission is safely stored directly in your WordPress database. Built-in form revisions allow you to track changes over time, while the one-click CSV export feature lets you seamlessly transfer your lead data into any CRM, spreadsheet, or email marketing platform.
+
+🗺️ Enhanced UX via Chatbot Start Menu & System Commands
+Make your interactive forms incredibly easy to find. You can anchor your newly created forms directly to the WPBot ChatBot Start Menu or configure custom system commands to trigger specific forms automatically. This seamless navigation keeps users on your site longer, sending positive user-experience signals to search engine algorithms.
+
+> 🚀 [Support, Bug Report, Feature Requests](https://www.wpbot.pro/free-support/) | [WPBot Pro with Conversational Forms Pro](https://www.wpbot.pro/) | <strong>[Upgrade to ChatBot Pro!](https://www.wpbot.pro/pricing/)</strong>
 
 > ++ Download [Free ChatBot from WordPress](https://github.com/qcloud/chatbot) from GITHUB
 
 
-= Conversational Forms Support, Bug Fix, Feature Request =
+= ChatBot Conversational Forms Support, Bug Fix, Feature Request =
 
 * This is a new plugin for our ChatBot and we want to improve this plugin's features based on your feedback and suggestions. Let us know if you face any problem or need help with this ChatBot plugin in the comments section.*
 
@@ -108,6 +142,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.4.7 =
+# Fixed conflict with pro version
 
 = 1.4.6 =
 # Fixed conflicting issues with pro plugin

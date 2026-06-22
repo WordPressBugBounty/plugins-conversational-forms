@@ -5,20 +5,37 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.4.6
+ * Version: 1.4.7
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
  * Requires at least: 4.6
- * Tested up to: 6.9
+ * Tested up to: 7.0
  * Text Domain: conversational-form-builder
 */
-
 
 
 // If this file is called directly, abort.
 if ( !defined('WPINC') ) {
 	die;
+}
+
+// Abort execution if Pro version is active to prevent conflicts
+if ( ! function_exists( 'is_plugin_active' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+if ( is_plugin_active( 'wpbot-pro-master/qcld-wpwbot.php' ) || is_plugin_active( 'wpbot-pro-professional/qcld-wpwbot.php' ) ) {
+	return;
+}
+
+// Also abort if we are currently activating the Pro plugin
+if ( isset($_REQUEST['action']) ) {
+	if ( $_REQUEST['action'] == 'activate' && isset($_REQUEST['plugin']) && ( ( strpos($_REQUEST['plugin'], 'wpbot-pro-master') !== false ) || ( strpos($_REQUEST['plugin'], 'wpbot-pro-professional') !== false ) ) ) {
+		return;
+	}
+	if ( $_REQUEST['action'] == 'activate-selected' && isset($_POST['checked']) && ( in_array('wpbot-pro-master/qcld-wpwbot.php', $_POST['checked']) || in_array('wpbot-pro-professional/qcld-wpwbot.php', $_POST['checked']) ) ) {
+		return;
+	}
 }
 
 add_action( 'init', function(){
@@ -70,7 +87,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		define('WFBCORE_URL', plugin_dir_url(__FILE__));
 	}
 	if ( ! defined('WFBCORE_VER') ) {
-		define( 'WFBCORE_VER', '1.4.5' );
+		define( 'WFBCORE_VER', '1.4.7' );
 	}
 	if ( ! defined('WFBCORE_EXTEND_URL') ) {
 		define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
