@@ -78,12 +78,13 @@ function get_compiled_template( template ) {
 
 jQuery(document).ready(function($){
 
-    var $spinner = $('#save_indicator');
+    var $spinner = $('#save_indicator').appendTo('body');
+    var $saveNotice = $('.updated_notice_box').first().appendTo('body');
 
     $( '#qcformbuilder-forms-restore-revision' ).on( 'click', function(e){
         e.preventDefault();
         var $el = $(this);
-        $spinner.addClass('loading');
+        $spinner.addClass('loading').attr('aria-hidden', 'false');
 
         $.post({
             url: 'admin.php?page=qcformbuilder-forms',
@@ -108,7 +109,7 @@ jQuery(document).ready(function($){
                 return false;
             }
 
-            $spinner.addClass('loading');
+            $spinner.addClass('loading').attr('aria-hidden', 'false');
             if( typeof tinyMCE !== 'undefined'){
                 tinyMCE.triggerSave();
             }
@@ -130,21 +131,24 @@ jQuery(document).ready(function($){
 
         },
         callback: function( obj ){
+            $spinner.removeClass('loading').attr('aria-hidden', 'true');
 
             if( false === obj.data ){
-                var notice = $('.updated_notice_box');
-
-                notice.stop().animate({top: 0}, 200, function(){
-                    setTimeout( function(){
-                        notice.stop().animate({top: -75}, 200);
-                    }, 2000);
-                });
+                $saveNotice.removeClass('is-visible');
+                if( $saveNotice[0] ){
+                    $saveNotice[0].offsetWidth;
+                }
+                $saveNotice.addClass('is-visible');
+                clearTimeout( $saveNotice.data('hideTimer') );
+                $saveNotice.data('hideTimer', setTimeout( function(){
+                    $saveNotice.removeClass('is-visible');
+                }, 2800));
 
                 wfb_revisions_ui();
             }
         },
         complete: function( obj ){
-
+            $spinner.removeClass('loading').attr('aria-hidden', 'true');
             $('.wrapper-instance-pane .field-config').prop('sabled', false);
 
         }
@@ -998,29 +1002,18 @@ jQuery(document).ready(function($){
 			$labelInputs = $wrap.find('.toggle_label_field'),
 			$valueInputs = $wrap.find('.toggle_value_field, .toggle_calc_value_field'),
 			$valueLabels = $wrap.find( '.option-setting-label-for-value' ),
-			$labelLabel = $wrap.find( '.option-setting-label-for-label' ),
-			$optionGroupControl = $wrap.find( '.option-group-control' ),
-			inputCss = {
-				width: '100%',
-				display: 'inline',
-				float: 'left',
-			};
+			$labelLabel = $wrap.find( '.option-setting-label-for-label' );
 		if( ! $clicked.prop( 'checked' ) ){
-			$valueInputs.hide().attr( 'aria-hidden', true );
+			$valueInputs.hide().css({ width: '', float: '' }).attr( 'aria-hidden', true );
 			$valueLabels.hide().attr( 'aria-hidden', true );
-			$labelInputs.css('width', 245);
-			$labelLabel.css( 'display', 'inline' );
-
-
+			$labelInputs.css({ width: '', display: '', float: '' });
+			$labelLabel.css( 'display', '' );
 		}else{
-			$valueInputs.show().css(inputCss).attr( 'aria-hidden', false );
-			$labelInputs.show().css(inputCss).attr( 'aria-hidden', false );
-			$valueLabels.show().css({
-				display: 'inline-block'
-			});
-			$labelLabel.css( 'display', 'inline' );
+			$valueInputs.show().css({ width: '', display: '', float: '' }).attr( 'aria-hidden', false );
+			$labelInputs.show().css({ width: '', display: '', float: '' }).attr( 'aria-hidden', false );
+			$valueLabels.show().css({ display: '' });
+			$labelLabel.css( 'display', '' );
 		}
-
 
 		$labelInputs.trigger('toggle.values');
         init_magic_tags();
@@ -1825,7 +1818,55 @@ jQuery(document).ready(function($) {
         // Draggables
         $( "h3 .layout-new-form-field" ).draggable({
             helper: "clone",
-            appendTo: "body"
+            appendTo: "body",
+            cursor: "move",
+            zIndex: 100000,
+            scroll: false,
+            iframeFix: true,
+            start: function(e, ui){
+                var $el = $(this),
+                    $helper = ui.helper.appendTo("body"),
+                    grabX = Math.max(12, Math.min(e.offsetX || 40, $el.outerWidth() - 12)),
+                    grabY = Math.max(8, Math.min(e.offsetY || 14, $el.outerHeight() - 8)),
+                    inst = $el.data("ui-draggable") || $el.data("uiDraggable") || $el.data("draggable");
+
+                $el.data("wfb-drag-grab", { x: grabX, y: grabY });
+
+                $helper.css({
+                    position: "fixed",
+                    margin: 0,
+                    transform: "none",
+                    left: (e.clientX - grabX) + "px",
+                    top: (e.clientY - grabY) + "px",
+                    width: $el.outerWidth(),
+                    height: $el.outerHeight(),
+                    zIndex: 100000
+                });
+
+                if( inst ){
+                    inst.cssPosition = "fixed";
+                    inst.margins = { left: 0, top: 0, right: 0, bottom: 0 };
+                    inst.offset.click.left = grabX;
+                    inst.offset.click.top = grabY;
+                    inst.offset.parent = { left: 0, top: 0 };
+                    inst.offset.relative = { left: 0, top: 0 };
+                }
+            },
+            drag: function(e, ui){
+                var grab = $(this).data("wfb-drag-grab") || { x: 40, y: 14 },
+                    left = e.clientX - grab.x,
+                    top = e.clientY - grab.y;
+
+                ui.position.left = left;
+                ui.position.top = top;
+                ui.helper.css({
+                    position: "fixed",
+                    margin: 0,
+                    transform: "none",
+                    left: left + "px",
+                    top: top + "px"
+                });
+            }
         });
         $('.page-toggle.button').droppable({
             accept: ".layout-form-field",

@@ -1,5 +1,3 @@
-&nbsp;
-
 <div id="newfield-tool" class="button button-primary button-small layout-new-form-field" title="<?php esc_attr_e( 'Drag this box onto the layout grid where you want the field to appear', 'qcformbuilder-forms'); ?>">
 	<i class="icon-edit" style="display:none;"></i>
 	<i class="dashicons dashicons-admin-page" style="display:none;"></i>
@@ -24,11 +22,17 @@ if(empty($haspointer)){ ?>
 <script>
 	
 	jQuery(document).ready( function($) {
-		$( '#new-form-element' ).pointer( {
-			content: '<h3><?php esc_html_e( 'Form Elements & Fields', 'qcformbuilder-forms' ); ?></h3><p><img src="<?php echo esc_url( WFBCORE_URL . 'assets/images/howto.gif' ); ?>"></p>',
+		$( '#newfield-tool' ).pointer( {
+			content: <?php echo wp_json_encode(
+				'<h3>' . esc_html__( 'Form Elements & Fields', 'qcformbuilder-forms' ) . '</h3>'
+				. '<p>' . esc_html__( 'Drag the Add Field button onto the layout canvas to add a new conversation step.', 'qcformbuilder-forms' ) . '</p>'
+				. '<p class="wfb-pointer-gif"><img src="' . esc_url( WFBCORE_URL . 'assets/images/howto.gif' ) . '" alt=""></p>'
+			); ?>,
+			pointerClass: 'wp-pointer wfb-add-field-pointer',
+			pointerWidth: 420,
 			position: {
 				edge: 'top',
-				align: 'left'
+				align: 'center'
 			},
 			close: function() {
 				$('#dismiss-add-element').trigger('click');

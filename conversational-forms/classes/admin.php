@@ -1222,7 +1222,7 @@ class Qcformbuilder_Forms_Admin {
 
 		echo "	<div class=\"wrap\">\r\n";
 		if(!empty($_GET['edit'])){
-			echo "<form method=\"POST\" action=\"admin.php?page=" . esc_html( $this->plugin_slug ) . "\" data-load-element=\"#save_indicator\" data-sender=\"ajax\" class=\"qcformbuilder-forms-options-form edit-update-trigger\">\r\n";
+			echo "<form method=\"POST\" action=\"admin.php?page=" . esc_html( $this->plugin_slug ) . "\" data-load-element=\"#save_indicator\" data-sender=\"ajax\" class=\"qcformbuilder-forms-options-form edit-update-trigger wfb-wpbot-page wfb-form-editor-page\">\r\n";
 			include WFBCORE_PATH . 'ui/edit.php';
 			echo "</form>\r\n";
 		}elseif(!empty($_GET['page']) && $_GET['page'] == 'qcformbuilder-forms-extend'){

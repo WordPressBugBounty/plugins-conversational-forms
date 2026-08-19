@@ -103,3 +103,9 @@ width: 205px !important;
     font-weight: bold;
     color: #757575 !important;}
 
+td.active-form {
+    box-shadow: 2px 0 0 #0085ba00 inset !important;
+}
+.toplevel_page_qcformbuilder-forms .wrap {
+    padding-top: 8px !important;
+}

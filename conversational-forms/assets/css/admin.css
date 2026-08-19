@@ -1656,9 +1656,7 @@ td.draft-form {
   box-shadow: 2px 0 0 rgba(175, 0, 0, 0.6) inset;
   background-color: rgba(175, 0, 0, 0.09);
 }
-td.active-form {
-  box-shadow: 2px 0 0 #a3be5f inset;
-}
+
 tr.form_entry_row.loading {
   opacity: 0.5;
 }

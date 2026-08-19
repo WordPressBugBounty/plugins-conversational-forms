@@ -290,22 +290,22 @@ $field_options_template = "
 
 </div>
 <div class=\"qcformbuilder-config-group-toggle-options\" {{#if auto}}style=\"display:none;\"{{/if}}>
-	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full\">
-		<button type=\"button\" class=\"button add-toggle-option\" style=\"width: 180px;\">" . esc_html__( 'Add Option', 'qcformbuilder-forms' ) . "</button>
-		<button type=\"button\" data-bulk=\"#{{_id}}_bulkwrap\" class=\"button add-toggle-option\" style=\"width: 190px;\">" . esc_html__( 'Bulk Insert / Preset', 'qcformbuilder-forms' ) . "</button>
-		<div id=\"{{_id}}_bulkwrap\" style=\"display:none; margin-top:10px;\" class=\"bulk-preset-panel\">
-		<select data-bulk=\"#{{_id}}_batch\" class=\"preset_options block-input\" style=\"margin-bottom:6px;\">
+	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options-actions\">
+		<button type=\"button\" class=\"button add-toggle-option\">" . esc_html__( 'Add Option', 'qcformbuilder-forms' ) . "</button>
+		<button type=\"button\" data-bulk=\"#{{_id}}_bulkwrap\" class=\"button add-toggle-option\">" . esc_html__( 'Bulk Insert / Preset', 'qcformbuilder-forms' ) . "</button>
+		<div id=\"{{_id}}_bulkwrap\" style=\"display:none;\" class=\"bulk-preset-panel\">
+		<select data-bulk=\"#{{_id}}_batch\" class=\"preset_options block-input\">
 		<option value=\"\">" . esc_html__( 'Select a preset', 'qcformbuilder-forms' ) . "</option>
 		" . $preset_options . "
 		</select>		
 		<textarea style=\"resize:vertical; height:200px;\" class=\"block-input\" id=\"{{_id}}_batch\"></textarea>
 		<p class=\"description\">" . esc_html__( 'Single option per line. These replace the current list.', 'qcformbuilder-forms' ) . "</p>
-		<button type=\"button\" data-options=\"#{{_id}}_batch\" class=\"button block-button add-toggle-option\" style=\"margin: 10px 0;\">" . esc_html__( 'Insert Options', 'qcformbuilder-forms' ) . "</button>
+		<button type=\"button\" data-options=\"#{{_id}}_batch\" class=\"button block-button add-toggle-option\">" . esc_html__( 'Insert Options', 'qcformbuilder-forms' ) . "</button>
 		</div>
 	</div>
-	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full\">
-	<label style=\"padding: 10px;\"><input type=\"radio\" class=\"toggle_set_default field-config\" name=\"{{_name}}[default]\" value=\"\" {{#unless default}}checked=\"checked\"{{/unless}}> " . esc_html__( 'No Default', 'qcformbuilder-forms' ) . "</label>
-	<label class=\"pull-right\" style=\"padding: 10px;\"><input type=\"checkbox\" class=\"toggle_show_values field-config\" name=\"{{_name}}[show_values]\" value=\"1\" {{#if show_values}}checked=\"checked\"{{/if}}> " . esc_html__( 'Show Values', 'qcformbuilder-forms' ) . "</label>
+	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options-flags\">
+	<label><input type=\"radio\" class=\"toggle_set_default field-config\" name=\"{{_name}}[default]\" value=\"\" {{#unless default}}checked=\"checked\"{{/unless}}> " . esc_html__( 'No Default', 'qcformbuilder-forms' ) . "</label>
+	<label class=\"pull-right\"><input type=\"checkbox\" class=\"toggle_show_values field-config\" name=\"{{_name}}[show_values]\" value=\"1\" {{#if show_values}}checked=\"checked\"{{/if}}> " . esc_html__( 'Show Values', 'qcformbuilder-forms' ) . "</label>
 	</div>
 	
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options qcformbuilder-config-field\">
@@ -328,7 +328,7 @@ $field_options_template = "
 						<label class=\"option-setting-label option-setting-label-for-value\" for=\"opt-val-{{@key}}\">
 							". esc_html__( 'Value', 'qcformbuilder-forms' ) . " 
 						</label>
-						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_value_field option-setting field-config  required \" name=\"{{../_name}}[option][{{@key}}][value]\" value=\"{{#if ../show_values}}{{value}}{{else}}{{label}}{{/if}}\"" . esc_attr( __( 'Value', 'qcformbuilder-forms' ) ) . "\" id=\"opt-val-{{@key}}\" data-opt=\"{{@key}}\" />
+						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_value_field option-setting field-config  required \" name=\"{{../_name}}[option][{{@key}}][value]\" value=\"{{#if ../show_values}}{{value}}{{else}}{{label}}{{/if}}\" placeholder=\"" . esc_attr( __( 'Value', 'qcformbuilder-forms' ) ) . "\" id=\"opt-val-{{@key}}\" data-opt=\"{{@key}}\" />
 						
 					</div>
 					
@@ -336,7 +336,7 @@ $field_options_template = "
 						<label class=\"option-setting-label option-setting-label-for-label\" for=\"opt-label-{{@key}}\">
 							". esc_html__( 'Label', 'qcformbuilder-forms' ) . "
 						</label>
-						<input{{#unless ../show_values}} style=\"width:245px;\"{{/unless}} type=\"text\" data-option=\"{{@key}}\" class=\"toggle_label_field option-setting field-config required\" name=\"{{../_name}}[option][{{@key}}][label]\" value=\"{{label}}\" placeholder=\"" . esc_attr( __( 'Label', 'qcformbuilder-forms' ) ) . "\" for=\"opt-label-{{@key}}\" data-opt=\"{{@key}}\" />
+						<input type=\"text\" data-option=\"{{@key}}\" class=\"toggle_label_field option-setting field-config required\" name=\"{{../_name}}[option][{{@key}}][label]\" value=\"{{label}}\" placeholder=\"" . esc_attr( __( 'Label', 'qcformbuilder-forms' ) ) . "\" for=\"opt-label-{{@key}}\" data-opt=\"{{@key}}\" />
 					</div>	
 				<button class=\"button button-small toggle-remove-option\" type=\"button\">
 					x
@@ -521,10 +521,11 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
         data-event="field.drop"
         data-load-class="none"
         data-modal="field_setup"
+        data-modal-class="wfb-fields-modal"
         data-modal-title="<?php echo esc_html__( 'Fields', 'qcformbuilder-forms' ); ?>"
         data-template="#form-fields-selector-tmpl"
-        data-modal-width="700"
-        data-modal-height="680"
+        data-modal-width="760"
+        data-modal-height="520"
 	    id="<?php echo esc_attr($field_id); ?>"
          style="display:none;"
     >
@@ -709,16 +710,16 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 
 	</ul>
 
-	<div class="updated_notice_box">
+	<div class="updated_notice_box" role="status" aria-live="polite">
 		<?php esc_html_e( 'Updated Successfully', 'qcformbuilder-forms'  ); ?>
 	</div>
+	<div id="save_indicator" class="spinner wfb-save-preloader" aria-hidden="true"></div>
 
 
 	<?php if( ! Qcformbuilder_Forms_Admin::is_revision_edit() ){ ?>
 
 		<button class="button button-primary qcformbuilder-header-save-button" data-active-class="none" data-load-element="#save_indicator" type="button" disabled="disabled">
 			<?php esc_html_e( 'Save Conversational Form', 'qcformbuilder-forms' ); ?>
-			<span id="save_indicator" class="spinner" style="position: absolute; right: -33px;"></span>
 		</button>
 
 		<!--<a class="button qcformbuilder-header-preview-button" target="_blank" href="<?php echo esc_url( Qcformbuilder_Forms_Admin::preview_link( $element[ 'ID' ] ) ); ?>">
@@ -745,7 +746,6 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 		    data-edit-link="<?php echo esc_url( Qcformbuilder_Forms_Admin::form_edit_link($element[ 'ID' ] )); ?>"
 		>
 			<?php esc_html_e( 'Restore Form Revision', 'qcformbuilder-forms' ); ?>
-			<span id="save_indicator" class="spinner" style="position: absolute; right: -33px;"></span>
 
 		</a>
 		<!--
@@ -772,7 +772,6 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 	</a>
 </div>
 
-<?php include WFBCORE_PATH  . 'ui/panels/form-settings.php'; ?>
 	<div class="qcformbuilder-editor-header qcformbuilder-editor-subnav">
 		<ul class="qcformbuilder-editor-header-nav">
 
@@ -800,7 +799,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 							}
 							
 							if($group_slug=='conditions' || $group_slug=='variables' || $group_slug=='processors' || $group_slug=='revisions'){
-								echo "<li><p>" . esc_html( $tab_setup['name'] ) . " <span>Pro</span> </p></li>\r\n";
+								echo "<li class=\"wfb-pro-tab\"><p>" . esc_html( $tab_setup['name'] ) . " <span class=\"wfb-pro-badge\">Pro</span></p></li>\r\n";
 							}else{
 								echo "<li". esc_attr( $active )." id=\"tab_". esc_attr( $group_slug )."\"><a href=\"#" . esc_attr( $group_slug ) . "-config-panel\">" . esc_html( $tab_setup['name'] ) . "</a></li>\r\n";
 							}
@@ -827,6 +826,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 		?>
 		</ul>
 	</div>
+<?php include WFBCORE_PATH  . 'ui/panels/form-settings.php'; ?>
 <?php
 
 // PANEL WRAPPERS & RENDER
@@ -1125,7 +1125,6 @@ do_action('qcformbuilder_forms_edit_end', $element);
 				placeholder="<?php esc_attr_e( 'Label', 'qcformbuilder-forms' ); ?>"
 				for="opt-label-{{@key}}"
 				data-opt="{{@key}}"
-				{{#unless ../show_values}} style="width:245px;"{{/unless}}
 			/>
 		</div>
 

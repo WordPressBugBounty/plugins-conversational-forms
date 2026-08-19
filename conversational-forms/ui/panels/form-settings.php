@@ -16,17 +16,19 @@
 
 	<input type="hidden" name="config[wfb_version]" value="<?php echo esc_attr( WFBCORE_VER ); ?>">
 
-	<div class="qcformbuilder-config-group">
-		<label for="wfb-form-name">
-			<?php esc_html_e( 'Form Name', 'qcformbuilder-forms' ); ?>
-		</label>
-		<div class="qcformbuilder-config-field">
-			<input id="wfb-form-name"type="text" class="field-config required" name="config[name]" value="<?php esc_html_e( esc_attr($form[ 'name' ]), 'chatbot-forms' ); ?>" style="width:500px;" required="required">
+	<div class="wfb-form-settings-layout">
+		<div class="qcformbuilder-config-group wfb-form-settings-name">
+			<label for="wfb-form-name">
+				<?php esc_html_e( 'Form Name', 'qcformbuilder-forms' ); ?>
+			</label>
+			<div class="qcformbuilder-config-field">
+				<input id="wfb-form-name" type="text" class="field-config required" name="config[name]" value="<?php echo esc_attr( $form['name'] ); ?>" required="required">
+			</div>
 		</div>
-	</div>
-	<div class="qcformbuilder-config-group">
-		<p>This Form Name will be label of the button if you add it in WPBot start menu.</p>
-		<p>If you update the Form Name and already added in start menu before, then please hit the Save Settings in WPBot Lite > Start Menu.</p>
+		<div class="qcformbuilder-config-group wfb-form-settings-help">
+			<p><?php esc_html_e( 'This Form Name will be the label of the button if you add it in the WPBot start menu.', 'qcformbuilder-forms' ); ?></p>
+			<p><?php esc_html_e( 'If you update the Form Name and it was already added in the start menu, please hit Save Settings in WPBot Lite > Start Menu.', 'qcformbuilder-forms' ); ?></p>
+		</div>
 	</div>
 
 	<?php

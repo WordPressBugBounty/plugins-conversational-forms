@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: ChatBot Conversational Forms for Lead Generation
- * Plugin URI: https://wordpress.org/plugins/conversational-forms
+ * Plugin URI: https://www.wpbot.pro/
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.4.7
+ * Version: 1.4.8
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
@@ -87,7 +87,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		define('WFBCORE_URL', plugin_dir_url(__FILE__));
 	}
 	if ( ! defined('WFBCORE_VER') ) {
-		define( 'WFBCORE_VER', '1.4.7' );
+		define( 'WFBCORE_VER', '1.4.8' );
 	}
 	if ( ! defined('WFBCORE_EXTEND_URL') ) {
 		define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
@@ -541,7 +541,31 @@ if(!function_exists('add_menu_wpbot_adding_page')){
 		);
 	}
 	function set_wpbot_page(){
-		require_once("qcld-recommendbot-plugin.php");
+		require_once( 'qcld-recommendbot-plugin.php' );
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'wfb_enqueue_wpbot_admin_page_assets' );
+function wfb_enqueue_wpbot_admin_page_assets( $hook ) {
+	$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$is_wpbot_page = ( 'qcformbuilder-form-wpbot' === $page );
+	$is_form_list  = ( 'qcformbuilder-forms' === $page && empty( $_GET['edit'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$is_form_edit  = ( 'qcformbuilder-forms' === $page && ! empty( $_GET['edit'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	if ( ! $is_wpbot_page && ! $is_form_list && ! $is_form_edit ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'wfb-wpbot-admin-page',
+		WFBCORE_URL . 'assets/css/wpbot-admin-page.css',
+		array(),
+		WFBCORE_VER
+	);
+
+	if ( $is_wpbot_page ) {
+		wp_enqueue_script( 'updates' );
+		wp_enqueue_script( 'plugin-install' );
 	}
 }
 
