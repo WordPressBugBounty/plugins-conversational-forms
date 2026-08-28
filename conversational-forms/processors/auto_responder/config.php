@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-send-name-{{_id}}">
 		<?php esc_html_e('From Name', 'qcformbuilder-forms'); ?>

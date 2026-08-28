@@ -105,7 +105,7 @@ class Qcformbuilder_Forms_Render_Nonce {
 	 */
 	public static function hook_esi( $params ) {
 		$form_id = $params[ 'form_id' ] ;
-		echo self::nonce_field( $form_id, true ) ;
+		echo wp_kses_post( self::nonce_field( $form_id, true ) ) ;
 		exit ;
 	}
 

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 // conditional groups template
 $element['conditional_groups']['magic'] = $magic_tags['system']['tags'];
 if( !empty( $element['conditional_groups']['fields'] ) ){

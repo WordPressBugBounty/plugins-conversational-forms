@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <style>
 	.qcformbuilder-editor-header-nav {
 		height: 48px;

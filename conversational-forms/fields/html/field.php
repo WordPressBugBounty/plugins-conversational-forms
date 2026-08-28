@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 $html_template = '';
 // magics!
 $syncer = Qcformbuilder_Forms_Sync_Factory::get_object( $form, $field, Qcformbuilder_Forms_Field_Util::get_base_id( $field, null, $form )
@@ -22,7 +25,7 @@ if( $sync ){
 }else{
 	$html_template = $field[ 'config' ][ 'default' ];
 	$content = do_shortcode( Qcformbuilder_Forms::do_magic_tags( wpautop( $html_template ) ) );
-	echo '<div class="' . esc_attr( $field['config']['custom_class'] ) . '">' . $content . '</div>';
+	echo '<div class="' . esc_attr( $field['config']['custom_class'] ) . '">' . wp_kses_post( $content ) . '</div>';
 }
 
 

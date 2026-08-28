@@ -111,7 +111,7 @@ class Qcformbuilder_Forms_Render_Footer {
 	 * @since 1.5.0
 	 */
 	public function print_data(){
-		echo $this->get_data_as_string();
+		echo wp_kses_post( $this->get_data_as_string() );
 		$this->printed = true;
 	}
 }

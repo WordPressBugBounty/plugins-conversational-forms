@@ -506,7 +506,7 @@ class Qcformbuilder_Forms
 		}
 
 		// check for field_id from 1.0.4
-		$columns = $wpdb->get_results("SHOW COLUMNS FROM `" . $wpdb->prefix . "wfb_form_entry_values`", ARRAY_A);  //db call ok; no-cache ok  
+		$columns = $wpdb->get_results("SHOW COLUMNS FROM `" . $wpdb->prefix . "wfb_form_entry_values`", ARRAY_A); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		$fields = array();
 		foreach ($columns as $column) {
@@ -520,7 +520,7 @@ class Qcformbuilder_Forms
 			$wpdb->query("CREATE INDEX `field_id` ON `" . $wpdb->prefix . "wfb_form_entry_values` (`field_id`); ");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange
 
 			// update all entries
-			$forms = $wpdb->get_results("SELECT `id`,`form_id` FROM `" . $wpdb->prefix . "wfb_form_entries`", ARRAY_A);  //db call ok; no-cache ok 
+			$forms = $wpdb->get_results("SELECT `id`,`form_id` FROM `" . $wpdb->prefix . "wfb_form_entries`", ARRAY_A); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			$known = array();
 			if (!empty($forms)) {
@@ -537,10 +537,11 @@ class Qcformbuilder_Forms
 
 					foreach ($config['fields'] as $field_id => $field) {
 
-						$wpdb->update($wpdb->prefix . "wfb_form_entry_values", array('field_id' => $field_id), array(
-							'entry_id' => $form['id'],
-							'slug' => $field['slug']
-						));  //db call ok; no-cache ok 
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->update($wpdb->prefix . "wfb_form_entry_values", array('field_id' => $field_id), array(
+						'entry_id' => $form['id'],
+						'slug' => $field['slug']
+					));
 
 					}
 
@@ -548,7 +549,7 @@ class Qcformbuilder_Forms
 			}
 		}
 		// add status
-		$columns = $wpdb->get_results("SHOW COLUMNS FROM `" . $wpdb->prefix . "wfb_form_entries`", ARRAY_A);  //db call ok; no-cache ok 
+		$columns = $wpdb->get_results("SHOW COLUMNS FROM `" . $wpdb->prefix . "wfb_form_entries`", ARRAY_A); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		$fields = array();
 
@@ -731,10 +732,11 @@ class Qcformbuilder_Forms
 
 		if ($original_data !== null) {
 
-			$wpdb->delete($wpdb->prefix . 'wfb_form_entry_values', array(
-				'entry_id' => $entry_id,
-				'field_id' => $field['ID']
-			));  //db call ok; no-cache ok 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->delete($wpdb->prefix . 'wfb_form_entry_values', array(
+			'entry_id' => $entry_id,
+			'field_id' => $field['ID']
+		));
 
 		}
 
@@ -934,7 +936,7 @@ class Qcformbuilder_Forms
 			'meta_value' => $result
 		);
 
-		$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry);  //db call ok;
+		$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 
 	}
@@ -2407,10 +2409,11 @@ class Qcformbuilder_Forms
 				global $wpdb;
 
 
-				$entry = $wpdb->get_results($wpdb->prepare(
-					"SELECT `value` FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` = %d AND `field_id` = %s",
-					$entry_id, $field_id
-				), ARRAY_A);   //db call ok; no-cache ok 
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$entry = $wpdb->get_results($wpdb->prepare(
+				"SELECT `value` FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` = %d AND `field_id` = %s",
+				$entry_id, $field_id
+			), ARRAY_A);
 
 				//allow plugins to alter the value
 				$entry = apply_filters('qcformbuilder_forms_get_field_entry', $entry, $field_id, $form, $entry_id);
@@ -2623,8 +2626,9 @@ class Qcformbuilder_Forms
 	{
 		global $wpdb, $form;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$entry = $wpdb->get_row($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `id` = %d",
-			$entry_id), ARRAY_A); //db call ok; no-cache ok 
+			$entry_id), ARRAY_A);
 
 		if (!empty($entry)) {
 			if (null === $form) {
@@ -2659,7 +2663,7 @@ class Qcformbuilder_Forms
 
 		$entry_meta = array();
 
-		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` = %d", $entry_id), ARRAY_A);   //db call ok; no-cache ok 
+		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` = %d", $entry_id), ARRAY_A); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		if (!empty($entry_meta_data)) {
 			$processors = Qcformbuilder_Forms_Processor_Load::get_instance()->get_processors();
@@ -3334,7 +3338,7 @@ class Qcformbuilder_Forms
 				}
 			}
 
-			$wpdb->insert($wpdb->prefix . 'wfb_form_entries', $new_entry); //db call ok;
+			$wpdb->insert($wpdb->prefix . 'wfb_form_entries', $new_entry); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 			$entryid = $wpdb->insert_id;
 
@@ -3427,7 +3431,7 @@ class Qcformbuilder_Forms
 					// remove pending entry
 					if (!empty($entryid) && !empty($new_entry) && $new_entry['status'] == 'pending') {
 						// kill it with fire
-						$wpdb->delete($wpdb->prefix . 'wfb_form_entries', array('id' => $entryid));  //db call ok; no-cache ok 
+						$wpdb->delete($wpdb->prefix . 'wfb_form_entries', array('id' => $entryid)); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					}
 					// set error transient
 					$transdata = apply_filters('qcformbuilder_forms_submit_error_transient', $transdata, $form, $referrer,
@@ -3632,7 +3636,7 @@ class Qcformbuilder_Forms
 								absint($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY]), $url);
 						}
 
-						wp_redirect($url);
+						wp_safe_redirect($url);
 						exit;
 					}
 
@@ -3652,7 +3656,7 @@ class Qcformbuilder_Forms
 							absint($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY]), $url);
 					}
 
-					wp_redirect($url);
+					wp_safe_redirect($url);
 					exit;
 				}
 
@@ -3750,7 +3754,7 @@ class Qcformbuilder_Forms
 					}
 				}
 			}
-			echo self::render_form($atts); //use $atts not form in case of entry edit
+			echo wp_kses_post( self::render_form($atts) ); //use $atts not form in case of entry edit
 			exit;
 		}
 	}

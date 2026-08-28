@@ -71,7 +71,7 @@ class Qcformbuilder_Forms_Save_Final {
 								'meta_value' =>	$meta_value
 							);
 
-							$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry); //db call ok; no-cache ok
+							$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 						}
 
@@ -79,7 +79,7 @@ class Qcformbuilder_Forms_Save_Final {
 				}
 
 				// update status
-				$wpdb->update($wpdb->prefix . 'wfb_form_entries', array('status' => 'active'), array( 'id' => $entryid ) ); //db call ok; no-cache ok
+				$wpdb->update($wpdb->prefix . 'wfb_form_entries', array('status' => 'active'), array( 'id' => $entryid ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			}else{
 
@@ -108,7 +108,7 @@ class Qcformbuilder_Forms_Save_Final {
 								'meta_value' =>	$meta_value
 							);
 							
-							$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry); //db call ok; no-cache ok
+							$wpdb->insert($wpdb->prefix . 'wfb_form_entry_meta', $meta_entry); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 						}
 

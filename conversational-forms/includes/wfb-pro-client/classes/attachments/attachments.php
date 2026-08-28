@@ -40,7 +40,7 @@ class attachments
 		try {
 			$attached = $this->phpMailer->addAttachment($path);
 		} catch ( \phpmailerException $e ) {
-			throw new Exception($e->getMessage(), $e->getCode());
+			throw new Exception( esc_html( $e->getMessage() ), (int) $e->getCode() );
 		}
 
 		return $attached;

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Updaters for DB structure/etc.
  *
@@ -34,9 +37,10 @@ function qcformbuilder_forms_db_v2_update(){
 
 		//12-04-2024: Converted sprintf() to $wpdb->prepare()
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->get_results( 
 			$wpdb->prepare( "UPDATE `%s` SET `autoload`='no' WHERE %s", $wpdb->options, $where )
-		 ); //db call ok, no-caching ok
+		 );
 
 		//Create new registry that is just ID and not autoloaded
 		$new_registry = array();

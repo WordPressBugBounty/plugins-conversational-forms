@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <script type="text/html" id="bulk-actions-active-tmpl">
 	<option selected="selected" value="">
 		<?php esc_html_e( 'Bulk Actions', 'qcformbuilder-forms' ); ?>

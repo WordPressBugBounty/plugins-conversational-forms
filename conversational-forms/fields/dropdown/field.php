@@ -1,5 +1,8 @@
-<?php 
-	echo $wrapper_before;
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+	echo wp_kses_post( $wrapper_before );
 	if ( isset( $field[ 'slug' ] ) && isset( $_GET[ $field[ 'slug' ] ] ) ) {
 		$field_value = Qcformbuilder_Forms_Sanitize::sanitize( $_GET[ $field[ 'slug' ] ] );
 	}
@@ -14,9 +17,9 @@ $attrs = array(
 $attr_string =  qcformbuilder_forms_field_attributes( $attrs, $field, $form );
 
 ?>
-	<?php echo $field_label; ?>
-	<?php echo $field_before; ?>
-		<select <?php echo $attr_string . ' ' . $field_required . ' ' . $field_structure['aria']; ?> >
+	<?php echo wp_kses_post( $field_label ); ?>
+	<?php echo wp_kses_post( $field_before ); ?>
+		<select <?php echo $attr_string . ' ' . $field_required . ' ' . $field_structure['aria']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts ?> >
 		<?php
 
 		$field_value = Qcformbuilder_Forms_Field_Util::find_select_field_value( $field, $field_value );
@@ -29,7 +32,7 @@ $attr_string =  qcformbuilder_forms_field_attributes( $attrs, $field, $form );
 				}
 				$placeholder = Qcformbuilder_Forms::do_magic_tags( $field['config']['placeholder'] );
 
-				echo '<option value="" disabled ' . $sel . '>' . $placeholder . '</option>';
+				echo '<option value="" disabled ' . esc_attr( $sel ) . '>' . esc_html( $placeholder ) . '</option>';
 			}
 
 			if ( ! empty( $field[ 'config' ][ 'option' ] ) ) {
@@ -61,6 +64,6 @@ $attr_string =  qcformbuilder_forms_field_attributes( $attrs, $field, $form );
 
 			?>
 		</select>
-		<?php echo $field_caption; ?>
-	<?php echo $field_after; ?>
-<?php echo $wrapper_after; ?>
+		<?php echo wp_kses_post( $field_caption ); ?>
+	<?php echo wp_kses_post( $field_after ); ?>
+<?php echo wp_kses_post( $wrapper_after ); ?>

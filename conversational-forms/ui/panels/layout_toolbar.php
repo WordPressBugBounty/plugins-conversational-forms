@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div id="newfield-tool" class="button button-primary button-small layout-new-form-field" title="<?php esc_attr_e( 'Drag this box onto the layout grid where you want the field to appear', 'qcformbuilder-forms'); ?>">
 	<i class="icon-edit" style="display:none;"></i>
 	<i class="dashicons dashicons-admin-page" style="display:none;"></i>

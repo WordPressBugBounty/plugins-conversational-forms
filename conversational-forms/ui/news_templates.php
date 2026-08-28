@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <script type="text/html" id="extensions-modal-tmpl">
 {{#if extensions}}
 	{{#each extensions}}
@@ -38,7 +39,7 @@
 			{{#if url}}
 				data-request="{{url}}"
 			{{else}}
-				data-request="<?php echo WFBCORE_EXTEND_URL . '{{location}}/?version=' . WFBCORE_VER; ?>"
+				data-request="<?php echo esc_url( WFBCORE_EXTEND_URL . '{{location}}/?version=' . WFBCORE_VER ); ?>"
 			{{/if}}
 			{{#if template}}
 				data-template-url="{{template}}"

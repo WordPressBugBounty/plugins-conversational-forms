@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /*
  * Ajax Submissions 
  */
@@ -75,7 +78,7 @@ function wfb_form_ajaxsetup($form){
 				<p class="description" id="qcformbuilder-forms-custom_callback-desc">
 					<?php esc_html_e('Javascript function to call on submission. Passed an object containing form submission result.'); ?> <a href="#" onclick="jQuery('#json_callback_example').toggle();return false;"><?php esc_html_e( 'See Example', 'qcformbuilder-forms' ); ?></a>
 				</p>
-					<pre id="json_callback_example" style="display:none;"><?php echo htmlentities('
+					<pre id="json_callback_example" style="display:none;"><?php echo esc_html('
 {    
     "data": {
         "wfb_id"		: "200", // Form Entry ID
@@ -297,11 +300,11 @@ function wfb_ajax_api_url( $form_id ) {
  */
 function wfb_redirect( $location, $status = 302 ) {
 	if ( !headers_sent() ) {
-		wp_redirect( $location, $status );
+		wp_safe_redirect( $location, $status );
 		die();
 	}else {
 		die( '<script type="text/javascript">'
-		     . 'document.location = "' . str_replace( '&amp;', '&', esc_js( $location ) ) . '";'
+		     . 'document.location = "' . esc_js( str_replace( '&amp;', '&', $location ) ) . '";'
 		     . '</script>' );
 	}
 

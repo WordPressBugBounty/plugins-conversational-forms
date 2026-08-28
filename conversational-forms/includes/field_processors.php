@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 
 add_filter('qcformbuilder_forms_view_field_checkbox', 'wfb_handle_multi_view', 10, 3);

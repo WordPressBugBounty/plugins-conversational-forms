@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="{{_id}}editor">
         <?php esc_html_e('Content', 'qcformbuilder-forms'); ?>

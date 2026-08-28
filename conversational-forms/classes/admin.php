@@ -1262,7 +1262,7 @@ class Qcformbuilder_Forms_Admin {
 			}else{
 				$deleted = Qcformbuilder_Forms_Forms::delete_form( strip_tags( $_GET['delete'] ) );
 				if ( $deleted ) {
-					wp_redirect( 'admin.php?page=qcformbuilder-forms' );
+					wp_safe_redirect( 'admin.php?page=qcformbuilder-forms' );
 					exit;
 				} else {
 					wp_die( esc_html__('Form could not be deleted.', 'qcformbuilder-forms' ) );
@@ -1463,8 +1463,8 @@ class Qcformbuilder_Forms_Admin {
 			AND `entry`.`status` = 'active'
 			ORDER BY `entry`.`datestamp` DESC;", $tableName, Qcformbuilder_Forms_Sanitize::sanitize($_GET['export']), $filter);
 
-			//Execution of Prepared Query, i.e. SQL execution.
-			$rawdata = $wpdb->get_results( $preparedSQLQuery );  //db call ok; no-cache ok
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
+		$rawdata = $wpdb->get_results( $preparedSQLQuery );
 
 			$data = array();
 
@@ -1560,7 +1560,7 @@ class Qcformbuilder_Forms_Admin {
 					exit;
 				}
 
-				wp_redirect('admin.php?page=qcformbuilder-forms');
+				wp_safe_redirect('admin.php?page=qcformbuilder-forms');
 				die;
 
 			}

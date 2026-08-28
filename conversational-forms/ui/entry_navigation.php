@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <script type="text/javascript">
 var init_wfb_baldrick;
 function wfb_set_limits( el ){

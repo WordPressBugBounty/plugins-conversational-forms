@@ -170,7 +170,7 @@ class Qcformbuilder_Forms_Transient  {
 
 		$return = [];
 		
-		$results = $wpdb->get_results( $query,ARRAY_A ); //db call ok; no-cache ok
+		$results = $wpdb->get_results( $query,ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
 		if( ! empty( $results) ){
 			foreach ($results as $result ){

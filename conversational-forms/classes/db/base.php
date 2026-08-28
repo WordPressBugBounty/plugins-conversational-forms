@@ -211,11 +211,12 @@ abstract class Qcformbuilder_Forms_DB_Base {
 
 			global $wpdb;
 
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$inserted = $wpdb->insert(
 				$this->get_table_name( $meta ),
 				$data[ 'fields' ],
 				$data[ 'formats' ]
-			);  //db call ok
+			);
 
 			if( $inserted ){
 				return $wpdb->insert_id;
@@ -242,7 +243,7 @@ abstract class Qcformbuilder_Forms_DB_Base {
 
 		global $wpdb;
 
-		$deleted = $wpdb->delete( $this->get_table_name(), array( 'ID' => $id ) );  //db call ok; no-cache ok 
+		$deleted = $wpdb->delete( $this->get_table_name(), array( 'ID' => $id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		if( false != $deleted ){
 			return true;
@@ -311,14 +312,16 @@ abstract class Qcformbuilder_Forms_DB_Base {
 		$table_name = $this->get_table_name();
 		if( is_array( $id ) ) {
 			$single = false;
-			$sql = "SELECT * FROM $table_name WHERE `ID` IN(" . $this->escape_array( $id ) . ")";
+			$ids = array_map( 'absint', $id );
+			$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `ID` IN($placeholders)", $ids ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}else{
 			$single = true;
-			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `ID` = %d", absint( $id ) );
+			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `ID` = %d", absint( $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );  //db call ok; no-cache ok 
+		$results = $wpdb->get_results( $sql, ARRAY_A );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 		if( ! empty( $results ) && $single ){
 			$results = $results[0];
@@ -345,12 +348,14 @@ abstract class Qcformbuilder_Forms_DB_Base {
 		$table_name = $this->get_table_name( true );
 
 		if( is_array( $id ) ) {
-			$sql = "SELECT * FROM $table_name WHERE`$this->index` IN(" . $this->escape_array( $id ) . ")";
+			$ids = array_map( 'absint', $id );
+			$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE`$this->index` IN($placeholders)", $ids ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}else{
-			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `$this->index` = %d", absint( $id ) );
+			$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `$this->index` = %d", absint( $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );  //db call ok; no-cache ok 
+		$results = $wpdb->get_results( $sql, ARRAY_A );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 		if( ! empty( $results ) && is_string( $key ) ){
 			return $this->reduce_meta( $results, $key );
@@ -471,7 +476,7 @@ abstract class Qcformbuilder_Forms_DB_Base {
 
 		$table_name = $this->get_table_name();
 
-		$results = $wpdb->get_results(  "SELECT max(ID) FROM $table_name", ARRAY_N );  //db call ok; no-cache ok 
+		$results = $wpdb->get_results(  "SELECT max(ID) FROM $table_name", ARRAY_N );  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 
 		if( is_array( $results ) && isset( $results[0], $results[0][0] ) ) {
 			return $results[0][0];
@@ -498,9 +503,9 @@ abstract class Qcformbuilder_Forms_DB_Base {
 
 		$table = $this->get_table_name( true );
 
-		$sql = $wpdb->prepare( "SELECT * FROM $table WHERE  `meta_key` = '%s' AND `meta_value` = '%s' ", $key, $value );
+		$sql = $wpdb->prepare( "SELECT * FROM $table WHERE  `meta_key` = %s AND `meta_value` = %s ", $key, $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		$r = $wpdb->get_results( $sql, ARRAY_A );  //db call ok; no-cache ok 
+		$r = $wpdb->get_results( $sql, ARRAY_A );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 		return $r;
 

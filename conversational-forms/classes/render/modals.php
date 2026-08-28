@@ -90,8 +90,8 @@ class Qcformbuilder_Forms_Render_Modals {
 		?>
 		<div data-remodal-id="<?php echo esc_attr( $modal_id ); ?>" id="<?php echo esc_attr( $modal_id ); ?>" class="<?php echo esc_attr( $class_attr ); ?>" data-form-id="<?php echo esc_attr( $form_id ); ?>"  data-remodal-options="hashTracking: true, closeOnOutsideClick: false">
 			<button data-remodal-action="close" class="remodal-close"></button>
-			<div class="qcformbuilder-modal-body qcformbuilder-front-modal-body" id="<?php echo $modal_id; ?>_modal_body">
-				<?php echo $form_html ?>
+			<div class="qcformbuilder-modal-body qcformbuilder-front-modal-body" id="<?php echo esc_attr( $modal_id ); ?>_modal_body">
+				<?php echo wp_kses_post( $form_html ); ?>
 			</div>
 		</div>
 
@@ -123,7 +123,7 @@ class Qcformbuilder_Forms_Render_Modals {
 	public static function render_footer_modals() {
 		$footer_modals = self::$footer_modals;
 		if ( ! empty( $footer_modals ) && is_string( $footer_modals ) ) {
-			echo $footer_modals;
+			echo wp_kses_post( $footer_modals );
 		}
 
 	}

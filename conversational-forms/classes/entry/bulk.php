@@ -24,11 +24,14 @@ class Qcformbuilder_Forms_Entry_Bulk {
 
 		global $wpdb;
 
-		$result = $wpdb->query( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `id` IN (" . implode( ',', $entry_ids ) . ");" ); //db call ok; no-cache ok
+		$entry_ids = array_map( 'absint', $entry_ids );
+		$placeholders = implode( ',', array_fill( 0, count( $entry_ids ), '%d' ) );
 
-		$result = $wpdb->query( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` IN (" . implode( ',', $entry_ids ) . ");" ); //db call ok; no-cache ok
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
-		$result = $wpdb->query( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` IN (" . implode( ',', $entry_ids ) . ");" ); //db call ok; no-cache ok
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		/**
 		 * Fires after Qcformbuilder Forms entries are deleted
@@ -57,7 +60,9 @@ class Qcformbuilder_Forms_Entry_Bulk {
 
 		global $wpdb;
 
-		$result = $wpdb->query( $wpdb->prepare( "UPDATE `" . $wpdb->prefix . "wfb_form_entries` SET `status` = %s WHERE `id` IN (" . implode( ',', $entry_ids ) . ");", $status ) ); //db call ok; no-cache ok
+		$entry_ids = array_map( 'absint', $entry_ids );
+		$placeholders = implode( ',', array_fill( 0, count( $entry_ids ), '%d' ) );
+		$result = $wpdb->query( $wpdb->prepare( "UPDATE `" . $wpdb->prefix . "wfb_form_entries` SET `status` = %s WHERE `id` IN ($placeholders)", array_merge( array( $status ), $entry_ids ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		/**
 		 * Fires after selected entries' status is updated
@@ -97,7 +102,7 @@ class Qcformbuilder_Forms_Entry_Bulk {
 
 		}
 
-		$total = $wpdb->get_var( $sql ); //db call ok; no-cache ok
+		$total = $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
 		return (int) $total;
 	}

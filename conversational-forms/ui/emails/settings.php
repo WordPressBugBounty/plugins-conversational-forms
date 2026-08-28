@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Settings for Qcformbuilder Forms emails
  *
@@ -65,7 +68,7 @@
 		?></p>
 
 	</div>
-	<?php echo Qcformbuilder_Forms_Email_Settings::nonce_field(); ?>
+	<?php echo wp_kses_post( Qcformbuilder_Forms_Email_Settings::nonce_field() ); ?>
 	<br><br>
 	<div class="field-group">
 		<button type="button" id="wfb-email-settings-save" class="button button-primary">

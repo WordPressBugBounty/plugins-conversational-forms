@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if( ! empty( $field['config']['width' ] ) ){
     $width = $field['config']['width' ];
 }else{
@@ -20,5 +23,5 @@ if( ! empty( $field[ 'config'][ 'custom_class'] ) ){
 printf( '<hr id="%s" class="%s" style="width: %s" />',
     esc_attr( $field_id ),
     esc_attr( $custom_class ),
-    $width
+    esc_attr( $width )
 );

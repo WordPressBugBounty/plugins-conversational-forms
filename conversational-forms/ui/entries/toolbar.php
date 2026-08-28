@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 		<?php
 			$entry_perpage = get_option( '_qcformbuilder_forms_entry_perpage', 20 );
 		?>

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if(!isset($element['mailer']['sender_name'])){
 	$element['mailer']['sender_name'] = __('Chatbot Forms Notification', 'qcformbuilder-forms');
@@ -123,7 +126,7 @@ if ( ! empty( $element['mailer']['enable_mailer'] ) ) {
             $send_local = \qcformbuilderwp\qcformbuilderforms\pro\container::get_instance()->get_settings()->get_form( $element['ID'] )->get_send_local();
             ?>
             <script type="text/javascript">
-              var cfId = "<?php echo $element['ID'] ?>";
+              var cfId = "<?php echo esc_attr( $element['ID'] ); ?>";
               var $check = jQuery("<input id='wfb-pro-send-local-" + cfId + "' type='checkbox'/>" );
             </script>
             <?php

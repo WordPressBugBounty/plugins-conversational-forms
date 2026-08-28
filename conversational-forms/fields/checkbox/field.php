@@ -1,6 +1,11 @@
-<?php echo $wrapper_before; ?>
-	<?php echo $field_label; ?>
-	<?php echo $field_before; ?>
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
+<?php echo wp_kses_post( $wrapper_before ); ?>
+	<?php echo wp_kses_post( $field_label ); ?>
+	<?php echo wp_kses_post( $field_before ); ?>
 		<?php
 
 		$req_class = '';
@@ -32,12 +37,12 @@
                         for="<?php echo esc_attr($field_id . '_' . $option_key); ?>"
                 >
                             <input
-                                <?php echo $parsley_req; ?>
+                                <?php echo $parsley_req; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from esc_attr() ?>
                                 type="checkbox"
                                 data-label="<?php echo esc_attr($option['label']); ?>"
                                 data-field="<?php echo esc_attr($field_base_id); ?>"
                                 id="<?php echo esc_attr(Qcformbuilder_Forms_Field_Util::opt_id_attr($field_id, $option_key)); ?>"
-                                class="<?php echo $field_id . $req_class; ?>"
+                                class="<?php echo esc_attr( $field_id . $req_class ); ?>"
                                 name="<?php echo esc_attr($field_name); ?>[<?php echo esc_attr($option_key); ?>]"
                                 value="<?php echo esc_attr($option['value']); ?>"
                                 <?php if (Qcformbuilder_Forms_Field_Util::is_checked_option($option['value'], (array)$field_value)){ ?>checked="checked"<?php } ?>
@@ -46,7 +51,7 @@
                                 <?php if ( isset( $disabled[$option_key] ) && $disabled[$option_key] === true  ) { ?>disabled<?php } ?>
                                 data-calc-value="<?php echo esc_attr(Qcformbuilder_Forms_Field_Util::get_option_calculation_value($option, $field, $form)); ?>"
                             >
-                    <?php echo $option['label']; ?>
+                    <?php echo esc_html( $option['label'] ); ?>
                 </label>
 
                 <?php if(empty($field['config']['inline'])){ ?>
@@ -55,6 +60,6 @@
 				<?php
 			}
 		} ?>
-		<?php echo $field_caption; ?>
-	<?php echo $field_after; ?>
-<?php echo $wrapper_after; ?>
+		<?php echo wp_kses_post( $field_caption ); ?>
+	<?php echo wp_kses_post( $field_after ); ?>
+<?php echo wp_kses_post( $wrapper_after ); ?>

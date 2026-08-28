@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Compatibility functions for functionality from PHP extensions or not present in old PHP versions
  *

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Generic HTML input field
  *
@@ -9,10 +12,10 @@
  * @copyright 2016 CalderaWP LLC
  */
 ?>
-<?php echo $wrapper_before; ?>
-	<?php echo $field_label; ?>
-	<?php echo $field_before; ?>
-		<?php echo Qcformbuilder_Forms_Field_Input::html( $field, $field_structure, $form ); ?>
-		<?php echo $field_caption; ?>
-	<?php echo $field_after; ?>
-<?php echo $wrapper_after; ?>
+<?php echo wp_kses_post( $wrapper_before ); ?>
+	<?php echo wp_kses_post( $field_label ); ?>
+	<?php echo wp_kses_post( $field_before ); ?>
+		<?php echo Qcformbuilder_Forms_Field_Input::html( $field, $field_structure, $form ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output is built from escaped parts ?>
+		<?php echo wp_kses_post( $field_caption ); ?>
+	<?php echo wp_kses_post( $field_after ); ?>
+<?php echo wp_kses_post( $wrapper_after ); ?>

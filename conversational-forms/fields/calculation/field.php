@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $elementType = $field['config']['element'];
 if(empty($elementType)){
@@ -40,21 +43,21 @@ $syncer = Qcformbuilder_Forms_Sync_Factory::get_object( $form, $field, Qcformbui
 
 ?>
 
-<?php echo $wrapper_before; ?>
+<?php echo wp_kses_post( $wrapper_before ); ?>
 
-	<?php echo $field_label; ?>
+	<?php echo wp_kses_post( $field_label ); ?>
 
-	<?php echo $field_before; ?>
+	<?php echo wp_kses_post( $field_before ); ?>
 
-		<<?php echo $elementType . $field_structure['aria']; ?> class="<?php echo $field['config']['classes']; ?>"><?php echo $field['config']['before']; ?>
-			<span id="<?php echo esc_attr( $field_id ); ?>" data-calc-display="<?php echo esc_attr( $value_field_id ); ?>"><?php echo $field_value; ?></span><?php echo $field['config']['after']; ?></<?php echo $elementType; ?>>
-				<input type="hidden" <?php echo $attr_string; ?> >
+		<<?php echo tag_escape( $elementType ) . $field_structure['aria']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- aria attributes built from escaped parts ?> class="<?php echo esc_attr( $field['config']['classes'] ); ?>"><?php echo wp_kses_post( $field['config']['before'] ); ?>
+			<span id="<?php echo esc_attr( $field_id ); ?>" data-calc-display="<?php echo esc_attr( $value_field_id ); ?>"><?php echo esc_html( $field_value ); ?></span><?php echo wp_kses_post( $field['config']['after'] ); ?></<?php echo tag_escape( $elementType ); ?>>
+				<input type="hidden" <?php echo $attr_string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts ?> >
 
-		<?php echo $field_caption; ?>
+		<?php echo wp_kses_post( $field_caption ); ?>
 
-	<?php echo $field_after; ?>
+	<?php echo wp_kses_post( $field_after ); ?>
 
-<?php echo $wrapper_after; ?>
+<?php echo wp_kses_post( $wrapper_after ); ?>
 
 <?php
 

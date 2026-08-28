@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 
 class Qcformbuilder_Forms_Widget extends WP_Widget {
@@ -34,14 +37,14 @@ class Qcformbuilder_Forms_Widget extends WP_Widget {
 
 			extract($args, EXTR_SKIP);
 
-			echo $before_widget;
+			echo wp_kses_post( $before_widget );
 
 			$title = empty($instance['title']) ? ' ' : apply_filters( 'widget_title', $instance['title']);
-			if ( !empty( $title ) ) { echo $before_title . $title . $after_title; };
+			if ( !empty( $title ) ) { echo wp_kses_post( $before_title . $title . $after_title ); };
 
-				echo Qcformbuilder_Forms::render_form( $instance[ 'form' ] );
+				echo wp_kses_post( Qcformbuilder_Forms::render_form( $instance[ 'form' ] ) );
 			
-			echo $after_widget;
+			echo wp_kses_post( $after_widget );
 	
 		}
 	}
@@ -75,12 +78,12 @@ class Qcformbuilder_Forms_Widget extends WP_Widget {
 		
 		do_action( 'qcformbuilder_forms_widget_form_start', $instance );
 
-		echo "<p><label for=\" " . $this->get_field_id('title') . "\">" . esc_html__('Title', 'qcformbuilder-forms') . ": <input class=\"widefat\" id=\"" . $this->get_field_id('title') . "\" name=\"" . $this->get_field_name('title') . "\" type=\"text\" value=\"" . esc_attr($title). "\" /></label></p>\r\n";
+		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Title', 'qcformbuilder-forms') . ": <input class=\"widefat\" id=\"" . esc_attr( $this->get_field_id('title') ) . "\" name=\"" . esc_attr( $this->get_field_name('title') ) . "\" type=\"text\" value=\"" . esc_attr($title). "\" /></label></p>\r\n" );
 
 		// get forms
 		$forms = Qcformbuilder_Forms_Forms::get_forms( true );
 
-		echo "<p><label for=\" " . $this->get_field_id('title') . "\">" . esc_html__('Form', 'qcformbuilder-forms') . ": </label><select style=\"width:100%;\" name=\"" . $this->get_field_name('form') . "\">\r\n";
+		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Form', 'qcformbuilder-forms') . ": </label><select style=\"width:100%;\" name=\"" . esc_attr( $this->get_field_name('form') ) . "\">\r\n" );
 		echo "<option value=\"\"></option>\r\n";
 		if(!empty($forms)){
 

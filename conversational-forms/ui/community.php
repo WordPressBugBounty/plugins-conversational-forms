@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-editor-header">
 	<ul class="qcformbuilder-editor-header-nav">
 		<li class="qcformbuilder-editor-logo">

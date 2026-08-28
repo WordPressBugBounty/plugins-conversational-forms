@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if(!isset($element['variables'])){
 	$element['variables'] = array();
@@ -80,7 +83,7 @@ if(!isset($element['variables'])){
 			tags	:	{
 				vars	: []
 			},
-			type	:	"<?php echo __('Variables', 'qcformbuilder-forms'); ?>",
+			type	:	"<?php echo esc_html( __('Variables', 'qcformbuilder-forms') ); ?>",
 			wrap	:	['{','}']
 		};
 		// add values

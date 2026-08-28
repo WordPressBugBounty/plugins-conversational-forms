@@ -52,7 +52,7 @@ class menu
 	 */
 	public function render()
 	{
-		echo $this->scripts->webpack($this->view_dir);
+		echo wp_kses_post( $this->scripts->webpack($this->view_dir) );
 
 	}
 

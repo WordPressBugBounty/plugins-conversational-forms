@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * View for email preview
  *
@@ -56,10 +59,10 @@ header( "Cache-Control: no-cache, must-revalidate, post-check=0, pre-check=0" );
 <div id="wrap">
 	<div id="inner">
 		<div id="headers" class="item">
-			<?php echo $headers; ?>
+			<?php echo wp_kses_post( $headers ); ?>
 		</div>
 		<div id="message">
-			<?php echo $message; ?>
+			<?php echo wp_kses_post( $message ); ?>
 		</div>
 	</div>
 </div>

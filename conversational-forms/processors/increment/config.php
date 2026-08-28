@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="{{_id}}_increment-start">
         <?php esc_html_e( 'Increment Start', 'qcformbuilder-forms' ); ?>

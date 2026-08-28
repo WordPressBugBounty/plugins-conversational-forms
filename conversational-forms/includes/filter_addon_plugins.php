@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Simple Filter for plugins page to help filter qcformbuilder forms addons into its own lost.
 

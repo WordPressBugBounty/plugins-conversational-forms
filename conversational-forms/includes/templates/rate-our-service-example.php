@@ -1,4 +1,7 @@
  <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
  return array(
   '_last_updated' => 'Mon, 30 Jan 2017 13:53:00 +0000',

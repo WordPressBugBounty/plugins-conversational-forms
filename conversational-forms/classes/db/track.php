@@ -338,9 +338,11 @@ class Qcformbuilder_Forms_DB_Track extends Qcformbuilder_Forms_DB_Base {
 
 		$table = $this->get_table_name( false );
 
-		$sql = $wpdb->prepare( "SELECT `form_id` FROM $table WHERE `ID` IN( '%s' )", implode( ',', $event_ids ) );
+		$event_ids = array_map( 'absint', $event_ids );
+		$placeholders = implode( ',', array_fill( 0, count( $event_ids ), '%d' ) );
+		$sql = $wpdb->prepare( "SELECT `form_id` FROM $table WHERE `ID` IN( $placeholders )", $event_ids ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		return $wpdb->get_results( $sql, ARRAY_A ); //db call ok; no-cache ok 
+		return $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 	}
 

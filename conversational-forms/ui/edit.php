@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 //php_cs::disable
 
@@ -543,7 +546,8 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 				<div class="qcformbuilder-config-field">
 					<select class="block-input qcformbuilder-select-field-type" data-field="<?php echo esc_attr($field_id); ?>" id="<?php echo esc_attr($field_id); ?>_type" name="config[fields][<?php echo esc_attr($field_id); ?>][type]" data-type="<?php echo esc_attr( $type ); ?>">
 						<?php
-							echo build_field_types($type);
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Options built from internal field registry.
+							echo build_field_types( $type );
 						?>
 					</select>
 				</div>
@@ -603,9 +607,9 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 			?>
 
 
-			<input type="hidden" class="field_config_string block-input" value="<?php echo htmlentities( $config_str ); ?>">
+			<input type="hidden" class="field_config_string block-input" value="<?php echo esc_attr( $config_str ); ?>">
 
-            <input type="hidden" class="field_conditions_config_string block-input ajax-trigger" data-event="none" data-autoload="true" data-request="build_conditions_config" data-template="#conditional-group-tmpl" data-id="<?php echo esc_attr($field_id); ?>" data-target="#<?php echo esc_attr($field_id); ?>_conditional_wrap" data-type="fields" data-callback="rebuild_field_binding" value="<?php echo htmlentities( $conditions_str ); ?>">
+            <input type="hidden" class="field_conditions_config_string block-input ajax-trigger" data-event="none" data-autoload="true" data-request="build_conditions_config" data-template="#conditional-group-tmpl" data-id="<?php echo esc_attr($field_id); ?>" data-target="#<?php echo esc_attr($field_id); ?>_conditional_wrap" data-type="fields" data-callback="rebuild_field_binding" value="<?php echo esc_attr( $conditions_str ); ?>">
 
             <br>
 			<?php
@@ -682,7 +686,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 		<a href="#<?php echo esc_attr( $id ); ?>">
 			<i class="icn-right pull-right"></i>
 			<i class="icn-field"></i>
-			<?php echo htmlentities( $label ); ?>
+			<?php echo esc_attr( $label ); ?>
 		</a>
 		<input type="hidden" class="qcformbuilder-config-field-group" value="<?php echo esc_attr( $group ); ?>" name="config[fields][<?php echo esc_attr( $id ); ?>][group]" autocomplete="off">
 	</li>
@@ -767,7 +771,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 	<a class="button qcformbuilder-header-email-preview-button" target="_blank" href="<?php echo esc_url( add_query_arg( array(
 			'wfb-email-preview' => wp_create_nonce( $element[ 'ID' ] ),
 			'wfb-email-preview-form' => $element[ 'ID' ]
-	),  get_home_url() ) ); ?>" <?php echo $has_email_preview; ?>>
+	),  get_home_url() ) ); ?>" <?php echo $has_email_preview; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hardcoded aria/style attributes. ?>>
 		<?php esc_html_e( 'Preview Last Email', 'qcformbuilder-forms' ); ?>
 	</a>
 </div>
@@ -801,7 +805,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 							if($group_slug=='conditions' || $group_slug=='variables' || $group_slug=='processors' || $group_slug=='revisions'){
 								echo "<li class=\"wfb-pro-tab\"><p>" . esc_html( $tab_setup['name'] ) . " <span class=\"wfb-pro-badge\">Pro</span></p></li>\r\n";
 							}else{
-								echo "<li". esc_attr( $active )." id=\"tab_". esc_attr( $group_slug )."\"><a href=\"#" . esc_attr( $group_slug ) . "-config-panel\">" . esc_html( $tab_setup['name'] ) . "</a></li>\r\n";
+								echo "<li". $active ." id=\"tab_". esc_attr( $group_slug )."\"><a href=\"#" . esc_attr( $group_slug ) . "-config-panel\">" . esc_html( $tab_setup['name'] ) . "</a></li>\r\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $active is hardcoded class attribute or null.
 							}
 							
 							
@@ -814,7 +818,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 								if(!empty($tab_setup['active'])){
 									$active = " class=\"active\"";
 								}
-								echo "<li". esc_attr( $active )."><a href=\"#" . esc_attr( $code_slug ) . "-code-panel\" data-editor=\"" . esc_attr( $code_slug ) . "-editor\">" . esc_html( $tab_setup['name'] ) . "</a></li>\r\n";
+								echo "<li". $active ."><a href=\"#" . esc_attr( $code_slug ) . "-code-panel\" data-editor=\"" . esc_attr( $code_slug ) . "-editor\">" . esc_html( $tab_setup['name'] ) . "</a></li>\r\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $active is hardcoded class attribute or null.
 							}
 						}
 
@@ -841,7 +845,7 @@ foreach($panel_extensions as $panel){
 		if(!empty($tab_setup['active'])){
 			$active = null;
 		}
-		echo "<div id=\"" . esc_attr( $panel_slug ) . "-config-panel\" class=\"qcformbuilder-editor-body qcformbuilder-config-editor-panel " . ( !empty($tab_setup['side_panel']) ? "qcformbuilder-config-has-side" : "" ) . "\"".$active.">\r\n";
+		echo "<div id=\"" . esc_attr( $panel_slug ) . "-config-panel\" class=\"qcformbuilder-editor-body qcformbuilder-config-editor-panel " . ( !empty($tab_setup['side_panel']) ? "qcformbuilder-config-has-side" : "" ) . "\"". $active .">\r\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $active is hardcoded style attribute or null.
 			if( !empty($tab_setup['side_panel']) ){
 				echo "<div id=\"" . esc_attr( $panel_slug ) . "-config-panel-main\" class=\"qcformbuilder-config-editor-main-panel\">\r\n";
 			}
@@ -993,6 +997,7 @@ do_action('qcformbuilder_forms_edit_end', $element);
 ?>
 <script type="text/html" id="field-options-cofnig-tmpl">
 <?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Handlebars template built server-side for editor use.
 	echo $field_options_template;
 ?>
 </script>
@@ -1059,8 +1064,9 @@ do_action('qcformbuilder_forms_edit_end', $element);
 			if(!empty($cat_show)){
 				$cat_show = 'style="display: none;"';
 			}
-			echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr( $cat ) . '" class="tab-detail-panel" '.$cat_show.'>';
-				echo $template;
+echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr( $cat ) . '" class="tab-detail-panel" '. $cat_show .'>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $cat_show is hardcoded style attribute or empty.
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Handlebars field selector template.
+			echo $template;
 			echo '</div>';
 			$cat_show = true;
 		}
@@ -1193,7 +1199,8 @@ do_action('qcformbuilder_forms_edit_end', $element);
 
 /// Output the field templates
 foreach($field_type_templates as $key=>$template){
-	echo "<script type=\"text/html\" class=\"wfb-editor-template\" id=\"" . $key . "\">\r\n";
+	echo "<script type=\"text/html\" class=\"wfb-editor-template\" id=\"" . esc_attr( $key ) . "\">\r\n";
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Handlebars field preview/config templates.
 		echo $template;
 	echo "\r\n</script>\r\n";
 }
@@ -1232,7 +1239,8 @@ foreach($magic_tags as $magic_set_key=>$magic_tags_set){
 
 <?php
 // output fieldtype defaults
-echo implode("\r\n", $field_type_defaults);
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Inline JS config for form editor.
+echo implode("\r\n", $field_type_defaults );
 ?>
 var system_values = <?php echo json_encode( $magic_script ); ?>;
 var preset_options = <?php echo json_encode( $option_presets ); ?>;

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if( Qcformbuilder_Forms_Admin::is_revision_edit() ){
 	printf( '<div class="notice"><p>%s</p></div>', esc_html__( 'Currently Viewing A Revision', 'qcformbuilder-forms' ) );
 }

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 global $form_processors;
 //dump($element,0);
 // Get Processors
@@ -30,12 +33,12 @@ function processor_line_template($id = '{{id}}', $type = null){
 	}
 
 	?>
-	<li class="qcformbuilder-processor-nav <?php echo $id; ?> <?php if(!empty($type)){ echo 'processor_type_'.$type; }; ?>">
-		<a href="#<?php echo $id; ?>">
-		<?php echo $type_name; ?>
+	<li class="qcformbuilder-processor-nav <?php echo esc_attr( $id ); ?> <?php if(!empty($type)){ echo 'processor_type_' . esc_attr( $type ); }; ?>">
+		<a href="#<?php echo esc_attr( $id ); ?>">
+		<?php echo esc_html( $type_name ); ?>
 		<span class="processor-line-number"></span>
 		</a>
-		<input type="hidden" name="config[processors][<?php echo $id; ?>][ID]" value="<?php echo $id; ?>">
+		<input type="hidden" name="config[processors][<?php echo esc_attr( $id ); ?>][ID]" value="<?php echo esc_attr( $id ); ?>">
 	</li>
 	<?php
 }
@@ -97,17 +100,17 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 	}
 
 	?>
-	<div class="qcformbuilder-editor-processor-config-wrapper qcformbuilder-editor-config-wrapper processor-<?php echo $type; ?>" id="<?php echo $id; ?>" data-type="<?php echo $type; ?>" style="display:none;">
+	<div class="qcformbuilder-editor-processor-config-wrapper qcformbuilder-editor-config-wrapper processor-<?php echo esc_attr( $type ); ?>" id="<?php echo esc_attr( $id ); ?>" data-type="<?php echo esc_attr( $type ); ?>" style="display:none;">
 
 		<div class="toggle_option_tab">
-			<a href="#<?php echo $id; ?>_settings_pane" class="button button-primary"><?php echo esc_html__( 'Settings', 'qcformbuilder-forms' ); ?></a>
-			<a href="#<?php echo $id; ?>_conditions_pane" class="button "><?php echo esc_html__( 'Conditions', 'qcformbuilder-forms' ); ?></a>
+			<a href="#<?php echo esc_attr( $id ); ?>_settings_pane" class="button button-primary"><?php echo esc_html__( 'Settings', 'qcformbuilder-forms' ); ?></a>
+			<a href="#<?php echo esc_attr( $id ); ?>_conditions_pane" class="button "><?php echo esc_html__( 'Conditions', 'qcformbuilder-forms' ); ?></a>
 		</div>
-		<h3 data-title="<?php esc_html_e( 'New Form Processor', 'qcformbuilder-forms'); ?>" class="qcformbuilder-editor-processor-title"><?php echo $type_name; ?></h3>
-		<div id="<?php echo $id; ?>_settings_pane" class="wrapper-instance-pane">
+		<h3 data-title="<?php esc_html_e( 'New Form Processor', 'qcformbuilder-forms'); ?>" class="qcformbuilder-editor-processor-title"><?php echo esc_html( $type_name ); ?></h3>
+		<div id="<?php echo esc_attr( $id ); ?>_settings_pane" class="wrapper-instance-pane">
 			<div class="toggle_processor_event">
 
-				<label title="<?php echo esc_attr( __('Enable / Disable Processor', 'qcformbuilder-forms') ); ?>" class="button button-small <?php if( !empty( $run_times['insert'] )){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo $id; ?>][runtimes][insert]" <?php if( !empty( $run_times['insert'] )){ echo 'checked="checked"'; } ?>>
+				<label title="<?php echo esc_attr( __('Enable / Disable Processor', 'qcformbuilder-forms') ); ?>" class="button button-small <?php if( !empty( $run_times['insert'] )){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo esc_attr( $id ); ?>][runtimes][insert]" <?php if( !empty( $run_times['insert'] )){ echo 'checked="checked"'; } ?>>
 				<span class="is_active" style="<?php if( empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Disable Processor', 'qcformbuilder-forms' ); ?></span>
 				<span class="not_active" style="<?php if( !empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Enable Processor', 'qcformbuilder-forms' ); ?></span>
 				</label>
@@ -118,11 +121,11 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 				<p style="padding:12px; text-align:center;background:#e7e7e7;" class="description"><?php esc_html_e('Processor is currently disabled', 'qcformbuilder-forms'); ?></p>
 			</div>
 			<div class="qcformbuilder-config-group" style="display:none;">
-				<label for="<?php echo $id; ?>_type"><?php esc_html_e( 'Processor Type', 'qcformbuilder-forms'); ?></label>
+				<label for="<?php echo esc_attr( $id ); ?>_type"><?php esc_html_e( 'Processor Type', 'qcformbuilder-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
-					<select class="block-input qcformbuilder-select-processor-type" id="<?php echo $id; ?>_type" name="config[processors][<?php echo $id; ?>][type]" data-type="<?php echo $type; ?>">					
+					<select class="block-input qcformbuilder-select-processor-type" id="<?php echo esc_attr( $id ); ?>_type" name="config[processors][<?php echo esc_attr( $id ); ?>][type]" data-type="<?php echo esc_attr( $type ); ?>">					
 						<?php
-						echo build_processor_types($type);
+						echo wp_kses_post( build_processor_types($type) );
 						?>
 					</select>
 				</div>
@@ -130,24 +133,24 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 			<div class="qcformbuilder-config-processor-setup" <?php if( empty( $run_times ) ){ ?> style="display:none;"<?php } ?>>
 
 			</div>
-			<input type="hidden" class="processor_config_string block-input" value="<?php echo htmlentities( $config_str ); ?>">
+			<input type="hidden" class="processor_config_string block-input" value="<?php echo esc_attr( $config_str ); ?>">
 			<br>
 			<br>
 
 			<button class="button block-button delete-processor" data-confirm="<?php esc_html_e( 'Are you sure you want to remove this processor?', 'qcformbuilder-forms'); ?>" type="button"><?php esc_html_e( 'Remove Processor', 'qcformbuilder-forms'); ?></button>
 		</div>
-		<div id="<?php echo $id; ?>_conditions_pane" style="display:none;" class="wrapper-instance-pane">
+		<div id="<?php echo esc_attr( $id ); ?>_conditions_pane" style="display:none;" class="wrapper-instance-pane">
 		<p>
-			<select name="config[processors][<?php echo $id; ?>][conditions][type]" data-id="<?php echo $id; ?>" class="qcformbuilder-conditionals-usetype">
+			<select name="config[processors][<?php echo esc_attr( $id ); ?>][conditions][type]" data-id="<?php echo esc_attr( $id ); ?>" class="qcformbuilder-conditionals-usetype">
 				<option value=""></option>
 				<option value="use" <?php if($condition_type == 'use'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Use', 'qcformbuilder-forms'); ?></option>
 				<option value="not" <?php if($condition_type == 'not'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Don\'t Use', 'qcformbuilder-forms'); ?></option>
 			</select>
-			<button id="<?php echo $id; ?>_condition_group_add" style="display:none;" type="button" data-id="<?php echo $id; ?>" class="pull-right button button-small add-conditional-group ajax-trigger" data-type="processors" data-template="#conditional-group-tmpl" data-target-insert="append" data-request="new_conditional_group" data-callback="rebuild_field_binding" data-target="#<?php echo $id; ?>_conditional_wrap"><?php esc_html_e( 'Add Conditional Group', 'qcformbuilder-forms'); ?></button>
+			<button id="<?php echo esc_attr( $id ); ?>_condition_group_add" style="display:none;" type="button" data-id="<?php echo esc_attr( $id ); ?>" class="pull-right button button-small add-conditional-group ajax-trigger" data-type="processors" data-template="#conditional-group-tmpl" data-target-insert="append" data-request="new_conditional_group" data-callback="rebuild_field_binding" data-target="#<?php echo esc_attr( $id ); ?>_conditional_wrap"><?php esc_html_e( 'Add Conditional Group', 'qcformbuilder-forms'); ?></button>
 		</p>
-		<div class="qcformbuilder-conditionals-wrapper" id="<?php echo $id; ?>_conditional_wrap"></div>
+		<div class="qcformbuilder-conditionals-wrapper" id="<?php echo esc_attr( $id ); ?>_conditional_wrap"></div>
 		<?php do_action('qcformbuilder_forms_processor_conditionals_template', $id); ?>
-		<input type="hidden" class="processor_conditions_config_string block-input ajax-trigger" data-event="none" data-type="processors" data-autoload="true" data-request="build_conditions_config" data-template="#conditional-group-tmpl" data-id="<?php echo $id; ?>" data-target="#<?php echo $id; ?>_conditional_wrap" data-callback="rebuild_field_binding" value="<?php echo htmlentities( $conditions_str ); ?>">
+		<input type="hidden" class="processor_conditions_config_string block-input ajax-trigger" data-event="none" data-type="processors" data-autoload="true" data-request="build_conditions_config" data-template="#conditional-group-tmpl" data-id="<?php echo esc_attr( $id ); ?>" data-target="#<?php echo esc_attr( $id ); ?>_conditional_wrap" data-callback="rebuild_field_binding" value="<?php echo esc_attr( $conditions_str ); ?>">
 		</div>
 	</div>
 	<?php
@@ -195,7 +198,7 @@ function build_processor_types($default = null){
 				if(!empty($element['processors'])){
 					foreach($element['processors'] as $processor_id=>$config){
 						if(!empty($config['type'])){
-							echo processor_line_template($processor_id, $config['type']);
+							ob_start(); processor_line_template($processor_id, $config['type']); echo wp_kses_post( ob_get_clean() );
 						}
 					}
 				}
@@ -251,10 +254,10 @@ function build_processor_types($default = null){
 				$icon = $processor['icon'];
 			}
 
-			echo '<div class="form-modal-add-line'. ( !empty($processor['single']) ? ' is_single_processor' : null ) . '" data-type="' . $processor_id . '">';
-				echo '<button type="button" class="button info-button add-new-processor" data-type="' . $processor_id . '">' . __('Use Processor', 'qcformbuilder-forms') . '</button>';
-				echo '<img src="'. $icon .'" class="form-modal-lgo" width="45" height="45">';
-				echo '<strong>' . $processor['name'] .'</strong> ';
+			echo '<div class="form-modal-add-line'. ( !empty($processor['single']) ? ' is_single_processor' : null ) . '" data-type="' . esc_attr( $processor_id ) . '">';
+				echo '<button type="button" class="button info-button add-new-processor" data-type="' . esc_attr( $processor_id ) . '">' . esc_html__('Use Processor', 'qcformbuilder-forms') . '</button>';
+				echo '<img src="'. esc_url( $icon ) .'" class="form-modal-lgo" width="45" height="45">';
+				echo '<strong>' . esc_html( $processor['name'] ) .'</strong> ';
 				if(!empty($processor['author'])){
 					echo '<small><span class="description">';
 					echo '&nbsp' . esc_html__( 'by', 'qcformbuilder-forms' ) . '&nbsp';
@@ -270,7 +273,7 @@ function build_processor_types($default = null){
 				}
 				echo '<p class="description">';
 				if(!empty($processor['description'])){
-					 echo $processor['description'];
+					 echo wp_kses_post( $processor['description'] );
 				}else{
 					echo '&nbsp;';
 				}
@@ -280,7 +283,7 @@ function build_processor_types($default = null){
 					foreach($processor['links'] as $link){
 						if(!empty($link['url']) && !empty($link['label'])){
 							//echo '<div style="float:right; margin-top:5px;">';
-							echo '<a style="" href="'.$link['label'].'" target="_blank" class="' . (!empty($link['class']) ? $link['class'] : null ) . '">' . $link['label'] . '</a>';
+							echo '<a style="" href="' . esc_url( $link['url'] ) . '" target="_blank" class="' . (!empty($link['class']) ? esc_attr( $link['class'] ) : '' ) . '">' . esc_html( $link['label'] ) . '</a>';
 							//echo '<div>';
 						}
 					}
@@ -293,19 +296,19 @@ function build_processor_types($default = null){
 	?>
 </script>
 <script type="text/html" id="processor-line-tmpl">
-<?php echo processor_line_template(); ?>
+<?php ob_start(); processor_line_template(); echo wp_kses_post( ob_get_clean() ); ?>
 </script>
 <script type="text/html" id="processor-wrapper-tmpl">
-<?php echo processor_wrapper_template(); ?>
+<?php ob_start(); processor_wrapper_template(); echo wp_kses_post( ob_get_clean() ); ?>
 </script>
 <?php
 
 do_action('qcformbuilder_forms_processor_templates', $form_processors);
 
 foreach($form_processors as $processor=>$config){
-	echo "<script type=\"text/html\" id=\"" . $processor . "-tmpl\">\r\n";
+	echo "<script type=\"text/html\" id=\"" . esc_attr( $processor ) . "-tmpl\">\r\n";
 	if(isset($config['description'])){
-		echo "<p class=\"description\">" . $config['description'] ."</p><br>\r\n";
+		echo "<p class=\"description\">" . wp_kses_post( $config['description'] ) ."</p><br>\r\n";
 	}
 	if(isset($config['conditionals'])){
 		if(empty($config['conditionals'])){
@@ -315,7 +318,7 @@ foreach($form_processors as $processor=>$config){
 	if(isset($config['template'])){
 		include $config['template'];
 	}else{
-		echo '<p>' . __('This processor has no configurable options.', 'qcformbuilder-forms') . '</p>';
+		echo '<p>' . esc_html__('This processor has no configurable options.', 'qcformbuilder-forms') . '</p>';
 	}
 	echo "\r\n</script>\r\n";
 
@@ -323,7 +326,7 @@ foreach($form_processors as $processor=>$config){
 ?>
 <script type="text/javascript">
 
-<?php echo implode("\r\n", $form_processors_defaults); ?>
+<?php echo wp_kses_post( implode("\r\n", $form_processors_defaults) ); ?>
 
 function hide_single_processors(){
 	jQuery('.is_single_processor').each(function(k,v){

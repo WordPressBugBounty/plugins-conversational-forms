@@ -194,12 +194,12 @@ class messages
 	{
 		$table = $this->table_name;
 
-		$sql = sprintf("SELECT * FROM $table WHERE `%s` = %d", $field, absint($value));
-
 		if ( $type ) {
-			$sql .= sprintf(" AND `type` = '%s'", $this->validate_type($type));
+			$sql = $this->wpdb->prepare( "SELECT * FROM $table WHERE `$field` = %d AND `type` = %s", absint( $value ), $this->validate_type( $type ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		} else {
+			$sql = $this->wpdb->prepare( "SELECT * FROM $table WHERE `$field` = %d", absint( $value ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
-		$results = $this->wpdb->get_results($sql, ARRAY_A);
+		$results = $this->wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 		if ( $results ) {
 			return message::from_array($results);

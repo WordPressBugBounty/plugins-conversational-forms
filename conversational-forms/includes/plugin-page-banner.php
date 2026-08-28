@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 add_action('admin_init', 'qcformbuilder_forms_notice_ignore');
 
 

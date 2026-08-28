@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="{{_id}}_element"><?php echo esc_html__('Element', 'qcformbuilder-forms'); ?></label>
 	<div class="qcformbuilder-config-field">

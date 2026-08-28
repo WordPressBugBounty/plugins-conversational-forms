@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Just some basics.
 $per_page_limit = 20;
@@ -133,7 +136,7 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 
 				if(!empty($form['db_support'])){
 
-					$total = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(`id`) AS `total` FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `form_id` = %s && `status` = 'active';", $form_id) ); //db call ok
+					$total = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(`id`) AS `total` FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `form_id` = %s && `status` = 'active';", $form_id) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 				}else{
 					$total = __('Disabled', 'qcformbuilder-forms');
@@ -198,7 +201,7 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 		<p><?php esc_html_e( 'Creating a Conversational form is easy with the visual form builder. You can get started with a ready template and see how it works. Also, check out the', 'qcformbuilder-forms' ); ?> <a href="https://www.youtube.com/watch?v=YUgyyVPKsSo" target="_blank"><?php esc_html_e( 'video tutorial', 'qcformbuilder-forms' ); ?></a> <?php esc_html_e( 'to get started.', 'qcformbuilder-forms' ); ?></p>
 	
 		<h2><?php esc_html_e( 'How to add forms as custom intent button in bot window?', 'qcformbuilder-forms' ); ?></h2>
-		<p><?php esc_html_e( 'To add the forms as chatbot intent button in bot window, please go to', 'qcformbuilder-forms' ); ?> <b>><?php esc_html_e( 'Chatbot Pro > Settings > Start Menu', 'qcformbuilder-forms' ); ?></b> <?php _e( 'page. Here all of the created forms will be listed in <b>"Menu List"</b> section. You just have to drag it and drop inside the', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"Menu area"' ); ?></b><?php esc_html_e( '". If you left the' ); ?> <b><?php esc_html_e( '""Menu Area"', 'qcformbuilder-forms' ); ?></b> <?php esc_html_e( 'empty then all intents (including predefined & Custom) buttons will be displayed inside the bot window. You can see the intents button by typing', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"start"' ); ?></b> ><?php esc_html_e( 'command in bot window.' ); ?></p>
+		<p><?php esc_html_e( 'To add the forms as chatbot intent button in bot window, please go to', 'qcformbuilder-forms' ); ?> <b>><?php esc_html_e( 'Chatbot Pro > Settings > Start Menu', 'qcformbuilder-forms' ); ?></b> <?php echo wp_kses_post( __( 'page. Here all of the created forms will be listed in <b>"Menu List"</b> section. You just have to drag it and drop inside the', 'qcformbuilder-forms' ) ); ?> <b><?php esc_html_e( '"Menu area"' ); ?></b><?php esc_html_e( '". If you left the' ); ?> <b><?php esc_html_e( '""Menu Area"', 'qcformbuilder-forms' ); ?></b> <?php esc_html_e( 'empty then all intents (including predefined & Custom) buttons will be displayed inside the bot window. You can see the intents button by typing', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"start"' ); ?></b> ><?php esc_html_e( 'command in bot window.' ); ?></p>
 		<p class="wfb-help-warning"><?php esc_html_e( '**After making changes in the settings, please clear browser cache and cookies before reloading the page or open a new Incognito window (Ctrl+Shit+N in chrome).', 'qcformbuilder-forms' ); ?></p>
 		
 		<h2><?php esc_html_e( 'What is the Command to trigger the specific form intent in Chatbot?', 'qcformbuilder-forms' ); ?></h2>
@@ -209,7 +212,7 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 	</div>
 	<div id="qcformbuilder-forms-admin-page-right">
 		
-		<?php echo Qcformbuilder_Forms_Entry_Viewer::full_viewer(); ?>
+		<?php echo wp_kses_post( Qcformbuilder_Forms_Entry_Viewer::full_viewer() ); ?>
 
 	</div>
 </div>
@@ -288,7 +291,7 @@ function get_front_end_settings( obj ){
 }
 
 function extend_fail_notice(el){
-	jQuery("#extend_wfb_baldrickModalBody").html('<div class="alert error"><p><?php echo __('Looks like something is not working. Please try again a little later or post to the <a href="http://wordpress.org/support/plugin/qcformbuilder-forms" target="_blank">support forum</a>.', 'qcformbuilder-forms'); ?></p></div>');
+	jQuery("#extend_wfb_baldrickModalBody").html('<div class="alert error"><p><?php echo esc_html( __('Looks like something is not working. Please try again a little later or post to the support forum.', 'qcformbuilder-forms') ); ?></p></div>');
 }
 
 function start_new_form(obj){
@@ -349,12 +352,12 @@ jQuery( function( $ ){
 			var dataa = 'template='+obj.parent().parent().find('.wfb-template-select').val()+'&name='+input;
 			
 			var data = {'action': 'wfb_create_form', 'before': 'serialize_modal_form', 'data': dataa, 'callback': 'new_form_redirect', 'loadClass': 'disabled', 'activeClass': 'disabled', 'nonce': nonce, 'modalAutoclose': 'new_form'};
-			jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function (response) {
-			   window.location = "<?php echo esc_attr( admin_url('admin.php?page=qcformbuilder-forms' ) ); ?>&edit=" + response;
-			});
-			
-		}else{
-			obj.parent().find('.block-input').focus();
+jQuery.post('<?php echo esc_url( admin_url('admin-ajax.php') ); ?>', data, function (response) {
+		   window.location = "<?php echo esc_attr( admin_url('admin.php?page=qcformbuilder-forms' ) ); ?>&edit=" + response;
+		});
+		
+	}else{
+		obj.parent().find('.block-input').focus();
 		}
 		
 	})
@@ -401,9 +404,9 @@ jQuery( function( $ ){
 		
 		var data = {'action': 'wfb_create_form', 'before': 'serialize_modal_form', 'data': data, 'callback': 'new_form_redirect', 'loadClass': 'disabled', 'activeClass': 'disabled', 'modalAutoclose': 'new_form'};
 		$('body').append('<div class="baldrick-backdrop" style="display: block;"></div>');
-		jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function (response) {
-		   window.location = "<?php echo esc_attr( admin_url('admin.php?page=qcformbuilder-forms' ) ); ?>&edit=" + response;
-		});
+jQuery.post('<?php echo esc_url( admin_url('admin-ajax.php') ); ?>', data, function (response) {
+	   window.location = "<?php echo esc_attr( admin_url('admin.php?page=qcformbuilder-forms' ) ); ?>&edit=" + response;
+	});
 		
 	});
 	$( document ).on('click', '.wfb-change-template-button', function(){

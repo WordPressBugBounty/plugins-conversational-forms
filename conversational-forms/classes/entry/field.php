@@ -95,7 +95,7 @@ class Qcformbuilder_Forms_Entry_Field  extends Qcformbuilder_Forms_Entry_Object 
 
 		global  $wpdb;
 
-		$wpdb->insert( $wpdb->prefix . 'wfb_form_entry_values', $this->to_array() ); //db call ok;
+		$wpdb->insert( $wpdb->prefix . 'wfb_form_entry_values', $this->to_array() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		return (int) $wpdb->insert_id;
 

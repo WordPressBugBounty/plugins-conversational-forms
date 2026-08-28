@@ -21,11 +21,11 @@ if( ! defined( 'ABSPATH' ) ){
 <?php
 if( isset( $_GET[ 'wfb-alt-viewer' ] ) ){
 	$form = Qcformbuilder_Forms_Forms::get_form( $_GET[ 'wfb-alt-viewer' ] );
-	echo Qcformbuilder_Forms_Entry_Viewer::form_entry_viewer_2( $form );
+	echo wp_kses_post( Qcformbuilder_Forms_Entry_Viewer::form_entry_viewer_2( $form ) );
 }else{
 	?>
 	<span class="form_entry_row highlight">
-	<?php echo Qcformbuilder_Forms_Entry_Viewer::entry_trigger( $form[ 'ID' ] ); ?>
+	<?php echo wp_kses_post( Qcformbuilder_Forms_Entry_Viewer::entry_trigger( $form[ 'ID' ] ) ); ?>
 </span>
 	<?php
 	$is_pinned = true;

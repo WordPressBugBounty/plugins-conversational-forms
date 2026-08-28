@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /*
  * Frontier Layout Engine
  * Used to build responsive grid layouts
@@ -223,7 +226,7 @@ if( !class_exists( 'Qcformbuilder_Form_Grid' )){
 				$this->output .= sprintf($this->config['before'], $rowID, $rowClass);
 				
 				if(!is_array($cols)){
-					echo $cols;
+					echo wp_kses_post( $cols );
 				}else{
 					foreach($cols as $col=>$content){
 						if(!is_array($content) || empty($content)){

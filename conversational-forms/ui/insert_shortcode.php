@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-backdrop qcformbuilder-forms-insert-modal" style="display: none;"></div>
 <form id="qcformbuilderf_forms_shortcode_modal" class="qcformbuilder-modal-wrap qcformbuilder-forms-insert-modal" style="display: none; width: 700px; max-height: 500px; margin-left: -350px;">
 	<div class="qcformbuilder-modal-title" id="qcformbuilderf_forms_shortcode_modalTitle" style="display: block;">

@@ -281,9 +281,9 @@ class Qcformbuilder_Forms_Entry {
 
             $table = $wpdb->prefix . 'wfb_form_entries';
 
-            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `id` = %d AND `form_id` = %s", $this->entry_id, $this->form['ID']);
+            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `id` = %d AND `form_id` = %s", $this->entry_id, $this->form['ID']); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-            $results = $wpdb->get_results($sql);  //db call ok; no-cache ok
+            $results = $wpdb->get_results($sql);  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
             if (!empty($results)) {
                 $this->found = true;
@@ -310,9 +310,9 @@ class Qcformbuilder_Forms_Entry {
 
             $table = $wpdb->prefix . 'wfb_form_entry_values';
 
-            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `entry_id` = %d", $this->entry_id);
+            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `entry_id` = %d", $this->entry_id); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-            $results = $wpdb->get_results( $sql );  //db call ok; no-cache ok
+            $results = $wpdb->get_results( $sql );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
             if (!empty($results)) {
                 foreach ($results as $result) {
@@ -337,9 +337,9 @@ class Qcformbuilder_Forms_Entry {
 
             $table = $wpdb->prefix . 'wfb_form_entry_meta';
 
-            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `entry_id` = %d", $this->entry_id);
+            $sql = $wpdb->prepare("SELECT * FROM $table WHERE `entry_id` = %d", $this->entry_id); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-            $results = $wpdb->get_results( $sql );  //db call ok; no-cache ok
+            $results = $wpdb->get_results( $sql );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
             if (!empty($results)) {
 
@@ -407,7 +407,7 @@ class Qcformbuilder_Forms_Entry {
 
         if ( $wpdb ) {
 
-            $wpdb->update($wpdb->prefix . 'wfb_form_entries', array('status' => $status), array('id' => $this->entry_id));  //db call ok
+            $wpdb->update($wpdb->prefix . 'wfb_form_entries', array('status' => $status), array('id' => $this->entry_id)); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
         }
 	}
@@ -458,15 +458,16 @@ class Qcformbuilder_Forms_Entry {
 
             if (!$this->entry_id) {
 
-                $wpdb->insert($wpdb->prefix . 'wfb_form_entries', $this->entry->to_array());  //db call ok;
+                $wpdb->insert($wpdb->prefix . 'wfb_form_entries', $this->entry->to_array()); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
                 $this->entry_id = $this->entry->id = $wpdb->insert_id;
 
             } else {
 
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->update($wpdb->prefix . 'wfb_form_entries', $this->entry->to_array(), array(
                     'id' => $this->entry_id
-                ));  //db call ok
+                ));
 
             }
         }
@@ -521,7 +522,7 @@ class Qcformbuilder_Forms_Entry {
 
             unset( $data[ 'id' ] );
 
-            $wpdb->insert( $wpdb->prefix . 'wfb_form_entry_meta',  $data ); //db call ok
+            $wpdb->insert( $wpdb->prefix . 'wfb_form_entry_meta',  $data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
             $meta->meta_id = $wpdb->insert_id;
 

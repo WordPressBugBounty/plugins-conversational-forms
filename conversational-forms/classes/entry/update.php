@@ -43,9 +43,10 @@ class Qcformbuilder_Forms_Entry_Update {
 	public static function update_field( Qcformbuilder_Forms_Entry_Field $field ){
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update( $wpdb->prefix . 'wfb_form_entry_values', $field->to_array(), array(
 			'id' => $field->id
-		) );  //db call ok; no-cache ok
+		) );
 
 		return $wpdb->insert_id;
 	}
@@ -62,12 +63,13 @@ class Qcformbuilder_Forms_Entry_Update {
 	public static function update_field_value( $field_id, $entry_id, $value ){
 
 		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update( $wpdb->prefix . 'wfb_form_entry_values', array(
 			'value' => $value
 		), array(
 			'field_id' => $field_id,
 			'entry_id' => $entry_id
-		) );  //db call ok; no-cache ok
+		) );
 
 	}
 	

@@ -5,12 +5,12 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.4.8
+ * Version: 1.5.0
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
  * Requires at least: 4.6
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * Text Domain: conversational-form-builder
 */
 
@@ -87,7 +87,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		define('WFBCORE_URL', plugin_dir_url(__FILE__));
 	}
 	if ( ! defined('WFBCORE_VER') ) {
-		define( 'WFBCORE_VER', '1.4.8' );
+		define( 'WFBCORE_VER', '1.5.0' );
 	}
 	if ( ! defined('WFBCORE_EXTEND_URL') ) {
 		define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
@@ -234,7 +234,7 @@ if(!function_exists('qcld_condition_check')){
 				$fields = $form['fields'];
 				$table = $wpdb->prefix.'wfb_form_entry_values';
 
-				$row = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table WHERE 1 and `field_id` = %d order by id desc limit 1",$fieldid) ); //db call ok, no-caching ok
+				$row = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table WHERE 1 and `field_id` = %d order by id desc limit 1",$fieldid) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 				
 				if(isset($fields[$fieldid]['type']) && $fields[$fieldid]['type']=='dropdown'){
 					
@@ -331,7 +331,7 @@ if(!function_exists('wpbot_get_form')){
 		$formid = sanitize_text_field($_POST['formid']);
 		$table = $wpdb->prefix.'wfb_forms';
 
-		$result = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid) ); //db call ok, no-caching ok
+		$result = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 
 		$form = unserialize($result->config);
 		$fields = $form['fields'];
@@ -360,6 +360,7 @@ if(!function_exists('wpbot_capture_form_value')){
 	
 		if($entry==0){
 
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$wpdb->insert(
 				$wpdb->prefix."wfb_form_entries",
 				array(
@@ -368,13 +369,14 @@ if(!function_exists('wpbot_capture_form_value')){
 					'form_id'	=> $formid,
 					'status'	=> 'active'
 				)
-			); //db call ok
+			);
 
 			$entry = $wpdb->insert_id;
 
 		}
 		if($answer!=''){
 
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$wpdb->insert(
 				$wpdb->prefix."wfb_form_entry_values",
 				array(
@@ -383,12 +385,12 @@ if(!function_exists('wpbot_capture_form_value')){
 					'slug'	=> '',
 					'value'	=> $answer
 				)
-			);  //db call ok
+			);
 
 		}
 		$table = $wpdb->prefix.'wfb_forms';
 
-		$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid)); //db call ok, no-caching ok
+		$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid)); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 
 		$form = unserialize($result->config);
 		
@@ -451,7 +453,7 @@ if(!function_exists('qc_form_answer')){
 			$answer = '';
 			
 			if(!empty($fieldid)){
-				$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table  where entry_id = %s and field_id = %s",$entry,$fieldid)); //db call ok, no-caching ok
+				$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table  where entry_id = %s and field_id = %s",$entry,$fieldid)); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 				
 				$answer = $result->value;
 			}

@@ -182,9 +182,9 @@ class Qcformbuilder_Forms_Entry_Entries {
 
 		$limit    = $offset . ',' . $this->perpage;
 
-		$sql      = $wpdb->prepare( "SELECT * FROM $table WHERE `form_id` = %s AND `status` = %s ORDER BY `datestamp` DESC LIMIT " . $limit . ";", $this->form[ 'ID' ], $status );
+		$sql      = $wpdb->prepare( "SELECT * FROM $table WHERE `form_id` = %s AND `status` = %s ORDER BY `datestamp` DESC LIMIT %d, %d;", $this->form[ 'ID' ], $status, $offset, $this->perpage ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		$_entries = $wpdb->get_results( $sql ); //db call ok; no-cache ok
+		$_entries = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 		if ( ! empty( $_entries ) ) {
 			$this->entries[ $status ][ $page ] = array();

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label><?php echo esc_html__('Progress Bar', 'qcformbuilder-forms'); ?></label>
 	<div class="qcformbuilder-config-field">

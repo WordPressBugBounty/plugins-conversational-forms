@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 global $field_config_panels;
 
@@ -60,7 +63,7 @@ foreach( (array) $element['layout_grid']['structure'] as $page_key=>$page_struct
 		$rows = array('12');
 	}
 	?>
-	<div class="layout-grid-panel layout-grid <?php echo ( $page_key === 0 ? 'page-active' : null ); ?>" id="<?php echo esc_attr( $pgid ) . ($page_key+1); ?>" data-page="<?php echo esc_attr( $page_key ); ?>" <?php echo ( $page_key > 0 ? ' style="display:none;"' : null ); ?>>
+	<div class="layout-grid-panel layout-grid <?php echo ( $page_key === 0 ? 'page-active' : null ); ?>" id="<?php echo esc_attr( $pgid . ($page_key+1) ); ?>" data-page="<?php echo esc_attr( $page_key ); ?>" <?php echo ( $page_key > 0 ? ' style="display:none;"' : null ); ?>>
 		<?php
 		if(!empty($rows)){
 		foreach($rows as $row_in=>$columns){ ?>

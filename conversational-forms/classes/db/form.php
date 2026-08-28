@@ -151,7 +151,7 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
 	    if( $save_revision ){
 
-		    $old_update = $wpdb->update( $table_name, array( 'type' => 'revision' ), array( 'form_id' => $form_id ) );  //db call ok; no-cache ok 
+		    $old_update = $wpdb->update( $table_name, array( 'type' => 'revision' ), array( 'form_id' => $form_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		    $data[ 'config' ] = $this->prepare_config( $data[ 'config' ] );
 
@@ -161,10 +161,11 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
 	    }else{
 
+	    	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	    	$updated = $wpdb->update( $table_name,
 			    array( 'config' => $this->prepare_config( $data[ 'config' ] ) ),
 		        array( 'id' => $db_id )
-		    );  //db call ok; no-cache ok 
+		    );
 
 	    }
 
@@ -190,7 +191,7 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
 	    $table_name = $this->get_table_name();
 
-	    return $wpdb->update( $table_name, array( 'type' => $type ), array( 'id' => $id ) );  //db call ok; no-cache ok 
+	    return $wpdb->update( $table_name, array( 'type' => $type ), array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
     }
 
@@ -231,13 +232,13 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
  		$table_name = $this->get_table_name();
 
- 		$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `form_id` = '%s'", $form_id );
+ 		$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `form_id` = %s", $form_id ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 	    if( $primary_only ){
 	    	$sql .= ' AND `type` = "primary" ORDER BY `id` DESC';
 	    }
 
-	    $found = $wpdb->get_results( $sql, ARRAY_A );  //db call ok; no-cache ok 
+	    $found = $wpdb->get_results( $sql, ARRAY_A );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
 	    if( empty( $found ) ){
 	    	return false;
@@ -280,9 +281,10 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
     	global  $wpdb;
 
+	    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	    $rows =  $wpdb->delete( $this->get_table_name(), array(
 	    	'form_id' => $form_id
-	    ));  //db call ok; no-cache ok 
+	    ));
 
 	    if( $rows >= 1 ){
 	    	return true;
@@ -315,13 +317,12 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 	    	$id = absint( $id );
 	    }
 
-	    $in = implode( ',', $ids );
-
 	    $table = $this->get_table_name();
 
-	    $sql = $wpdb->prepare( "DELETE FROM $table WHERE `id` IN( %s )", $in );
+	    $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+	    $sql = $wpdb->prepare( "DELETE FROM $table WHERE `id` IN( $placeholders )", $ids ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-	    return $wpdb->query($sql);  //db call ok; no-cache ok 
+	    return $wpdb->query($sql);  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
     }
 
@@ -341,9 +342,9 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 
         $type = true === $primary ? 'primary' : 'revision';
 
-        $sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `type` = '%s'", $type );
+        $sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE `type` = %s", $type ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-        $found = $wpdb->get_results( $sql, ARRAY_A );  //db call ok; no-cache ok 
+        $found = $wpdb->get_results( $sql, ARRAY_A );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared above
 
         if( empty( $found ) ){
             return false;
