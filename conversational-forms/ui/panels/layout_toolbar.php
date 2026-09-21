@@ -1,10 +1,10 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
-<div id="newfield-tool" class="button button-primary button-small layout-new-form-field" title="<?php esc_attr_e( 'Drag this box onto the layout grid where you want the field to appear', 'qcformbuilder-forms'); ?>">
+<div id="newfield-tool" class="button button-primary button-small layout-new-form-field" title="<?php esc_attr_e( 'Drag this box onto the layout grid where you want the field to appear', 'conversational-forms'); ?>">
 	<i class="icon-edit" style="display:none;"></i>
 	<i class="dashicons dashicons-admin-page" style="display:none;"></i>
 	<i class="dashicons dashicons-menu" style="display:none;"></i>
 	<span id="new-form-element" class="layout_field_name"><span class="dashicons dashicons-move" style="margin: 1px 0px 0px -5px;"></span>
-		<?php esc_html_e( 'Add Field', 'qcformbuilder-forms' ); ?>
+		<?php esc_html_e( 'Add Field', 'conversational-forms'); ?>
 	</span>
 	<div class="drag-handle">
 		<div class="field_preview"></div>
@@ -25,8 +25,8 @@ if(empty($haspointer)){ ?>
 	jQuery(document).ready( function($) {
 		$( '#newfield-tool' ).pointer( {
 			content: <?php echo wp_json_encode(
-				'<h3>' . esc_html__( 'Form Elements & Fields', 'qcformbuilder-forms' ) . '</h3>'
-				. '<p>' . esc_html__( 'Drag the Add Field button onto the layout canvas to add a new conversation step.', 'qcformbuilder-forms' ) . '</p>'
+				'<h3>' . esc_html__( 'Form Elements & Fields', 'conversational-forms') . '</h3>'
+				. '<p>' . esc_html__( 'Drag the Add Field button onto the layout canvas to add a new conversation step.', 'conversational-forms') . '</p>'
 				. '<p class="wfb-pointer-gif"><img src="' . esc_url( WFBCORE_URL . 'assets/images/howto.gif' ) . '" alt=""></p>'
 			); ?>,
 			pointerClass: 'wp-pointer wfb-add-field-pointer',

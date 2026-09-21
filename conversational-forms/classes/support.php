@@ -168,11 +168,11 @@ class Qcformbuilder_Forms_Support {
 			'WordPress Version'           => $wp,
 			'PHP Version'                 => $php,
 			'MySQL Version'               => $mysql,
-			'Server Software'             => $_SERVER[ 'SERVER_SOFTWARE' ],
-			'Your User Agent'             => $_SERVER[ 'HTTP_USER_AGENT' ],
+			'Server Software'             => isset( $_SERVER[ 'SERVER_SOFTWARE' ] ) ? sanitize_text_field( wp_unslash( $_SERVER[ 'SERVER_SOFTWARE' ] ) ) : '',
+			'Your User Agent'             => isset( $_SERVER[ 'HTTP_USER_AGENT' ] ) ? sanitize_text_field( wp_unslash( $_SERVER[ 'HTTP_USER_AGENT' ] ) ) : '',
 			'Session Save Path'           => session_save_path(),
 			'Session Save Path Exists'    => ( file_exists( session_save_path() ) ? 'Yes' : 'No' ),
-			'Session Save Path Writeable' => ( is_writable( session_save_path() ) ? 'Yes' : 'No' ),
+			'Session Save Path Writeable' => ( wp_is_writable( session_save_path() ) ? 'Yes' : 'No' ),
 			'Session Max Lifetime'        => ini_get( 'session.gc_maxlifetime' ),
 			'Opcode Cache'                => $opcode_cache,
 			'Object Cache'                => $object_cache,
@@ -194,9 +194,9 @@ class Qcformbuilder_Forms_Support {
 						} else {
 
 							if( $v[ 'active' ] ){
-								$active = __( 'Active', 'qcformbuilder-forms' );
+								$active = __( 'Active', 'conversational-forms');
 							}else{
-								$active = __( 'Not Active', 'qcformbuilder-forms' );
+								$active = __( 'Not Active', 'conversational-forms');
 							}
 							$debug .= '<li><strong>' . esc_html( $v[ 'name' ] ) . '</strong>: ' . esc_html( $v[ 'version' ] ) . ' <em>' . esc_html( $active ) . '</em></li>';
 

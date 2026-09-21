@@ -58,7 +58,7 @@ class Qcformbuilder_Forms_DB_Form extends Qcformbuilder_Forms_DB_Base {
 		$this->primary_fields  = array(
 			'form_id'    => array(
 				'%s',
-				'strip_tags'
+				'wp_strip_all_tags'
 			),
 			'type'    => array(
 				'%s',

@@ -49,13 +49,22 @@ class Qcformbuilder_Forms_Admin_Resend {
 	 *
 	 */
 	public static function watch_for_resend(){
-		if( isset( $_GET[ '_wfb_resend' ], $_GET[ 'e' ], $_GET[ 'f' ] ) && self::verify_nonce($_GET[ '_wfb_resend' ]  ) ){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if( isset( $_GET[ '_wfb_resend' ], $_GET[ 'e' ], $_GET[ 'f' ] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$nonce = sanitize_text_field( wp_unslash( $_GET[ '_wfb_resend' ] ) );
+			if ( ! self::verify_nonce( $nonce ) ) {
+				return;
+			}
+
 			if ( ! current_user_can( Qcformbuilder_Forms::get_manage_cap( 'resend-email' ) ) ) {
 				return;
 			}
-			$form = Qcformbuilder_Forms_Forms::get_form( $_GET[ 'f' ] );
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$form = Qcformbuilder_Forms_Forms::get_form( sanitize_text_field( wp_unslash( $_GET[ 'f' ] ) ) );
 			if( is_array( $form ) ){
-				$resender = new Qcformbuilder_Forms_Email_Resend( absint( $_GET[ 'e' ] ), $form  );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$resender = new Qcformbuilder_Forms_Email_Resend( absint( wp_unslash( $_GET[ 'e' ] ) ), $form  );
 
 				$resender->resend();
 				wfb_redirect( add_query_arg( 'message_resent', 'true', Qcformbuilder_Forms_Admin::main_admin_page_url()  ) );

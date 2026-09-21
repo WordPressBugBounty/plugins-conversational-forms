@@ -28,7 +28,7 @@ class RunQueue extends Endpoint
             'permission_callback' => [$this, 'checkKeys' ],
             'args' => [
                 'jobs' => [
-                    'description' => __('Total jobs to run per back', 'qcformbuilder-forms'),
+                    'description' => __('Total jobs to run per back', 'conversational-forms'),
 					'required' => false,
 					'default' => 10,
 					'sanitize_callback' => 'absint'

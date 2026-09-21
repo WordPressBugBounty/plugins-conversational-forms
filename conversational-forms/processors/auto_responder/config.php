@@ -1,7 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-send-name-{{_id}}">
-		<?php esc_html_e('From Name', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('From Name', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input
@@ -12,7 +12,7 @@
 </div>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-from-email-{{_id}}">
-        <?php esc_html_e('From Email', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e('From Email', 'conversational-forms'); ?>
     </label>
 	<div class="qcformbuilder-config-field">
 		<input
@@ -24,7 +24,7 @@
 
 <div class="qcformbuilder-config-group">
     <label for="wfb-autoresponder-reply-to-{{_id}}">
-        <?php esc_html_e( 'Reply To', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e( 'Reply To', 'conversational-forms'); ?>
     </label>
     <div class="qcformbuilder-config-field">
         <input
@@ -36,7 +36,7 @@
 
 <div class="qcformbuilder-config-group">
     <label for="wfb-autoresponder-cc-{{_id}}">
-        <?php esc_html_e( 'CC', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e( 'CC', 'conversational-forms'); ?>
     </label>
     <div class="qcformbuilder-config-field">
         <input
@@ -48,7 +48,7 @@
 
 <div class="qcformbuilder-config-group">
     <label for="wfb-autoresponder-bcc-{{_id}}">
-        <?php esc_html_e( 'BCC', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e( 'BCC', 'conversational-forms'); ?>
     </label>
     <div class="qcformbuilder-config-field">
         <input
@@ -62,7 +62,7 @@
 
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-subject-{{_id}}">
-		<?php esc_html_e('Email Subject', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Email Subject', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input
@@ -73,7 +73,7 @@
 </div>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-to-name-{{_id}}">
-		<?php esc_html_e('Recipient Name', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Recipient Name', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input
@@ -84,7 +84,7 @@
 </div>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-to-email-{{_id}}">
-		<?php esc_html_e('Recipient Email', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Recipient Email', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input
@@ -95,7 +95,7 @@
 </div>
 <div class="qcformbuilder-config-group">
 	<label for="wfb-autoresponder-message-{{_id}}">
-		<?php esc_html_e('Message', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Message', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<textarea

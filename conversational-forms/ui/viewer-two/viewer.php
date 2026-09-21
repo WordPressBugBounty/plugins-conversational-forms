@@ -7,7 +7,7 @@ if( ! defined( 'ABSPATH' ) ){
 
 <script type="text/html" id="qcformbuilder-forms-entry-tmpl">
 	<div v-bind="{'data-remodal-id': entry.id }" class="qcformbuilder-forms-entry-viewer">
-		<button data-remodal-action="close" class="remodal-close"  title="<?php esc_attr_e( 'Click To Close', 'qcformbuilder-forms' ); ?>" v-on:click="close" ></button>
+		<button data-remodal-action="close" class="remodal-close"  title="<?php esc_attr_e( 'Click To Close', 'conversational-forms'); ?>" v-on:click="close" ></button>
 
 		<div class="qcformbuilder-forms-entry-left">
 
@@ -41,8 +41,8 @@ if( ! defined( 'ABSPATH' ) ){
 						{{ fieldValue( field.id, entry ) }}
 					</td>
 					<td>
-						<a class="btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-details-btn" role="button" href="#" title="<?php esc_html_e( 'View Entry Details', 'qcformbuilder-forms' ); ?>" @click="showSingle(id)" >
-							<?php esc_html_e( 'Details', 'qcformbuilder-forms' ); ?>
+						<a class="btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-details-btn" role="button" href="#" title="<?php esc_html_e( 'View Entry Details', 'conversational-forms'); ?>" @click="showSingle(id)" >
+							<?php esc_html_e( 'Details', 'conversational-forms'); ?>
 						</a>
 					</td>
 				</tr>
@@ -51,14 +51,14 @@ if( ! defined( 'ABSPATH' ) ){
 	</div>
 
 	<div id="qcformbuilder-forms-entries-nav" role="navigation">
-		<a href="#" v-on:click.prevent="prevPage" class="qcformbuilder-forms-entry-viewer-prev-btn btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-nav-btn" title="<?php esc_attr_e( 'Previous page of entries', 'qcformbuilder-forms' ); ?>">
-			<?php esc_html_e( 'Previous', 'qcformbuilder-forms' ); ?>
+		<a href="#" v-on:click.prevent="prevPage" class="qcformbuilder-forms-entry-viewer-prev-btn btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-nav-btn" title="<?php esc_attr_e( 'Previous page of entries', 'conversational-forms'); ?>">
+			<?php esc_html_e( 'Previous', 'conversational-forms'); ?>
 		</a>
-		<a href="#" v-on:click.prevent="nextPage" class="qcformbuilder-forms-entry-viewer-next-btn btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-nav-bt"  title="<?php esc_attr_e( 'Next page of entries', 'qcformbuilder-forms' ); ?>">
-			<?php esc_html_e( 'Next', 'qcformbuilder-forms' ); ?>
+		<a href="#" v-on:click.prevent="nextPage" class="qcformbuilder-forms-entry-viewer-next-btn btn btn-default qcformbuilder-forms-entry-viewer-btn qcformbuilder-forms-entry-viewer-nav-bt"  title="<?php esc_attr_e( 'Next page of entries', 'conversational-forms'); ?>">
+			<?php esc_html_e( 'Next', 'conversational-forms'); ?>
 		</a>
 		<label for="qcformbuilder-entry-viewer-2-per-page" class="screen-reader-text sr-only">
-			<?php esc_html_e( 'Entries Per Page', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Entries Per Page', 'conversational-forms'); ?>
 		</label>
 		<input type="number" min="1" max="100" v-model="perPage" v-on:change="updatePerPage" id="qcformbuilder-entry-viewer-2-per-page">
 

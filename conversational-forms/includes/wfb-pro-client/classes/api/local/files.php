@@ -78,7 +78,7 @@ class files implements \Qcformbuilder_Forms_API_Route {
 			'file' => $request[ 'file' ],
 		]);
 
-		return new \WP_Error('404', __('File not found', 'qcformbuilder-forms'));
+		return new \WP_Error('404', __('File not found', 'conversational-forms'));
 	}
 
 	/**

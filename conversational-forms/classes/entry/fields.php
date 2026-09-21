@@ -112,7 +112,7 @@ class Qcformbuilder_Forms_Entry_Fields implements \qcformbuilderwp\Qcformbuilder
         if( $this->has_field( $field_id ) ){
             return $this->fields[ $field_id ];
         }
-        throw new Exception( esc_html__( 'Field Not Found', 'qcformbuilder-forms' ) );
+        throw new Exception( esc_html__( 'Field Not Found', 'conversational-forms') );
     }
 
 

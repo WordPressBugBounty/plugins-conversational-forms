@@ -51,14 +51,19 @@ class Qcformbuilder_Forms_Render_Modals {
 
 		$out = self::modal_button( $atts, $content, $form, $modal_id );
 
-		if(!empty($_GET['wfb_er'])){
-			$transdata = Qcformbuilder_Forms_Transient::get_transient( $_GET[ 'wfb_er' ] );
-			if($transdata['transient'] == $_GET['wfb_er']){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if( ! empty( $_GET['wfb_er'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$wfb_er = sanitize_text_field( wp_unslash( $_GET['wfb_er'] ) );
+			$transdata = Qcformbuilder_Forms_Transient::get_transient( $wfb_er );
+			if( isset( $transdata['transient'] ) && $transdata['transient'] === $wfb_er ){
 				$current_state = 'style="display:block;"';
 			}
 		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! empty( $_GET[ 'wfb_su' ] ) ) {
 			// disable notices
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			unset( $_GET[ 'wfb_su' ] );
 		}
 
@@ -160,7 +165,8 @@ class Qcformbuilder_Forms_Render_Modals {
 		}
 
 
-		$title = sprintf( __( 'Click to open the form %s in a modal', 'qcformbuilder-forms' ), $form[ 'name' ] );
+		/* translators: %s: Form name */
+		$title = sprintf( __( 'Click to open the form %s in a modal', 'conversational-forms'), $form[ 'name' ] );
 		if ( ! empty( $atts[ 'type' ] ) && $atts[ 'type' ] == 'button' ) {
 			$tag_atts .= sprintf( 'data-remodal-target="%1s"', $modal_id );
 			return sprintf( '<button class="qcformbuilder-forms-modal" %s title="%s">%s</button>',esc_attr( $tag_atts), esc_attr($title), $content );

@@ -95,7 +95,7 @@ abstract class Qcformbuilder_Forms_Object {
 			}
 
 			if( ! $serialize_arrays && is_serialized( $value ) ){
-				$value = unserialize( $value );
+				$value = maybe_unserialize( $value );
 			}
 
 			$vars[ $property ] = $value;

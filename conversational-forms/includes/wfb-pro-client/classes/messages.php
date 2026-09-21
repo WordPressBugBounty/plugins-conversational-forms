@@ -86,7 +86,7 @@ class messages
 			return message::from_array($data);
 		}
 
-		throw New Exception( esc_html__('Could not store message', 'qcformbuilder-forms') );
+		throw New Exception( esc_html__('Could not store message', 'conversational-forms') );
 
 	}
 
@@ -205,7 +205,7 @@ class messages
 			return message::from_array($results);
 		}
 
-		throw new Exception( esc_html__('Could not find message.', 'qcformbuilder-forms') );
+		throw new Exception( esc_html__('Could not find message.', 'conversational-forms') );
 
 	}
 

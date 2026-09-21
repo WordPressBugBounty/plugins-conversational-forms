@@ -7,19 +7,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $field_type_list, $field_type_templates;
 
-if( ! isset( $_GET[  Qcformbuilder_Forms_Admin::EDIT_KEY  ] ) || ! is_string(  Qcformbuilder_Forms_Admin::EDIT_KEY  ) ){
-	wp_die( esc_html__( 'Invalid form ID', 'qcformbuilder-forms'  ) );
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+if( ! isset( $_GET[  Qcformbuilder_Forms_Admin::EDIT_KEY  ] ) || ! is_string(  $_GET[ Qcformbuilder_Forms_Admin::EDIT_KEY ]  ) ){
+	wp_die( esc_html__( 'Invalid form ID', 'conversational-forms') );
 }
 
-if( Qcformbuilder_Forms_Admin::is_revision_edit() ){
-	$element = $form = Qcformbuilder_Forms_Forms::get_revision( $_GET[ Qcformbuilder_Forms_Admin::REVISION_KEY ]  );
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+if( Qcformbuilder_Forms_Admin::is_revision_edit() && isset( $_GET[ Qcformbuilder_Forms_Admin::REVISION_KEY ] ) ){
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$revision_id = sanitize_text_field( wp_unslash( $_GET[ Qcformbuilder_Forms_Admin::REVISION_KEY ] ) );
+	$element = $form = Qcformbuilder_Forms_Forms::get_revision( $revision_id );
 } else{
-	$element = $form = Qcformbuilder_Forms_Forms::get_form( $_GET[ Qcformbuilder_Forms_Admin::EDIT_KEY ] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$form_id = sanitize_text_field( wp_unslash( $_GET[ Qcformbuilder_Forms_Admin::EDIT_KEY ] ) );
+	$element = $form = Qcformbuilder_Forms_Forms::get_form( $form_id );
 
 }
 
 if( empty( $element ) || ! is_array( $element ) ){
-	wp_die( esc_html__( 'Invalid Form.', 'qcformbuilder-forms'  ) );
+	wp_die( esc_html__( 'Invalid Form.', 'conversational-forms') );
 }
 /**
  * Runs before form editor is rendered, after form is gotten from DB.
@@ -42,7 +48,7 @@ do_action( 'qcformbuilder_forms_prerender_edit', $element );
 $magic_tags = apply_filters( 'qcformbuilder_forms_get_magic_tags', array(), $element['ID'] );
 
 if(empty($element['success'])){
-	$element['success'] = esc_html__( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' );
+	$element['success'] = esc_html__( 'Form has been successfully submitted. Thank you.', 'conversational-forms');
 }
 
 if(!isset($element['db_support'])){
@@ -103,8 +109,8 @@ $element['conditional_groups']['fields'] = $element['fields'];
 wp_nonce_field( 'wfb_edit_element', 'wfb_edit_nonce' );
 
 // Init check
-echo "<input id=\"last_updated_field\" name=\"config[_last_updated]\" value=\"" . esc_attr( date( 'r' ) ) . "\" type=\"hidden\">";
-echo "<input id=\"form_id_field\" name=\"config[ID]\" value=\"" . esc_attr( $_GET[ 'edit' ] ) . "\" type=\"hidden\">";
+echo "<input id=\"last_updated_field\" name=\"config[_last_updated]\" value=\"" . esc_attr( gmdate( 'r' ) ) . "\" type=\"hidden\">";
+echo "<input id=\"form_id_field\" name=\"config[ID]\" value=\"" . esc_attr( $element[ 'ID' ] ) . "\" type=\"hidden\">";
 echo "<input id=\"form_db_id_field\" name=\"config[db_id]\" value=\"" . esc_attr( $element[ 'db_id' ] ) . "\" type=\"hidden\">";
 
 do_action('qcformbuilder_forms_edit_start', $element);
@@ -128,12 +134,12 @@ $field_options_template = "
 {{#if auto}}{{#script}}jQuery('#{{_id}}_auto').trigger('change');{{/script}}{{/if}}
 <div class=\"qcformbuilder-config-group-auto-options\" style=\"display:none;\">
 	<div class=\"qcformbuilder-config-group\">
-		<label>". esc_html__( 'Source', 'qcformbuilder-forms' ) . "</label>
+		<label>". esc_html__( 'Source', 'conversational-forms') . "</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config auto-populate-type\" name=\"{{_name}}[auto_type]\">
-				<option value=\"\">" . esc_html__( 'Select a source', 'qcformbuilder-forms' ) . "</option>
-				<option value=\"post_type\"{{#is auto_type value=\"post_type\"}} selected=\"selected\"{{/is}}>" . esc_html__( 'Post Type', 'qcformbuilder-forms' ) . "</option>
-				<option value=\"taxonomy\"{{#is auto_type value=\"taxonomy\"}} selected=\"selected\"{{/is}}>" . esc_html__( 'Taxonomy', 'qcformbuilder-forms' ) . "</option>";
+				<option value=\"\">" . esc_html__( 'Select a source', 'conversational-forms') . "</option>
+				<option value=\"post_type\"{{#is auto_type value=\"post_type\"}} selected=\"selected\"{{/is}}>" . esc_html__( 'Post Type', 'conversational-forms') . "</option>
+				<option value=\"taxonomy\"{{#is auto_type value=\"taxonomy\"}} selected=\"selected\"{{/is}}>" . esc_html__( 'Taxonomy', 'conversational-forms') . "</option>";
 				ob_start();
 
 				/**
@@ -150,7 +156,7 @@ $field_options_template = "
 	</div>
 	
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-taxonomy auto-populate-type-panel\" style=\"display:none;\">
-		<label>". esc_html__( 'Taxonomy', 'qcformbuilder-forms' )."</label>
+		<label>". esc_html__( 'Taxonomy', 'conversational-forms')."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[taxonomy]\">";
 
@@ -166,7 +172,7 @@ $field_options_template = "
 	</div>
 
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-post_type auto-populate-type-panel\" style=\"display:none;\">
-		<label>".esc_html__( 'Post Type', 'qcformbuilder-forms' ) ."</label>
+		<label>".esc_html__( 'Post Type', 'conversational-forms') ."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[post_type]\">";
 
@@ -182,7 +188,7 @@ $field_options_template = "
 	</div>
 
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-taxonomy qcformbuilder-config-group-auto-post_type auto-populate-type-panel\" style=\"display:none;\">
-		<label>". esc_html__( 'Value', 'qcformbuilder-forms' )."</label>
+		<label>". esc_html__( 'Value', 'conversational-forms')."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[value_field]\">
 				<option value=\"name\" {{#is value_field value=\"name\"}}selected=\"selected\"{{/is}}>Name</option>\r\n
@@ -191,67 +197,67 @@ $field_options_template = "
 		</div>
 	</div>
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-taxonomy auto-populate-type-panel\" style=\"display:none;\">
-		<label>". esc_html__( 'Orderby', 'qcformbuilder-forms' )."</label>
+		<label>". esc_html__( 'Orderby', 'conversational-forms')."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[orderby_tax]\">
 				<option value=\"count\" {{#is value_field value=\"count\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Count', 'qcformbuilder-forms'  ) ."
+					" . __( 'Count', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"id\" {{#is value_field value=\"id\"}}selected=\"selected\"{{/is}}>
-					" . __( 'ID', 'qcformbuilder-forms'  ) ."
+					" . __( 'ID', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"name\" {{#is value_field value=\"name\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Name', 'qcformbuilder-forms'  ) ."
+					" . __( 'Name', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"slug\" {{#is value_field value=\"slug\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Slug', 'qcformbuilder-forms'  ) ."
+					" . __( 'Slug', 'conversational-forms') ."
 				</option>\r\n
 	    	</select>
 		</div>
 	</div>
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-post_type auto-populate-type-panel\" style=\"display:none;\">
-		<label>". esc_html__( 'Orderby', 'qcformbuilder-forms' )."</label>
+		<label>". esc_html__( 'Orderby', 'conversational-forms')."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[orderby_post]\">
 				<option value=\"ID\" {{#is value_field value=\"ID\"}}selected=\"selected\"{{/is}}>
-					" . __( 'ID', 'qcformbuilder-forms'  ) ."
+					" . __( 'ID', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"name\" {{#is value_field value=\"name\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Name (post slug)', 'qcformbuilder-forms'  ) ."
+					" . __( 'Name (post slug)', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"author\" {{#is value_field value=\"author\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Author', 'qcformbuilder-forms'  ) ."
+					" . __( 'Author', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"title\" {{#is value_field value=\"title\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Title', 'qcformbuilder-forms'  ) ."
+					" . __( 'Title', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"date\" {{#is value_field value=\"date\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Publish Date', 'qcformbuilder-forms'  ) ."
+					" . __( 'Publish Date', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"modified\" {{#is value_field value=\"modified\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Modified Date', 'qcformbuilder-forms'  ) ."
+					" . __( 'Modified Date', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"parent\" {{#is value_field value=\"parent\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Parent ID', 'qcformbuilder-forms'  ) ."
+					" . __( 'Parent ID', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"comment_count\" {{#is value_field value=\"comment_count\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Comment Count', 'qcformbuilder-forms'  ) ."
+					" . __( 'Comment Count', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"menu_order\" {{#is value_field value=\"menu_order\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Menu Order', 'qcformbuilder-forms'  ) ."
+					" . __( 'Menu Order', 'conversational-forms') ."
 				</option>\r\n
 	    	</select>
 		</div>
 	</div>
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-auto-taxonomy qcformbuilder-config-group-auto-post_type auto-populate-type-panel\" style=\"display:none;\">
-		<label>". esc_html__( 'Order', 'qcformbuilder-forms' )."</label>
+		<label>". esc_html__( 'Order', 'conversational-forms')."</label>
 		<div class=\"qcformbuilder-config-field\">
 			<select class=\"block-input field-config\" name=\"{{_name}}[order]\">
 				<option value=\"ASC\" {{#is value_field value=\"ASC\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Ascending', 'qcformbuilder-forms'  ) ."
+					" . __( 'Ascending', 'conversational-forms') ."
 				</option>\r\n
 				<option value=\"DESC\" {{#is value_field value=\"DESC\"}}selected=\"selected\"{{/is}}>
-					" . __( 'Descending', 'qcformbuilder-forms'  ) ."
+					" . __( 'Descending', 'conversational-forms') ."
 				</option>\r\n
 	    	</select>
 		</div>
@@ -294,21 +300,21 @@ $field_options_template = "
 </div>
 <div class=\"qcformbuilder-config-group-toggle-options\" {{#if auto}}style=\"display:none;\"{{/if}}>
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options-actions\">
-		<button type=\"button\" class=\"button add-toggle-option\">" . esc_html__( 'Add Option', 'qcformbuilder-forms' ) . "</button>
-		<button type=\"button\" data-bulk=\"#{{_id}}_bulkwrap\" class=\"button add-toggle-option\">" . esc_html__( 'Bulk Insert / Preset', 'qcformbuilder-forms' ) . "</button>
+		<button type=\"button\" class=\"button add-toggle-option\">" . esc_html__( 'Add Option', 'conversational-forms') . "</button>
+		<button type=\"button\" data-bulk=\"#{{_id}}_bulkwrap\" class=\"button add-toggle-option\">" . esc_html__( 'Bulk Insert / Preset', 'conversational-forms') . "</button>
 		<div id=\"{{_id}}_bulkwrap\" style=\"display:none;\" class=\"bulk-preset-panel\">
 		<select data-bulk=\"#{{_id}}_batch\" class=\"preset_options block-input\">
-		<option value=\"\">" . esc_html__( 'Select a preset', 'qcformbuilder-forms' ) . "</option>
+		<option value=\"\">" . esc_html__( 'Select a preset', 'conversational-forms') . "</option>
 		" . $preset_options . "
 		</select>		
 		<textarea style=\"resize:vertical; height:200px;\" class=\"block-input\" id=\"{{_id}}_batch\"></textarea>
-		<p class=\"description\">" . esc_html__( 'Single option per line. These replace the current list.', 'qcformbuilder-forms' ) . "</p>
-		<button type=\"button\" data-options=\"#{{_id}}_batch\" class=\"button block-button add-toggle-option\">" . esc_html__( 'Insert Options', 'qcformbuilder-forms' ) . "</button>
+		<p class=\"description\">" . esc_html__( 'Single option per line. These replace the current list.', 'conversational-forms') . "</p>
+		<button type=\"button\" data-options=\"#{{_id}}_batch\" class=\"button block-button add-toggle-option\">" . esc_html__( 'Insert Options', 'conversational-forms') . "</button>
 		</div>
 	</div>
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options-flags\">
-	<label><input type=\"radio\" class=\"toggle_set_default field-config\" name=\"{{_name}}[default]\" value=\"\" {{#unless default}}checked=\"checked\"{{/unless}}> " . esc_html__( 'No Default', 'qcformbuilder-forms' ) . "</label>
-	<label class=\"pull-right\"><input type=\"checkbox\" class=\"toggle_show_values field-config\" name=\"{{_name}}[show_values]\" value=\"1\" {{#if show_values}}checked=\"checked\"{{/if}}> " . esc_html__( 'Show Values', 'qcformbuilder-forms' ) . "</label>
+	<label><input type=\"radio\" class=\"toggle_set_default field-config\" name=\"{{_name}}[default]\" value=\"\" {{#unless default}}checked=\"checked\"{{/unless}}> " . esc_html__( 'No Default', 'conversational-forms') . "</label>
+	<label class=\"pull-right\"><input type=\"checkbox\" class=\"toggle_show_values field-config\" name=\"{{_name}}[show_values]\" value=\"1\" {{#if show_values}}checked=\"checked\"{{/if}}> " . esc_html__( 'Show Values', 'conversational-forms') . "</label>
 	</div>
 	
 	<div class=\"qcformbuilder-config-group qcformbuilder-config-group-full toggle-options qcformbuilder-config-field\">
@@ -322,24 +328,24 @@ $field_options_template = "
 		
 					<div class=\"qcformbuilder-config-group\">
 						<label class=\"option-setting-label option-setting-label-for-value\" for=\"opt-calc-val-{{@key}}\">
-							". esc_html__( 'Calculation Value', 'qcformbuilder-forms' ) . "
+							". esc_html__( 'Calculation Value', 'conversational-forms') . "
 						</label>
-						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_calc_value_field field-config option-setting \" name=\"{{../_name}}[option][{{@key}}][calc_value]\" value=\"{{#if ../show_values}}{{calc_value}}{{else}}{{label}}{{/if}}\" placeholder=\"" . esc_attr( __( 'Calculation Value', 'qcformbuilder-forms' ) ) . "\" id=\"opt-calc-val-{{@key}}\" data-opt=\"{{@key}}\" />
+						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_calc_value_field field-config option-setting \" name=\"{{../_name}}[option][{{@key}}][calc_value]\" value=\"{{#if ../show_values}}{{calc_value}}{{else}}{{label}}{{/if}}\" placeholder=\"" . esc_attr( __( 'Calculation Value', 'conversational-forms') ) . "\" id=\"opt-calc-val-{{@key}}\" data-opt=\"{{@key}}\" />
 					</div>
 					
 					<div class=\"qcformbuilder-config-group\">
 						<label class=\"option-setting-label option-setting-label-for-value\" for=\"opt-val-{{@key}}\">
-							". esc_html__( 'Value', 'qcformbuilder-forms' ) . " 
+							". esc_html__( 'Value', 'conversational-forms') . " 
 						</label>
-						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_value_field option-setting field-config  required \" name=\"{{../_name}}[option][{{@key}}][value]\" value=\"{{#if ../show_values}}{{value}}{{else}}{{label}}{{/if}}\" placeholder=\"" . esc_attr( __( 'Value', 'qcformbuilder-forms' ) ) . "\" id=\"opt-val-{{@key}}\" data-opt=\"{{@key}}\" />
+						<input{{#unless ../show_values}} style=\"display:none;\"{{/unless}} type=\"text\" class=\"toggle_value_field option-setting field-config  required \" name=\"{{../_name}}[option][{{@key}}][value]\" value=\"{{#if ../show_values}}{{value}}{{else}}{{label}}{{/if}}\" placeholder=\"" . esc_attr( __( 'Value', 'conversational-forms') ) . "\" id=\"opt-val-{{@key}}\" data-opt=\"{{@key}}\" />
 						
 					</div>
 					
 					<div class=\"qcformbuilder-config-group\">
 						<label class=\"option-setting-label option-setting-label-for-label\" for=\"opt-label-{{@key}}\">
-							". esc_html__( 'Label', 'qcformbuilder-forms' ) . "
+							". esc_html__( 'Label', 'conversational-forms') . "
 						</label>
-						<input type=\"text\" data-option=\"{{@key}}\" class=\"toggle_label_field option-setting field-config required\" name=\"{{../_name}}[option][{{@key}}][label]\" value=\"{{label}}\" placeholder=\"" . esc_attr( __( 'Label', 'qcformbuilder-forms' ) ) . "\" for=\"opt-label-{{@key}}\" data-opt=\"{{@key}}\" />
+						<input type=\"text\" data-option=\"{{@key}}\" class=\"toggle_label_field option-setting field-config required\" name=\"{{../_name}}[option][{{@key}}][label]\" value=\"{{label}}\" placeholder=\"" . esc_attr( __( 'Label', 'conversational-forms') ) . "\" for=\"opt-label-{{@key}}\" data-opt=\"{{@key}}\" />
 					</div>	
 				<button class=\"button button-small toggle-remove-option\" type=\"button\">
 					x
@@ -350,7 +356,7 @@ $field_options_template = "
 	</div>
 	
 	<div style=\"display:none;\" class=\"notice error\">
-		<p>" . esc_html__( 'Option values must be unique.', 'qcformbuilder-forms' ) . "</p>
+		<p>" . esc_html__( 'Option values must be unique.', 'conversational-forms') . "</p>
 	</div>
 </div>
 ";
@@ -367,11 +373,11 @@ $default_template = "
 
 // type list
 $field_type_list = array(
-	esc_html__( 'Basic', 'qcformbuilder-forms' )       => array(),
-	esc_html__( 'Select', 'qcformbuilder-forms' )         => array(),
+	esc_html__( 'Basic', 'conversational-forms')       => array(),
+	esc_html__( 'Select', 'conversational-forms')         => array(),
 	//esc_html__( 'eCommerce', 'qcformbuilder-forms' )         => array(),
 	//esc_html__( 'File', 'qcformbuilder-forms' )      => array(),
-	esc_html__( 'Content', 'qcformbuilder-forms' )      => array(),
+	esc_html__( 'Content', 'conversational-forms')      => array(),
 	//esc_html__( 'Special', 'qcformbuilder-forms' ) => array(),
 	
 );
@@ -393,7 +399,7 @@ foreach($field_types as $field_slug=>$config){
 	}
 	foreach((array) $categories as $category){
 		if( !isset( $field_type_list[trim($category)] ) ){
-			$category = esc_html__( 'Special', 'qcformbuilder-forms' );
+			$category = esc_html__( 'Special', 'conversational-forms');
 		}
 		$field_type_list[trim($category)][$field_slug] = $config;
 	}
@@ -525,7 +531,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
         data-load-class="none"
         data-modal="field_setup"
         data-modal-class="wfb-fields-modal"
-        data-modal-title="<?php echo esc_html__( 'Fields', 'qcformbuilder-forms' ); ?>"
+        data-modal-title="<?php echo esc_html__( 'Fields', 'conversational-forms'); ?>"
         data-template="#form-fields-selector-tmpl"
         data-modal-width="760"
         data-modal-height="520"
@@ -542,7 +548,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 		<div id="<?php echo esc_attr($field_id); ?>_settings_pane" class="wrapper-instance-pane">
 
             <div class="qcformbuilder-config-group">
-				<label for="<?php echo esc_attr($field_id); ?>_type"><?php echo esc_html__( 'Field Type', 'qcformbuilder-forms' ); ?></label>
+				<label for="<?php echo esc_attr($field_id); ?>_type"><?php echo esc_html__( 'Field Type', 'conversational-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
 					<select class="block-input qcformbuilder-select-field-type" data-field="<?php echo esc_attr($field_id); ?>" id="<?php echo esc_attr($field_id); ?>_type" name="config[fields][<?php echo esc_attr($field_id); ?>][type]" data-type="<?php echo esc_attr( $type ); ?>">
 						<?php
@@ -554,7 +560,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 			</div>
 
 			<div class="qcformbuilder-config-group">
-				<label for="<?php echo esc_attr($field_id); ?>_fid"><?php echo esc_html__( 'ID', 'qcformbuilder-forms' ); ?></label>
+				<label for="<?php echo esc_attr($field_id); ?>_fid"><?php echo esc_html__( 'ID', 'conversational-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
 					<input type="text" class="block-input field-id" id="<?php echo esc_attr($field_id); ?>_fid" value="<?php echo esc_attr($field_id); ?>" readonly="readonly">
 				</div>
@@ -562,7 +568,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 
 
 			<div class="qcformbuilder-config-group">
-				<label for="<?php echo esc_attr($field_id); ?>_lable"><?php echo esc_html__( 'Name', 'qcformbuilder-forms' ); ?></label>
+				<label for="<?php echo esc_attr($field_id); ?>_lable"><?php echo esc_html__( 'Name', 'conversational-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
 					<input type="text" class="block-input field-config field-label required" id="<?php echo esc_attr($field_id); ?>_lable" name="config[fields][<?php echo esc_attr($field_id); ?>][label]" value="<?php echo esc_attr( sanitize_text_field( $label ) ); ?>">
 				</div>
@@ -570,7 +576,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 			
 
 			<div class="qcformbuilder-config-group">
-				<label for="<?php echo esc_attr($field_id); ?>_slug"><?php echo esc_html__( 'Slug', 'qcformbuilder-forms' ); ?></label>
+				<label for="<?php echo esc_attr($field_id); ?>_slug"><?php echo esc_html__( 'Slug', 'conversational-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
 					<input type="text" class="block-input field-config field-slug required" id="<?php echo esc_attr($field_id); ?>_slug" name="config[fields][<?php echo esc_attr($field_id); ?>][slug]" value="<?php echo esc_attr( $slug ); ?>">
 				</div>
@@ -625,7 +631,7 @@ function qcformbuilder_forms_field_wrapper_template($field_id = '{{field_id}}', 
 			do_action( 'qcformbuilder_forms_field_wrapper_before_delete', $config, $type, $field_id );
 			?>
 
-			<button class="button delete-field block-button" data-confirm="<?php echo esc_html__( 'Are you sure you want to remove this field?. \'Cancel\' to stop. \'OK\' to delete', 'qcformbuilder-forms' ); ?>" type="button"><?php echo esc_html__( 'Delete Field', 'qcformbuilder-forms' ); ?></button>
+			<button class="button delete-field block-button" data-confirm="<?php echo esc_html__( 'Are you sure you want to remove this field?. \'Cancel\' to stop. \'OK\' to delete', 'conversational-forms'); ?>" type="button"><?php echo esc_html__( 'Delete Field', 'conversational-forms'); ?></button>
 
             <?php
 			/**
@@ -708,14 +714,14 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 		</li>
 		<li>
 			<a href="#settings-panel">
-				<?php esc_html_e( 'Form Settings', 'qcformbuilder-forms'  ); ?>
+				<?php esc_html_e( 'Form Settings', 'conversational-forms'); ?>
 			</a>
 		</li>
 
 	</ul>
 
 	<div class="updated_notice_box" role="status" aria-live="polite">
-		<?php esc_html_e( 'Updated Successfully', 'qcformbuilder-forms'  ); ?>
+		<?php esc_html_e( 'Updated Successfully', 'conversational-forms'); ?>
 	</div>
 	<div id="save_indicator" class="spinner wfb-save-preloader" aria-hidden="true"></div>
 
@@ -723,11 +729,11 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 	<?php if( ! Qcformbuilder_Forms_Admin::is_revision_edit() ){ ?>
 
 		<button class="button button-primary qcformbuilder-header-save-button" data-active-class="none" data-load-element="#save_indicator" type="button" disabled="disabled">
-			<?php esc_html_e( 'Save Conversational Form', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Save Conversational Form', 'conversational-forms'); ?>
 		</button>
 
 		<!--<a class="button qcformbuilder-header-preview-button" target="_blank" href="<?php echo esc_url( Qcformbuilder_Forms_Admin::preview_link( $element[ 'ID' ] ) ); ?>">
-			<?php esc_html_e( 'Preview Form', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Preview Form', 'conversational-forms'); ?>
 		</a>-->
 	<?php
 	}else{ ?>
@@ -737,7 +743,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 		    class="button qcformbuilder-header-return-button"
 			id="qcformbuilder-forms-return-from-revision"
 		>
-			<?php esc_html_e( 'Exit Revision', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Exit Revision', 'conversational-forms'); ?>
 			
 		</a>
 
@@ -749,12 +755,12 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 			data-revision="<?php echo esc_attr( $element[ 'db_id' ] ); ?>"
 		    data-edit-link="<?php echo esc_url( Qcformbuilder_Forms_Admin::form_edit_link($element[ 'ID' ] )); ?>"
 		>
-			<?php esc_html_e( 'Restore Form Revision', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Restore Form Revision', 'conversational-forms'); ?>
 
 		</a>
 		<!--
 		<a class="button qcformbuilder-header-preview-button" target="_blank" href="<?php echo esc_url( Qcformbuilder_Forms_Admin::preview_link( $element[ 'ID' ], $element[ 'db_id' ] ) ); ?>">
-			<?php esc_html_e( 'Preview Form Revision', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Preview Form Revision', 'conversational-forms'); ?>
 		</a>-->
 
 	<?php } ?>
@@ -772,7 +778,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 			'wfb-email-preview' => wp_create_nonce( $element[ 'ID' ] ),
 			'wfb-email-preview-form' => $element[ 'ID' ]
 	),  get_home_url() ) ); ?>" <?php echo $has_email_preview; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hardcoded aria/style attributes. ?>>
-		<?php esc_html_e( 'Preview Last Email', 'qcformbuilder-forms' ); ?>
+		<?php esc_html_e( 'Preview Last Email', 'conversational-forms'); ?>
 	</a>
 </div>
 
@@ -854,12 +860,12 @@ foreach($panel_extensions as $panel){
 					printf( '<a href="%s" target="_blank" class="dashicons dashicons-editor-help qcformbuilder-forms-tab-help-bubble" data-toggle="tooltip" data-placement="top"  title="%s"><span class="screen-reader-text">%s</span></a>',
 						esc_url( isset($tab_setup[ 'tip' ][ 'link' ])?$tab_setup[ 'tip' ][ 'link' ]:'' ),
 						esc_attr( isset($tab_setup[ 'tip' ][ 'text'])?$tab_setup[ 'tip' ][ 'text']:'' ),
-						esc_html__( 'Click to view help doc on QcformbuilderForms.com' )
+						esc_html__( 'Click to view help doc on QcformbuilderForms.com' , 'conversational-forms')
 					);
 				}
 				if( !empty( $tab_setup['repeat'] ) ){
 					// add a repeater button
-					echo " <a href=\"#" . esc_attr( $panel_slug ) . "_tag\" class=\"add-new-h2 qcformbuilder-add-group\" data-group=\"" . esc_attr( $panel_slug ) . "\">" . esc_html__( 'Add New', 'qcformbuilder-forms' ) . "</a>\r\n";
+					echo " <a href=\"#" . esc_attr( $panel_slug ) . "_tag\" class=\"add-new-h2 qcformbuilder-add-group\" data-group=\"" . esc_attr( $panel_slug ) . "\">" . esc_html__( 'Add New', 'conversational-forms') . "</a>\r\n";
 				}
 				// ADD ACTIONS
 				if(!empty($tab_setup['actions'])){
@@ -924,7 +930,7 @@ foreach($panel_extensions as $panel){
 
 					}
 					if( !empty( $tab_setup['repeat'] ) ){
-						echo "<a href=\"#remove_" . esc_attr( $panel_slug ) . "\" class=\"qcformbuilder-config-group-remove\">" . esc_html__( 'Remove', 'qcformbuilder-forms' ) . "</a>\r\n";
+						echo "<a href=\"#remove_" . esc_attr( $panel_slug ) . "\" class=\"qcformbuilder-config-group-remove\">" . esc_html__( 'Remove', 'conversational-forms') . "</a>\r\n";
 						echo "</div>\r\n";
 					}
 				}
@@ -958,7 +964,7 @@ foreach($panel_extensions as $panel){
 						$field_template .= "	</div>\r\n";
 
 					}
-					$field_template .= "	<a href=\"#remove-group\" class=\"qcformbuilder-config-group-remove\">" . esc_html__( 'Remove', 'qcformbuilder-forms' ) . "</a>\r\n";
+					$field_template .= "	<a href=\"#remove-group\" class=\"qcformbuilder-config-group-remove\">" . esc_html__( 'Remove', 'conversational-forms') . "</a>\r\n";
 					$field_template .= "	</div>\r\n";
 					$field_template .= "</script>\r\n";
 
@@ -1008,17 +1014,17 @@ do_action('qcformbuilder_forms_edit_end', $element);
 
 		
 		$sorted_field_types = array(
-			__( 'Basic', 'qcformbuilder-forms' ) => '',
-			__( 'Select', 'qcformbuilder-forms' ) => '',
+			__( 'Basic', 'conversational-forms') => '',
+			__( 'Select', 'conversational-forms') => '',
 			//__( 'File', 'qcformbuilder-forms' ) => '',
-			__( 'Content', 'qcformbuilder-forms' ) => '',
+			__( 'Content', 'conversational-forms') => '',
 			//__( 'eCommerce', 'qcformbuilder-forms' )  => '',
 			//__( 'Special', 'qcformbuilder-forms' ) => '',
 			
 		);
 
 		if( defined( 'WFBCORE_SHOW_DISCONTINUED_FIELDS' ) && WFBCORE_SHOW_DISCONTINUED_FIELDS  ){
-			$sorted_field_types[ __( 'Discontinued', 'qcformbuilder-forms' ) ] = '';
+			$sorted_field_types[ __( 'Discontinued', 'conversational-forms') ] = '';
 		}
 
 		foreach($field_types as $field_slug=>$config){
@@ -1038,21 +1044,21 @@ do_action('qcformbuilder_forms_edit_end', $element);
 			}
 			foreach($cats as $cat){
 				$cat = trim($cat);
-				if(  __( 'Discontinued', 'qcformbuilder-forms' ) == $cat ){
+				if(  __( 'Discontinued', 'conversational-forms') == $cat ){
 					continue;
 				}
 				$template = '<div class="form-modal-add-line">';
-					$template .= '<button type="button" class="button info-button set-current-field" data-field="{{id}}" data-type="' . $field_slug . '">' . esc_html__( 'Set Field', 'qcformbuilder-forms' ) . '</button>';
+					$template .= '<button type="button" class="button info-button set-current-field" data-field="{{id}}" data-type="' . $field_slug . '">' . esc_html__( 'Set Field', 'conversational-forms') . '</button>';
 					$class = 'form-modal-lgo';
 					if( $svg ){
 						$class .= ' form-modal-lgo-svg';
 					}
 					$template .= '<img src="'. $icon .'" class="' . $class . '" width="45" height="45">';
 					$template .= '<strong>' . $config['field'] . '</strong>';
-					$template .= '<p class="description">' . (!empty($config['description']) ? esc_html__( $config[ 'description' ] ) : esc_html__( 'No description given', 'qcformbuilder-forms' ) ) . '</p>';
+					$template .= '<p class="description">' . (!empty($config['description']) ? esc_html( $config[ 'description' ] ) : esc_html__( 'No description given', 'conversational-forms') ) . '</p>';
 				$template .= '</div>';
 				if(!isset($sorted_field_types[$cat])){
-					$cat = __( 'Special', 'qcformbuilder-forms' );
+					$cat = __( 'Special', 'conversational-forms');
 				}
 				$sorted_field_types[$cat] .= $template;
 			}
@@ -1090,14 +1096,14 @@ echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr
 
 		<div class="qcformbuilder-config-group">
 			<label class="option-setting-label option-setting-label-for-value" for="opt-calc-val-{{@key}}">
-				<?php esc_html_e( 'Calculation Value', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Calculation Value', 'conversational-forms'); ?>
 			</label>
 			<input
 				type="text"
 				class="toggle_calc_value_field field-config option-setting "
 				name="{{../_name}}[option][{{@key}}][calc_value]"
 				value="{{calc_value}}"
-				placeholder="<?php esc_attr_e( 'Calculation Value', 'qcformbuilder-forms'  ); ?>"
+				placeholder="<?php esc_attr_e( 'Calculation Value', 'conversational-forms'); ?>"
 				id="opt-calc-val-{{@key}}"
 				{{#unless ../show_values}} style="display:none;"{{/unless}}
 			/>
@@ -1105,14 +1111,14 @@ echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr
 
 		<div class="qcformbuilder-config-group">
 			<label class="option-setting-label option-setting-label-for-value" for="opt-val-{{@key}}">
-				<?php esc_html_e( 'Value', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Value', 'conversational-forms'); ?>
 			</label>
 			<input
 				type="text"
 				class="toggle_value_field option-setting field-config  required "
 				name="{{../_name}}[option][{{@key}}][value]"
 				value="{{value}}"
-				placeholder="<?php esc_attr_e( 'Value', 'qcformbuilder-forms' ); ?>"
+				placeholder="<?php esc_attr_e( 'Value', 'conversational-forms'); ?>"
 				id="opt-val-{{@key}}"
 				data-opt="{{@key}}"
 				{{#unless ../show_values}} style="display:none;"{{/unless}}
@@ -1121,14 +1127,14 @@ echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr
 
 		<div class="qcformbuilder-config-group">
 			<label class="option-setting-label option-setting-label-for-label" for="opt-label-{{@key}}">
-				<?php esc_html_e( 'Label', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Label', 'conversational-forms'); ?>
 			</label>
 			<input
 				type="text"
 				data-option="{{@key}}"
 				class="toggle_label_field option-setting field-config required"
 				name="{{../_name}}[option][{{@key}}][label]" value="{{label}}"
-				placeholder="<?php esc_attr_e( 'Label', 'qcformbuilder-forms' ); ?>"
+				placeholder="<?php esc_attr_e( 'Label', 'conversational-forms'); ?>"
 				for="opt-label-{{@key}}"
 				data-opt="{{@key}}"
 			/>
@@ -1151,7 +1157,7 @@ echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr
 <script type="text/html" id="conditional-group-tmpl">	
 	{{#each group}}
 		<div class="qcformbuilder-condition-group">
-			<div class="qcformbuilder-condition-group-label"><?php echo esc_html__( 'or', 'qcformbuilder-forms' ); ?></div>			
+			<div class="qcformbuilder-condition-group-label"><?php echo esc_html__( 'or', 'conversational-forms'); ?></div>			
 			<div class="qcformbuilder-condition-lines" id="{{id}}_conditions_lines">
 				{{#each lines}}
 				<div class="qcformbuilder-condition-line">
@@ -1160,38 +1166,38 @@ echo '<div id="modal-category-'. sanitize_key( $cat ) .'" data-tab="' . esc_attr
 						{{#if field}}<option value="{{field}}" class="bound-field" selected="selected"></option>{{else}}<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>{{/if}}
 					</select>
 					<select class="compare-type" name="config[{{../type}}][{{../../id}}][conditions][group][{{../id}}][{{id}}][compare]" style="max-width:110px;">
-						<option value="is" {{#is compare value="is"}}selected="selected"{{/is}}><?php echo esc_html__( 'is', 'qcformbuilder-forms' ); ?></option>
-						<option value="isnot" {{#is compare value="isnot"}}selected="selected"{{/is}}><?php echo esc_html__( 'is not', 'qcformbuilder-forms' ); ?></option>
-						<option value=">" {{#is compare value=">"}}selected="selected"{{/is}}><?php echo esc_html__( 'is greater than', 'qcformbuilder-forms' ); ?></option>
-						<option value="<" {{#is compare value="<"}}selected="selected"{{/is}}><?php echo esc_html__( 'is less than', 'qcformbuilder-forms' ); ?></option>
-						<option value="startswith" {{#is compare value="startswith"}}selected="selected"{{/is}}><?php echo esc_html__( 'starts with', 'qcformbuilder-forms' ); ?></option>
-						<option value="endswith" {{#is compare value="endswith"}}selected="selected"{{/is}}><?php echo esc_html__( 'ends with', 'qcformbuilder-forms' ); ?></option>
-						<option value="contains" {{#is compare value="contains"}}selected="selected"{{/is}}><?php echo esc_html__( 'contains', 'qcformbuilder-forms' ); ?></option>
+						<option value="is" {{#is compare value="is"}}selected="selected"{{/is}}><?php echo esc_html__( 'is', 'conversational-forms'); ?></option>
+						<option value="isnot" {{#is compare value="isnot"}}selected="selected"{{/is}}><?php echo esc_html__( 'is not', 'conversational-forms'); ?></option>
+						<option value=">" {{#is compare value=">"}}selected="selected"{{/is}}><?php echo esc_html__( 'is greater than', 'conversational-forms'); ?></option>
+						<option value="<" {{#is compare value="<"}}selected="selected"{{/is}}><?php echo esc_html__( 'is less than', 'conversational-forms'); ?></option>
+						<option value="startswith" {{#is compare value="startswith"}}selected="selected"{{/is}}><?php echo esc_html__( 'starts with', 'conversational-forms'); ?></option>
+						<option value="endswith" {{#is compare value="endswith"}}selected="selected"{{/is}}><?php echo esc_html__( 'ends with', 'conversational-forms'); ?></option>
+						<option value="contains" {{#is compare value="contains"}}selected="selected"{{/is}}><?php echo esc_html__( 'contains', 'conversational-forms'); ?></option>
 					</select>
-					<span style="padding: 0 12px 0; " class="qcformbuilder-conditional-field-value" data-value="{{value}}" id="{{id}}_value"><input disabled type="text" value="" placeholder="<?php echo esc_html__( 'Select field first', 'qcformbuilder-forms' ); ?>" style="max-width: 165px;"></span>
+					<span style="padding: 0 12px 0; " class="qcformbuilder-conditional-field-value" data-value="{{value}}" id="{{id}}_value"><input disabled type="text" value="" placeholder="<?php echo esc_html__( 'Select field first', 'conversational-forms'); ?>" style="max-width: 165px;"></span>
 					<button type="button" class="button remove-conditional-line pull-right"><i class="icon-join"></i></button>
 				</div>
 				{{/each}}
 			</div>
-			<button type="button" class="button button-small ajax-trigger" data-id="{{../id}}" data-type="{{type}}" data-group="{{id}}" data-request="new_conditional_line" data-target="#{{id}}_conditions_lines" data-callback="rebuild_field_binding" data-template="#conditional-line-tmpl" data-target-insert="append"><?php echo esc_html__( 'Add Condition', 'qcformbuilder-forms' ); ?></button>
+			<button type="button" class="button button-small ajax-trigger" data-id="{{../id}}" data-type="{{type}}" data-group="{{id}}" data-request="new_conditional_line" data-target="#{{id}}_conditions_lines" data-callback="rebuild_field_binding" data-template="#conditional-line-tmpl" data-target-insert="append"><?php echo esc_html__( 'Add Condition', 'conversational-forms'); ?></button>
 		</div>
 	{{/each}}
 </script>
 <script type="text/html" id="conditional-line-tmpl">
 	<div class="qcformbuilder-condition-line">
-		<div class="qcformbuilder-condition-line-label"><?php echo esc_html__( 'and', 'qcformbuilder-forms' ); ?></div>
+		<div class="qcformbuilder-condition-line-label"><?php echo esc_html__( 'and', 'conversational-forms'); ?></div>
 		if 
 		<select name="{{name}}[field]" class="qcformbuilder-field-bind qcformbuilder-conditional-field-set" data-condition="{{type}}" data-id="{{id}}" data-line="{{lineid}}" data-row="{{rowid}}" data-all="true" style="max-width:120px;"></select>
 		<select name="{{name}}[compare]" style="max-width:110px;">
-			<option value="is"><?php echo esc_html__( 'is', 'qcformbuilder-forms' ); ?></option>
-			<option value="isnot"><?php echo esc_html__( 'is not', 'qcformbuilder-forms' ); ?></option>
-			<option value=">"><?php echo esc_html__( 'is greater than', 'qcformbuilder-forms' ); ?></option>
-			<option value="<"><?php echo esc_html__( 'is less than', 'qcformbuilder-forms' ); ?></option>
-			<option value="startswith"><?php echo esc_html__( 'starts with', 'qcformbuilder-forms' ); ?></option>
-			<option value="endswith"><?php echo esc_html__( 'ends with', 'qcformbuilder-forms' ); ?></option>
-			<option value="contains"><?php echo esc_html__( 'contains', 'qcformbuilder-forms' ); ?></option>
+			<option value="is"><?php echo esc_html__( 'is', 'conversational-forms'); ?></option>
+			<option value="isnot"><?php echo esc_html__( 'is not', 'conversational-forms'); ?></option>
+			<option value=">"><?php echo esc_html__( 'is greater than', 'conversational-forms'); ?></option>
+			<option value="<"><?php echo esc_html__( 'is less than', 'conversational-forms'); ?></option>
+			<option value="startswith"><?php echo esc_html__( 'starts with', 'conversational-forms'); ?></option>
+			<option value="endswith"><?php echo esc_html__( 'ends with', 'conversational-forms'); ?></option>
+			<option value="contains"><?php echo esc_html__( 'contains', 'conversational-forms'); ?></option>
 		</select>
-		<span class="qcformbuilder-conditional-field-value" id="{{lineid}}_value"><input disabled type="text" value="" placeholder="<?php echo esc_html__( 'Select field first', 'qcformbuilder-forms' ); ?>" style="max-width: 165px;"></span>
+		<span class="qcformbuilder-conditional-field-value" id="{{lineid}}_value"><input disabled type="text" value="" placeholder="<?php echo esc_html__( 'Select field first', 'conversational-forms'); ?>" style="max-width: 165px;"></span>
 		<button type="button" class="button remove-conditional-line pull-right"><i class="icon-join"></i></button>
 	</div>
 </script>

@@ -73,11 +73,12 @@ class Qcformbuilder_Forms_Processor_Get_Data {
 	 * @param array $form Form config
 	 */
 	protected function set_fields( $fields, $config, $form ) {
-		$message_pattern = __( '%s is required', 'qcformbuilder-forms' );
+		/* translators: %s: Field label */
+		$message_pattern = __( '%s is required', 'conversational-forms');
 		$default_args = array(
 			'message' => false,
 			'default' => false,
-			'sanatize' => 'strip_tags',
+			'sanatize' => 'wp_strip_all_tags',
 			'magic' => true,
 			'required' => true,
 		);

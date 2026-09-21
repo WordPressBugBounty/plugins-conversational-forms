@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					    data-nonce="<?php echo esc_attr( wp_create_nonce( 'view_entries' ) ); ?>"
 						data-status="active"
 					    data-perpage="<?php echo esc_attr( Qcformbuilder_Forms_Entry_Viewer::entries_per_page() ); ?>"
-					><?php esc_html_e('Active', 'qcformbuilder-forms'); ?> <span class="current-status-count"></span></button>
+					><?php esc_html_e('Active', 'conversational-forms'); ?> <span class="current-status-count"></span></button>
 					<button type="button" class="status_toggles button ajax-trigger" style="margin-top: 1px; margin-right: 10px;"
 						data-before="wfb_set_limits"
 						data-action="browse_entries"
@@ -41,30 +41,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 						data-perpage="<?php echo esc_attr( Qcformbuilder_Forms_Entry_Viewer::entries_per_page() ); ?>"
 						data-nonce="<?php echo esc_attr( wp_create_nonce( 'view_entries' ) ); ?>"
 				        data-status="trash"
-					><?php echo esc_html_x( 'Trash', 'Status: In trash', 'qcformbuilder-forms' ); ?> <span class="current-status-count"></span></button>
+					><?php echo esc_html_x( 'Trash',  'Status: In trash', 'conversational-forms'); ?> <span class="current-status-count"></span></button>
 				</span>
 				<!--
 				<a href="" role="button" class="button qcformbuilder-forms-entry-exporter">
-					<?php esc_html_e( 'Export All', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Export All', 'conversational-forms'); ?>
 				</a>
 				-->
 				
 			</span>
 			<span class="wfb-tools-row wfb-tools-row-second">
 				<label for="wfb_bulk_action" class="screen-reader-text">
-					<?php esc_html_e( 'Bulk Action For Entries', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Bulk Action For Entries', 'conversational-forms'); ?>
 				</label>
 				<select id="wfb_bulk_action" name="action" style="vertical-align: top;">
 					<option selected="selected" value="">
-						<?php esc_html_e( 'Bulk Actions', 'qcformbuilder-forms' ); ?>
+						<?php esc_html_e( 'Bulk Actions', 'conversational-forms'); ?>
 					</option>
 					
 					<option value="trash">
-						<?php esc_html_e( 'Move to Trash', 'qcformbuilder-forms' ); ?>
+						<?php esc_html_e( 'Move to Trash', 'conversational-forms'); ?>
 					</option>
 				</select>
 				<button type="button" class="button wfb-bulk-action">
-					<?php esc_html_e( 'Apply', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Apply', 'conversational-forms'); ?>
 				</button>
 			</span>
 

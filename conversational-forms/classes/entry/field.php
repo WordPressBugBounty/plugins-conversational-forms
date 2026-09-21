@@ -113,7 +113,7 @@ class Qcformbuilder_Forms_Entry_Field  extends Qcformbuilder_Forms_Entry_Object 
 		if( is_array( $value ) ){
 			$this->value = $value;
 		}elseif( is_serialized( $value  ) ){
-			$this->value = unserialize( $value );
+			$this->value = maybe_unserialize( $value );
 		}elseif( 0 === strpos( $value, '{' ) && is_object( $_value = json_decode( $value ) ) ){
 			$this->value = (array) $_value;
 		}else{
@@ -131,7 +131,7 @@ class Qcformbuilder_Forms_Entry_Field  extends Qcformbuilder_Forms_Entry_Object 
 	protected function value_get(){
 		
 		if ( is_serialized( $this->value ) ) {
-			$this->value = unserialize( $this->value );
+			$this->value = maybe_unserialize( $this->value );
 		} elseif ( is_string( $this->value ) && 0 === strpos( $this->value, '{' ) && is_object( $_value = json_decode( $this->value ) ) ) {
 			$this->value = (array) $_value;
 		}

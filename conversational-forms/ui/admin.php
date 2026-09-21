@@ -7,8 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $per_page_limit = 20;
 
 Qcformbuilder_Forms::check_tables();
-// get all forms
-$orderby = isset( $_GET[ Qcformbuilder_Forms_Admin::ORDERBY_KEY ] ) && 'name' == $_GET[ Qcformbuilder_Forms_Admin::ORDERBY_KEY ] ? 'name' : false;
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$orderby = isset( $_GET[ Qcformbuilder_Forms_Admin::ORDERBY_KEY ] ) && 'name' === sanitize_text_field( wp_unslash( $_GET[ Qcformbuilder_Forms_Admin::ORDERBY_KEY ] ) ) ? 'name' : false;
 $forms = Qcformbuilder_Forms_Forms::get_forms( true, false, $orderby );
 $forms = apply_filters( 'qcformbuilder_forms_admin_forms', $forms );
 
@@ -26,7 +26,7 @@ if(empty($style_includes)){
 
 
 // create user modal buttons
-$modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-action" : "wfb_create_form", "data-active-class": "disabled", "data-load-class": "disabled", "data-callback": "new_form_redirect", "data-before" : "serialize_modal_form", "data-modal-autoclose" : "new_form" }|right';
+$modal_new_form = esc_html__('Create Form', 'conversational-forms').'|{"data-action" : "wfb_create_form", "data-active-class": "disabled", "data-load-class": "disabled", "data-callback": "new_form_redirect", "data-before" : "serialize_modal_form", "data-modal-autoclose" : "new_form" }|right';
 
 ?><div class="wfb-wpbot-page wfb-form-list-page">
 <div class="qcformbuilder-editor-header">
@@ -51,15 +51,15 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
                 <li class="qcformbuilder-forms-toolbar-item qcformbuilder-forms-hide-when-entry-viewer-closed" id="qcformbuilder-forms-close-entry-viewer-wrap" style="display: none;visibility: hidden" aria-hidden="true">
                     <?php
                     printf('<button title="%s" class="button" id="qcformbuilder-forms-close-entry-viewer">%s</button>',
-                        esc_attr__('Click to close entry Viewer', 'qcformbuilder-forms'),
-                        esc_html__('Close Entry Viewer', 'qcformbuilder-forms')
+                        esc_attr__('Click to close entry Viewer', 'conversational-forms'),
+                        esc_html__('Close Entry Viewer', 'conversational-forms')
                     );
                     ?>
                 </li>
-                <?php if (isset($_GET['message_resent'])) { ?>
+                <?php if ( isset( $_GET['message_resent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
                     <li class="qcformbuilder-forms-toolbar-item separator">&nbsp;&nbsp;</li>
                     <li class="qcformbuilder-forms-toolbar-item success">
-                        <?php esc_html_e('Message Resent', 'qcformbuilder-forms'); ?>
+                        <?php esc_html_e('Message Resent', 'conversational-forms'); ?>
                     </li>
             <?php } ?>
             <?php else : //is deprecated
@@ -75,22 +75,22 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 					data-modal-class="wfb-create-conversation-modal"
 					data-load-class="none" data-modal="new_form"
 					data-nonce="<?php echo esc_attr( wp_create_nonce('wfb_create_form') ); ?>"
-					data-modal-title="<?php esc_attr_e('Create New Conversation', 'qcformbuilder-forms' ); ?>"
+					data-modal-title="<?php esc_attr_e('Create New Conversation', 'conversational-forms'); ?>"
 					data-template="#new-form-tmpl">
-				<?php  esc_html_e('New Conversation', 'qcformbuilder-forms'); ?>
+				<?php  esc_html_e('New Conversation', 'conversational-forms'); ?>
 			</button>
 			<?php
 			if ('name' === $orderby) {
-				$text = __('Order Conversations By ID', 'qcformbuilder-forms');
+				$text = __('Order Conversations By ID', 'conversational-forms');
 				$url = Qcformbuilder_Forms_Admin::main_admin_page_url();
 			} else {
-				$text = __('Order Conversations By Name', 'qcformbuilder-forms');
+				$text = __('Order Conversations By Name', 'conversational-forms');
 				$url = Qcformbuilder_Forms_Admin::main_admin_page_url('name');
 			}
 			printf('<a  class="button" id="wfb-form-order" title="%s" href="%s">%s</a>',
-				esc_attr__('Click to change order of the Conversations', 'qcformbuilder-forms'),
+				esc_attr__('Click to change order of the Conversations', 'conversational-forms'),
 				esc_url($url),
-				esc_html__($text)
+				esc_html($text)
 			);
 			?>
 		</div>
@@ -119,8 +119,8 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 		<table class="widefat fixed wfb-form-list-table">
 			<thead>
 				<tr>
-					<th class="wfb-form-list-col-name"><?php esc_html_e('Form', 'qcformbuilder-forms'); ?></th>
-					<th class="wfb-form-list-col-actions"><?php esc_html_e('Actions', 'qcformbuilder-forms'); ?></th>
+					<th class="wfb-form-list-col-name"><?php esc_html_e('Form', 'conversational-forms'); ?></th>
+					<th class="wfb-form-list-col-actions"><?php esc_html_e('Actions', 'conversational-forms'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -139,31 +139,31 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 					$total = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(`id`) AS `total` FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `form_id` = %s && `status` = 'active';", $form_id) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 				}else{
-					$total = __('Disabled', 'qcformbuilder-forms');
+					$total = __('Disabled', 'conversational-forms');
 				}
 
 				?>
 
 				<tr id="<?php  echo esc_attr( trim( 'form_row_' . $form_id ) ); ?>" class="<?php echo esc_attr( $class ); ?> form_entry_row">
 					<td class="<?php if( !empty( $form['form_draft'] ) ) { echo 'draft-form'; }else{ echo 'active-form'; } ?>">
-						<span class="wfb-form-name-preview"><?php esc_html_e( $form[ 'name' ], 'chatbot-forms' ); ?></span> 
+						<span class="wfb-form-name-preview"><?php echo esc_html( $form[ 'name' ] ); ?></span> 
 
 						<?php if( !empty( $form['debug_mailer'] ) ) { ?>
-						<span style="color: rgb(207, 0, 0);" class="description"><?php esc_html_e('Mailer Debug enabled.', 'qcformbuilder-forms') ;?></span>
+						<span style="color: rgb(207, 0, 0);" class="description"><?php esc_html_e('Mailer Debug enabled.', 'conversational-forms') ;?></span>
 						<?php } ?>
 					</td>
 					<td class="wfb-form-list-actions-cell">
 						<div class="row-actions">
-						<?php if( empty( $form['_external_form'] ) ){ ?><span class="edit"><a class="form-control" href="<?php echo esc_url( Qcformbuilder_Forms_Admin::form_edit_link( $form_id ) ); ?>"><?php echo esc_html__('Edit'); ?></a></span>
+						<?php if( empty( $form['_external_form'] ) ){ ?><span class="edit"><a class="form-control" href="<?php echo esc_url( Qcformbuilder_Forms_Admin::form_edit_link( $form_id ) ); ?>"><?php echo esc_html__('Edit', 'conversational-forms'); ?></a></span>
 						<?php } ?>
 
 						<input type="hidden" id="form-export-<?php echo esc_attr( $form_id ); ?>" value='{ "formslug" : "<?php echo esc_attr( sanitize_title( $form['name'] ) ); ?>", "formid" : "<?php echo esc_attr( $form_id ); ?>", "nonce" : "<?php echo esc_attr( wp_create_nonce( 'wfb_del_frm' ) ); ?>" }'>
 
 							
-						<span class="clone"><a class="qc_clone_form_button" href="#clone" data-request="start_new_form" data-modal-buttons='<?php echo esc_attr( $modal_new_form ); ?>' data-name="<?php echo esc_attr( $form[ 'name' ] ); ?>" data-clone="<?php echo esc_attr( $form_id ); ?>" data-modal-width="600" data-modal-height="160" data-load-class="none" data-modal="new_clone" data-nonce="<?php echo esc_attr( wp_create_nonce( 'wfb_create_form' ) ); ?>" data-modal-title="<?php echo esc_attr__('Clone Form', 'qcformbuilder-forms'); ?>" data-template="#new-form-tmpl"><?php echo esc_html__('Clone', 'qcformbuilder-forms'); ?></a></span>
+						<span class="clone"><a class="qc_clone_form_button" href="#clone" data-request="start_new_form" data-modal-buttons='<?php echo esc_attr( $modal_new_form ); ?>' data-name="<?php echo esc_attr( $form[ 'name' ] ); ?>" data-clone="<?php echo esc_attr( $form_id ); ?>" data-modal-width="600" data-modal-height="160" data-load-class="none" data-modal="new_clone" data-nonce="<?php echo esc_attr( wp_create_nonce( 'wfb_create_form' ) ); ?>" data-modal-title="<?php echo esc_attr__('Clone Form', 'conversational-forms'); ?>" data-template="#new-form-tmpl"><?php echo esc_html__('Clone', 'conversational-forms'); ?></a></span>
 
 						<?php if( empty( $form['_external_form'] ) ){ ?>
-						<span class="trash form-delete"><a class="form-control" data-confirm="<?php echo esc_attr__('This will delete this form permanently. Continue?', 'qcformbuilder-forms'); ?>" href="admin.php?page=qcformbuilder-forms&delete=<?php echo esc_attr( trim( $form_id ) ); ?>&cal_del=<?php echo esc_attr( wp_create_nonce( 'wfb_del_frm' ) ); ?>"><?php echo esc_html__('Delete'); ?></a></span><?php } ?>
+						<span class="trash form-delete"><a class="form-control" data-confirm="<?php echo esc_attr__('This will delete this form permanently. Continue?', 'conversational-forms'); ?>" href="admin.php?page=qcformbuilder-forms&delete=<?php echo esc_attr( trim( $form_id ) ); ?>&cal_del=<?php echo esc_attr( wp_create_nonce( 'wfb_del_frm' ) ); ?>"><?php echo esc_html__('Delete', 'conversational-forms'); ?></a></span><?php } ?>
 
 
 						</div>
@@ -186,7 +186,7 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 
 			<div id="wfb-you-have-no-forms">
 				<p style="margin: 24px;">
-					<?php esc_html_e( 'You don\'t have any forms yet.', 'qcformbuilder-forms'); ?>
+					<?php esc_html_e( 'You don\'t have any forms yet.', 'conversational-forms'); ?>
 				</p>
 
 			</div>
@@ -196,16 +196,16 @@ $modal_new_form = esc_html__('Create Form', 'qcformbuilder-forms').'|{"data-acti
 	
 	<div class="qc_cfp_help_section">
 	
-		<h2><?php esc_html_e( 'How to create a Conversational Form?', 'qcformbuilder-forms' ); ?></h2>
+		<h2><?php esc_html_e( 'How to create a Conversational Form?', 'conversational-forms'); ?></h2>
 
-		<p><?php esc_html_e( 'Creating a Conversational form is easy with the visual form builder. You can get started with a ready template and see how it works. Also, check out the', 'qcformbuilder-forms' ); ?> <a href="https://www.youtube.com/watch?v=YUgyyVPKsSo" target="_blank"><?php esc_html_e( 'video tutorial', 'qcformbuilder-forms' ); ?></a> <?php esc_html_e( 'to get started.', 'qcformbuilder-forms' ); ?></p>
+		<p><?php esc_html_e( 'Creating a Conversational form is easy with the visual form builder. You can get started with a ready template and see how it works. Also, check out the', 'conversational-forms'); ?> <a href="https://www.youtube.com/watch?v=YUgyyVPKsSo" target="_blank"><?php esc_html_e( 'video tutorial', 'conversational-forms'); ?></a> <?php esc_html_e( 'to get started.', 'conversational-forms'); ?></p>
 	
-		<h2><?php esc_html_e( 'How to add forms as custom intent button in bot window?', 'qcformbuilder-forms' ); ?></h2>
-		<p><?php esc_html_e( 'To add the forms as chatbot intent button in bot window, please go to', 'qcformbuilder-forms' ); ?> <b>><?php esc_html_e( 'Chatbot Pro > Settings > Start Menu', 'qcformbuilder-forms' ); ?></b> <?php echo wp_kses_post( __( 'page. Here all of the created forms will be listed in <b>"Menu List"</b> section. You just have to drag it and drop inside the', 'qcformbuilder-forms' ) ); ?> <b><?php esc_html_e( '"Menu area"' ); ?></b><?php esc_html_e( '". If you left the' ); ?> <b><?php esc_html_e( '""Menu Area"', 'qcformbuilder-forms' ); ?></b> <?php esc_html_e( 'empty then all intents (including predefined & Custom) buttons will be displayed inside the bot window. You can see the intents button by typing', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"start"' ); ?></b> ><?php esc_html_e( 'command in bot window.' ); ?></p>
-		<p class="wfb-help-warning"><?php esc_html_e( '**After making changes in the settings, please clear browser cache and cookies before reloading the page or open a new Incognito window (Ctrl+Shit+N in chrome).', 'qcformbuilder-forms' ); ?></p>
+		<h2><?php esc_html_e( 'How to add forms as custom intent button in bot window?', 'conversational-forms'); ?></h2>
+		<p><?php esc_html_e( 'To add the forms as chatbot intent button in bot window, please go to', 'conversational-forms'); ?> <b>><?php esc_html_e( 'Chatbot Pro > Settings > Start Menu', 'conversational-forms'); ?></b> <?php echo wp_kses_post( __( 'page. Here all of the created forms will be listed in <b>"Menu List"</b> section. You just have to drag it and drop inside the', 'conversational-forms') ); ?> <b><?php esc_html_e( '"Menu area"' , 'conversational-forms'); ?></b><?php esc_html_e( '". If you left the' , 'conversational-forms'); ?> <b><?php esc_html_e( '""Menu Area"', 'conversational-forms'); ?></b> <?php esc_html_e( 'empty then all intents (including predefined & Custom) buttons will be displayed inside the bot window. You can see the intents button by typing', 'conversational-forms'); ?> <b><?php esc_html_e( '"start"' , 'conversational-forms'); ?></b> ><?php esc_html_e( 'command in bot window.' , 'conversational-forms'); ?></p>
+		<p class="wfb-help-warning"><?php esc_html_e( '**After making changes in the settings, please clear browser cache and cookies before reloading the page or open a new Incognito window (Ctrl+Shit+N in chrome).', 'conversational-forms'); ?></p>
 		
-		<h2><?php esc_html_e( 'What is the Command to trigger the specific form intent in Chatbot?', 'qcformbuilder-forms' ); ?></h2>
-		<p><?php esc_html_e( 'During form creation you have to provide the ChatBot Command for the form. You will find the field under', 'qcformbuilder-forms' ); ?> <b><?php esc_html_e( '"Form Settings"', 'qcformbuilder-forms' ); ?></b> <?php esc_html_e( 'tab. If you write the command in chatbot window the conversational form will be started.', 'qcformbuilder-forms' ); ?></p>
+		<h2><?php esc_html_e( 'What is the Command to trigger the specific form intent in Chatbot?', 'conversational-forms'); ?></h2>
+		<p><?php esc_html_e( 'During form creation you have to provide the ChatBot Command for the form. You will find the field under', 'conversational-forms'); ?> <b><?php esc_html_e( '"Form Settings"', 'conversational-forms'); ?></b> <?php esc_html_e( 'tab. If you write the command in chatbot window the conversational form will be started.', 'conversational-forms'); ?></p>
 	</div>
 	
 	
@@ -291,7 +291,7 @@ function get_front_end_settings( obj ){
 }
 
 function extend_fail_notice(el){
-	jQuery("#extend_wfb_baldrickModalBody").html('<div class="alert error"><p><?php echo esc_html( __('Looks like something is not working. Please try again a little later or post to the support forum.', 'qcformbuilder-forms') ); ?></p></div>');
+	jQuery("#extend_wfb_baldrickModalBody").html('<div class="alert error"><p><?php echo esc_html( __('Looks like something is not working. Please try again a little later or post to the support forum.', 'conversational-forms') ); ?></p></div>');
 }
 
 function start_new_form(obj){
@@ -432,7 +432,7 @@ jQuery.post('<?php echo esc_url( admin_url('admin-ajax.php') ); ?>', data, funct
 			$clippy = $('#qcformbuilder-forms-clippy');
 
 		if( inEmailSettings ){
-			$( this ).html( '<?php esc_html_e( 'Email Settings', 'qcformbuilder-forms' ); ?>' );
+			$( this ).html( '<?php esc_html_e( 'Email Settings', 'conversational-forms'); ?>' );
 			inEmailSettings = false;
 			$otherButtons.removeClass( 'disabled' );
 			$emailSettingsUI.hide().attr( 'aria-hidden', 'true' ).css( 'visibility', 'hidden' );
@@ -441,11 +441,11 @@ jQuery.post('<?php echo esc_url( admin_url('admin-ajax.php') ); ?>', data, funct
 			$clippy.show().attr( 'aria-hidden', 'false' ).css( 'visibility', 'visible' );
 		}else{
 			inEmailSettings = true;
-			$( this ).html( '<?php esc_html_e( 'Close Email Settings', 'qcformbuilder-forms' ); ?>' );
+			$( this ).html( '<?php esc_html_e( 'Close Email Settings', 'conversational-forms'); ?>' );
 			$otherButtons.addClass( 'disabled' );
 			$mainUI.hide().attr( 'aria-hidden', 'true' ).css( 'visibility', 'hidden' );
 			$emailSettingsUI.show().attr( 'aria-hidden', 'false' ).css( 'visibility', 'visible' );
-			$( this ).html = "<?php esc_html__( 'Email Settings', 'qcformbuilder-forms' ); ?>";
+			$( this ).html = "<?php esc_html__( 'Email Settings', 'conversational-forms'); ?>";
 			$clippy.hide().attr( 'aria-hidden', 'true' ).css( 'visibility', 'hidden' );
 			$toggles.hide().attr( 'aria-hidden', 'true' ).css( 'visibility', 'hidden' );
 		}

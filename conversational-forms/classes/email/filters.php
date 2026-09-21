@@ -80,8 +80,14 @@ class Qcformbuilder_Forms_Email_Filters{
 						} else {
 							if ( isset( $data[ $field_id ] ) && filter_var( $data[ $field_id ], FILTER_VALIDATE_URL ) ) {
 								$mail[ 'attachments' ][] = $data[ $field_id ];
-							} elseif ( isset( $_POST[ $field_id ] ) && filter_var( $_POST[ $field_id ], FILTER_VALIDATE_URL ) && 0 === strpos( $_POST[ $field_id ], $dir[ 'url' ] ) ) {
-								$mail[ 'attachments' ][] = $_POST[ $field_id ];
+							} elseif ( isset( $_POST[ $field_id ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+								// phpcs:ignore WordPress.Security.NonceVerification.Missing
+								$post_field_val = esc_url_raw( wp_unslash( $_POST[ $field_id ] ) );
+								if ( filter_var( $post_field_val, FILTER_VALIDATE_URL ) && 0 === strpos( $post_field_val, $dir[ 'url' ] ) ) {
+									$mail[ 'attachments' ][] = $post_field_val;
+								} else {
+									continue;
+								}
 							} else {
 								continue;
 							}

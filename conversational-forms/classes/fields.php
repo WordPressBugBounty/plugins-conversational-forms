@@ -98,14 +98,14 @@ class Qcformbuilder_Forms_Fields {
 	 * @return array
 	 */
 	public static function internal_types() {
-		$deprecated = __( 'Discontinued', 'qcformbuilder-forms' );
+		$deprecated = __( 'Discontinued', 'conversational-forms');
 		$internal_fields = array(
 			//basic
 			'text'             => array(
-				"field"       => __( 'Simple Text', 'qcformbuilder-forms' ),
-				"description" => __( 'Simple Text Input Field', 'qcformbuilder-forms' ),
+				"field"       => __( 'Simple Text', 'conversational-forms'),
+				"description" => __( 'Simple Text Input Field', 'conversational-forms'),
 				"file"        => WFBCORE_PATH . "fields/generic-input.php",
-				"category"    => __( 'Basic', 'qcformbuilder-forms' ),
+				"category"    => __( 'Basic', 'conversational-forms'),
 				"setup"       => array(
 					"template" => WFBCORE_PATH . "fields/text/config.php",
 					"preview"  => WFBCORE_PATH . "fields/text/preview.php"
@@ -438,10 +438,10 @@ class Qcformbuilder_Forms_Fields {
 			*/
 			//content
 			'html'             => array(
-				"field"       => __( 'HTML', 'qcformbuilder-forms' ),
-				"description" => __( 'Add text/html content', 'qcformbuilder-forms' ),
+				"field"       => __( 'HTML', 'conversational-forms'),
+				"description" => __( 'Add text/html content', 'conversational-forms'),
 				"file"        => WFBCORE_PATH . "fields/html/field.php",
-				"category"    => __( 'Content', 'qcformbuilder-forms' ),
+				"category"    => __( 'Content', 'conversational-forms'),
 				"icon"        => WFBCORE_URL . "fields/html/icon.png",
 				"capture"     => false,
 				"setup"       => array(
@@ -491,11 +491,11 @@ class Qcformbuilder_Forms_Fields {
 			*/
 			//select
 			'dropdown'         => array(
-				"field"       => __( 'Select Option', 'qcformbuilder-forms' ),
-				"description" => __( 'Display Options as button', 'qcformbuilder-forms' ),
+				"field"       => __( 'Select Option', 'conversational-forms'),
+				"description" => __( 'Display Options as button', 'conversational-forms'),
 				'icon'          => WFBCORE_URL . 'assets/build/images/plus.svg',
 				"file"        => WFBCORE_PATH . "fields/dropdown/field.php",
-				"category"    => __( 'Select', 'qcformbuilder-forms' ),
+				"category"    => __( 'Select', 'conversational-forms'),
 				"options"     => "single",
 				"static"      => true,
 				"viewer"      => array( Qcformbuilder_Forms::get_instance(), 'filter_options_calculator' ),
@@ -506,11 +506,11 @@ class Qcformbuilder_Forms_Fields {
 				)
 			),
 			'checkbox'         => array(
-				"field"       => __( 'Checkbox', 'qcformbuilder-forms' ),
-				"description" => __( 'Checkbox', 'qcformbuilder-forms' ),
+				"field"       => __( 'Checkbox', 'conversational-forms'),
+				"description" => __( 'Checkbox', 'conversational-forms'),
 				'icon'          => WFBCORE_URL . 'assets/build/images/plus.svg',
 				"file"        => WFBCORE_PATH . "fields/checkbox/field.php",
-				"category"    => __( 'Select', 'qcformbuilder-forms' ),
+				"category"    => __( 'Select', 'conversational-forms'),
 				"options"     => "multiple",
 				"static"      => true,
 				"viewer"      => array( Qcformbuilder_Forms::get_instance(), 'filter_options_calculator' ),

@@ -21,7 +21,7 @@ function wfb_apply_field_classes($classes, $field, $form){
 function wfb_custom_field_classes(){
 ?>
 <div class="qcformbuilder-config-group customclass-field">
-	<label><?php echo esc_html__('Custom Class', 'qcformbuilder-forms'); ?> </label>
+	<label><?php echo esc_html__('Custom Class', 'conversational-forms'); ?> </label>
 	<div class="qcformbuilder-config-field">
 		<input type="text" class="block-input field-config" name="{{_name}}[custom_class]" value="{{custom_class}}">
 	</div>
@@ -37,7 +37,7 @@ function wfb_live_gravatar_field($fieldtypes){
 	$fieldtypes['live_gravatar'] = array(
 		"field"			=>	"Gravatar",
 		"file"			=>	WFBCORE_PATH . "fields/gravatar/field.php",
-		"category"		=>	__( 'Special' , 'qcformbuilder-forms' ),
+		"category"		=>	__( 'Special' , 'conversational-forms'),
 		"description" 	=> 'A live gravatar preview',
 		'icon'          => WFBCORE_URL . 'assets/build/images/user.svg',
 		"setup"			=>	array(
@@ -58,13 +58,14 @@ add_action( 'wp_ajax_nopriv_wfb_live_gravatar_get_gravatar', 'wfb_live_gravatar_
 
 
 function wfb_live_gravatar_get_gravatar(){
-	$defaults = array(
-		'email'	=> '',
-		'generator' => 'mystery',
-		'size' => 100
-	);
-	$defaults = array_merge( $defaults, $_POST );
-	echo get_avatar( Qcformbuilder_Forms::do_magic_tags( $defaults['email'] ), (int) $defaults['size'], $defaults['generator']);
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$email     = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$generator = isset( $_POST['generator'] ) ? sanitize_key( wp_unslash( $_POST['generator'] ) ) : 'mystery';
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$size      = isset( $_POST['size'] ) ? absint( $_POST['size'] ) : 100;
+
+	echo get_avatar( Qcformbuilder_Forms::do_magic_tags( $email ), $size, $generator );
 	exit;
 }
 

@@ -52,7 +52,7 @@ function qcformbuilder_forms_db_v2_update(){
 
 		}
 
-		add_option( '_qcformbuilder_forms_forms', $new_registry, false );
+		add_option( '_qcformbuilder_forms_forms', $new_registry, '', false );
 
 		qcformbuilder_forms_write_db_flag( 2 );
 

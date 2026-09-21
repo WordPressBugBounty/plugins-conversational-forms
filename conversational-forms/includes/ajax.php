@@ -18,10 +18,10 @@ add_action( 'wp_ajax_nopriv_wfb_process_ajax_submit', 'wfb_form_process_ajax' );
 
 function wfb_form_process_ajax(){
 	// hook into submision
-	//_wfb_cr_pst
-	global $post;
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if( !empty( $_POST['_wfb_cr_pst'] ) ){
-		$post = get_post( (int) $_POST['_wfb_cr_pst'] );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$post = get_post( absint( wp_unslash( $_POST['_wfb_cr_pst'] ) ) );
 	}
 
 	Qcformbuilder_Forms::process_form_via_post();
@@ -35,10 +35,10 @@ function wfb_form_ajaxsetup($form){
 ?>
 <div class="qcformbuilder-config-group">
 	<fieldset>
-		<legend><?php echo esc_html__( 'Ajax Submissions', 'qcformbuilder-forms'); ?></legend>
+		<legend><?php echo esc_html__( 'Ajax Submissions', 'conversational-forms'); ?></legend>
 		<div class="qcformbuilder-config-field">
 			<input type="checkbox" id="qcformbuilder-forms-enable_ajax" value="1" name="config[form_ajax]" class="field-config"<?php if(isset($form['form_ajax'])){ echo ' checked="checked"'; } ?>>
-			<label for="qcformbuilder-forms-enable_ajax"><?php echo esc_html__( 'Enable Ajax Submissions. (No page reloads)', 'qcformbuilder-forms'); ?></label>
+			<label for="qcformbuilder-forms-enable_ajax"><?php echo esc_html__( 'Enable Ajax Submissions. (No page reloads)', 'conversational-forms'); ?></label>
 		</div>
 	</fieldset>
 </div>
@@ -46,9 +46,9 @@ function wfb_form_ajaxsetup($form){
 
 <div class="qcformbuilder-config-group">
 	<fieldset>
-		<legend><?php esc_html_e( 'Custom Callback', 'qcformbuilder-forms'); ?></legend>
+		<legend><?php esc_html_e( 'Custom Callback', 'conversational-forms'); ?></legend>
 		<div class="qcformbuilder-config-field">
-			<input id="qcformbuilder-forms-custom_callback" type="checkbox" onclick="jQuery('#custom_callback_panel').toggle();" value="1" name="config[has_ajax_callback]" class="field-config"<?php if(isset($form['has_ajax_callback'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-custom_callback"><?php echo esc_html__( 'Add a custom Javascript callback handlers on submission.', 'qcformbuilder-forms'); ?></label>
+			<input id="qcformbuilder-forms-custom_callback" type="checkbox" onclick="jQuery('#custom_callback_panel').toggle();" value="1" name="config[has_ajax_callback]" class="field-config"<?php if(isset($form['has_ajax_callback'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-custom_callback"><?php echo esc_html__( 'Add a custom Javascript callback handlers on submission.', 'conversational-forms'); ?></label>
 		</div>
 	</fieldset>
 
@@ -59,10 +59,10 @@ function wfb_form_ajaxsetup($form){
 	<div class="qcformbuilder-config-group">
 		<fieldset>
 			<legend>
-				<?php esc_html_e( 'Inhibit Notices', 'qcformbuilder-forms'); ?>
+				<?php esc_html_e( 'Inhibit Notices', 'conversational-forms'); ?>
 			</legend>
 			<div class="qcformbuilder-config-field">
-				<input id="qcformbuilder-forms-inhbit_notices" type="checkbox" value="1" name="config[inhibit_notice]" class="field-config"<?php if(isset($form['inhibit_notice'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-inhbit_notices"><?php esc_html_e("Don't show default alerts (success etc.)", 'qcformbuilder-forms'); ?></label>
+				<input id="qcformbuilder-forms-inhbit_notices" type="checkbox" value="1" name="config[inhibit_notice]" class="field-config"<?php if(isset($form['inhibit_notice'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-inhbit_notices"><?php esc_html_e("Don't show default alerts (success etc.)", 'conversational-forms'); ?></label>
 			</div>
 		</fieldset>
 	</div>
@@ -71,12 +71,12 @@ function wfb_form_ajaxsetup($form){
 	<div class="qcformbuilder-config-group" style="width:500px;">
 		<fieldset>
 			<legend>
-				<?php esc_html_e( 'Callback Function', 'qcformbuilder-forms'); ?>
+				<?php esc_html_e( 'Callback Function', 'conversational-forms'); ?>
 			</legend>
 			<div class="qcformbuilder-config-field">
 				<input id="qcformbuilder-forms-custom_callback" type="text" value="<?php echo esc_attr( $form['custom_callback'] ); ?>" name="config[custom_callback]" class="field-config block-input" aria-describedby="qcformbuilder-forms-custom_callback-desc">
 				<p class="description" id="qcformbuilder-forms-custom_callback-desc">
-					<?php esc_html_e('Javascript function to call on submission. Passed an object containing form submission result.'); ?> <a href="#" onclick="jQuery('#json_callback_example').toggle();return false;"><?php esc_html_e( 'See Example', 'qcformbuilder-forms' ); ?></a>
+					<?php esc_html_e('Javascript function to call on submission. Passed an object containing form submission result.', 'conversational-forms'); ?> <a href="#" onclick="jQuery('#json_callback_example').toggle();return false;"><?php esc_html_e( 'See Example', 'conversational-forms'); ?></a>
 				</p>
 					<pre id="json_callback_example" style="display:none;"><?php echo esc_html('
 {    
@@ -108,10 +108,10 @@ function wfb_form_ajaxsetup($form){
 <div class="qcformbuilder-config-group">
 	<fieldset>
 		<legend>
-			<?php echo esc_html__( 'Multiple Ajax Submissions', 'qcformbuilder-forms'); ?>
+			<?php echo esc_html__( 'Multiple Ajax Submissions', 'conversational-forms'); ?>
 		</legend>
 		<div class="qcformbuilder-config-field">
-			<input for="qcformbuilder-forms-multi-ajax" type="checkbox" value="1" name="config[form_ajax_post_submission_disable]" class="field-config"<?php if(isset($form['form_ajax_post_submission_disable'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-multi-ajax"><?php esc_html_e( 'If set, form can be submitted multiple times with out a new page load.', 'qcformbuilder-forms'); ?></label>
+			<input for="qcformbuilder-forms-multi-ajax" type="checkbox" value="1" name="config[form_ajax_post_submission_disable]" class="field-config"<?php if(isset($form['form_ajax_post_submission_disable'])){ echo ' checked="checked"'; } ?>><label for="qcformbuilder-forms-multi-ajax"><?php esc_html_e( 'If set, form can be submitted multiple times with out a new page load.', 'conversational-forms'); ?></label>
 		</div>
 	</fieldset>
 </div>
@@ -126,6 +126,7 @@ function wfb_ajax_redirect($type, $url, $form){
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if( empty( $_POST['cfajax'] ) || empty( $_POST['action'] ) || $_POST['action'] != 'wfb_process_ajax_submit' ){
 		return;
 	}
@@ -133,7 +134,7 @@ function wfb_ajax_redirect($type, $url, $form){
 	$data = Qcformbuilder_Forms::get_submission_data($form);
 	
 	// setup notcies
-	$urlparts = parse_url($url);
+	$urlparts = wp_parse_url($url);
 	$query = array();
 
 	if(!empty($urlparts['query'])){
@@ -152,7 +153,7 @@ function wfb_ajax_redirect($type, $url, $form){
 			$form_id = 'qcformbuilder_form_' . $query['wfb_su'];
 		}else{
 			$out['url'] = $url;
-			$notices['success']['note'] = esc_html__( 'Redirecting', 'qcformbuilder-forms');
+			$notices['success']['note'] = esc_html__( 'Redirecting', 'conversational-forms');
 		}
 	}elseif($type == 'preprocess'){
 		if(isset($query['wfb_er'])){
@@ -163,7 +164,7 @@ function wfb_ajax_redirect($type, $url, $form){
 
 		}else{
 			$out['url'] = $url;
-			$notices['success']['note'] = esc_html__( 'Redirecting', 'qcformbuilder-forms');
+			$notices['success']['note'] = esc_html__( 'Redirecting', 'conversational-forms');
 		}
 
 	}elseif($type == 'error'){
@@ -211,8 +212,10 @@ function wfb_ajax_redirect($type, $url, $form){
 	$out['form_name'] = $form['name'];	
 	$out['status'] = $type;
 
-	if( ! empty( $form[ 'scroll_top' ] ) ){
-		$out[ 'scroll' ] = Qcformbuilder_Forms_Render_Util::notice_element_id( $form, absint( $_POST[ '_wfb_frm_ct' ]  ) );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if( ! empty( $form[ 'scroll_top' ] ) && isset( $_POST[ '_wfb_frm_ct' ] ) ){
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$out[ 'scroll' ] = Qcformbuilder_Forms_Render_Util::notice_element_id( $form, absint( wp_unslash( $_POST[ '_wfb_frm_ct' ]  ) ) );
 	}
 
 	$out = apply_filters( 'qcformbuilder_forms_ajax_return', $out, $form);

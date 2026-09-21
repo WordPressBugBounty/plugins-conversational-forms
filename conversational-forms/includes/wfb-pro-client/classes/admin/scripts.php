@@ -53,8 +53,12 @@ class scripts
 	{
 		\Qcformbuilder_Forms_Render_Assets::maybe_register();
 		if ( $enqueue_admin ) {
-			wp_enqueue_style(\Qcformbuilder_Forms_Admin_Assets::slug('admin', false),
-				\Qcformbuilder_Forms_Render_Assets::make_url('admin', false));
+			wp_enqueue_style(
+				\Qcformbuilder_Forms_Admin_Assets::slug('admin', false),
+				\Qcformbuilder_Forms_Render_Assets::make_url('admin', false),
+				array(),
+				$this->version
+			);
 			\Qcformbuilder_Forms_Admin_Assets::set_wfb_admin(\Qcformbuilder_Forms_Render_Assets::make_slug('pro'));
 		}
 		\Qcformbuilder_Forms_Render_Assets::enqueue_style('pro');
@@ -79,36 +83,33 @@ class scripts
 
 		$data = [
 			'strings' => [
-				'saved' => esc_html__('Settings Saved', 'qcformbuilder-forms'),
-				'notSaved' => esc_html__('Settings could not be saved', 'qcformbuilder-forms'),
-				'apiKeysViewText' => esc_html__('You must add your API keys to use Qcformbuilder Forms Pro', 'qcformbuilder-forms'),
+				'saved' => esc_html__('Settings Saved', 'conversational-forms'),
+				'notSaved' => esc_html__('Settings could not be saved', 'conversational-forms'),
+				'apiKeysViewText' => esc_html__('You must add your API keys to use Qcformbuilder Forms Pro', 'conversational-forms'),
 				'apiKeysViewLink' => esc_url($pro_url),
-				'minLogLevelTitle' => esc_html__('Minimum Log Level', 'qcformbuilder-forms'),
-				'minLogLevelInfo' => esc_html__('Setting a higher level than notice may affect performance, and should only be used when instructed by support.',
-					'qcformbuilder-forms'),
+				'minLogLevelTitle' => esc_html__('Minimum Log Level', 'conversational-forms'),
+				'minLogLevelInfo' => esc_html__('Setting a higher level than notice may affect performance, and should only be used when instructed by support.', 'conversational-forms'),
 				'whatIsCFPro' => [
-					'firstParagraph' => esc_html__("Qcformbuilder Forms Pro is an app + plugin that makes forms easy.",
-						'qcformbuilder-forms'),
-					'hTitle' => esc_html__('Benefits', 'qcformbuilder-forms'),
-					'firstLi' => esc_html__('Enhanced Email Delivery', 'qcformbuilder-forms'),
-					'secondLi' => esc_html__('Form To PDF', 'qcformbuilder-forms'),
-					'thirdLi' => esc_html__('Priority Support.', 'qcformbuilder-forms'),
-					'fourthLi' => esc_html__('Add-ons Included in Yearly Plans', 'qcformbuilder-forms'),
+					'firstParagraph' => esc_html__("Qcformbuilder Forms Pro is an app + plugin that makes forms easy.", 'conversational-forms'),
+					'hTitle' => esc_html__('Benefits', 'conversational-forms'),
+					'firstLi' => esc_html__('Enhanced Email Delivery', 'conversational-forms'),
+					'secondLi' => esc_html__('Form To PDF', 'conversational-forms'),
+					'thirdLi' => esc_html__('Priority Support.', 'conversational-forms'),
+					'fourthLi' => esc_html__('Add-ons Included in Yearly Plans', 'conversational-forms'),
 				],
 				'freeTrial' => [
-					'firstParagraph' => esc_html__('Ready to try Qcformbuilder Forms Pro? Plans start at just $14.99/ month with a 7 day free trial.',
-						'qcformbuilder-forms'),
-					'buttonLeft' => esc_html__('View Documentation', 'qcformbuilder-forms'),
-					'buttonRight' => esc_html__('Start Free Trial', 'qcformbuilder-forms'),
+					'firstParagraph' => esc_html__('Ready to try Qcformbuilder Forms Pro? Plans start at just $14.99/ month with a 7 day free trial.', 'conversational-forms'),
+					'buttonLeft' => esc_html__('View Documentation', 'conversational-forms'),
+					'buttonRight' => esc_html__('Start Free Trial', 'conversational-forms'),
 				],
-				'notConnected' => esc_html__('Not Connected', 'qcformbuilder-forms'),
-				'connected' => esc_html__('Connected', 'qcformbuilder-forms'),
+				'notConnected' => esc_html__('Not Connected', 'conversational-forms'),
+				'connected' => esc_html__('Connected', 'conversational-forms'),
 				'tabNames' => [
-					'account' => esc_html__('Account', 'qcformbuilder-forms'),
-					'formSettings' => esc_html__('Form Settings', 'qcformbuilder-forms'),
-					'settings' => esc_html__('Settings', 'qcformbuilder-forms'),
-					'whatIsCFPro' => esc_html__('What is Qcformbuilder Forms Pro ?', 'qcformbuilder-forms'),
-					'freeTrial' => esc_html__('Free Trial', 'qcformbuilder-forms'),
+					'account' => esc_html__('Account', 'conversational-forms'),
+					'formSettings' => esc_html__('Form Settings', 'conversational-forms'),
+					'settings' => esc_html__('Settings', 'conversational-forms'),
+					'whatIsCFPro' => esc_html__('What is Qcformbuilder Forms Pro ?', 'conversational-forms'),
+					'freeTrial' => esc_html__('Free Trial', 'conversational-forms'),
 				],
 			],
 			'api' => [
@@ -125,7 +126,8 @@ class scripts
 			'logLevels' => container::get_instance()->get_settings()->log_levels(),
 		];
 
-		$data[ 'formScreen' ] = \Qcformbuilder_Forms_Admin::is_edit() ? esc_attr($_GET[ \Qcformbuilder_Forms_Admin::EDIT_KEY ]) : false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$data[ 'formScreen' ] = ( \Qcformbuilder_Forms_Admin::is_edit() && isset( $_GET[ \Qcformbuilder_Forms_Admin::EDIT_KEY ] ) ) ? sanitize_text_field( wp_unslash( $_GET[ \Qcformbuilder_Forms_Admin::EDIT_KEY ] ) ) : false;
 
 		return $data;
 	}

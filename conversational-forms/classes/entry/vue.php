@@ -119,8 +119,8 @@ class Qcformbuilder_Forms_Entry_Vue {
 				),
 				'perPage' => absint( Qcformbuilder_Forms_Entry_Viewer::entries_per_page() ),
 				'strings' => array(
-					'no_entries' => esc_html__( 'No Entries To Display', 'qcformbuilder-forms' ),
-					'not_allowed' => esc_html__( 'You are not allowed to view this.', 'qcformbuilder-forms' )
+					'no_entries' => esc_html__( 'No Entries To Display', 'conversational-forms'),
+					'not_allowed' => esc_html__( 'You are not allowed to view this.', 'conversational-forms')
 				)
 			)
 		);

@@ -91,9 +91,9 @@ class Qcformbuilder_Forms_Admin_Assets
         $version = Qcformbuilder_Forms::VERSION;
         Qcformbuilder_Forms_Render_Assets::maybe_validator_i18n(true);
 
-        wp_register_script(self::slug('shortcode-insert'), Qcformbuilder_Forms_Render_Assets::make_url('shortcode-insert'), array('jquery', 'wp-color-picker'), $version);
+        wp_register_script(self::slug('shortcode-insert'), Qcformbuilder_Forms_Render_Assets::make_url('shortcode-insert'), array('jquery', 'wp-color-picker'), $version, true);
 
-        wp_register_script(self::slug('baldrick'), Qcformbuilder_Forms_Render_Assets::make_url('wp-baldrick-full'), array('jquery'), $version);
+        wp_register_script(self::slug('baldrick'), Qcformbuilder_Forms_Render_Assets::make_url('wp-baldrick-full'), array('jquery'), $version, true);
 
 
         $admin_client_dependencies = [
@@ -104,23 +104,23 @@ class Qcformbuilder_Forms_Admin_Assets
         if (!version_compare($wp_version, '5.0.0', '>=')) {
             $admin_client_dependencies[] = Qcformbuilder_Forms_Render_Assets::make_slug('legacy-bundle');
         }
-        wp_register_script(Qcformbuilder_Forms_Render_Assets::make_slug('admin-client'), Qcformbuilder_Forms_Render_Assets::make_url('admin-client'), $admin_client_dependencies, $version);
+        wp_register_script(Qcformbuilder_Forms_Render_Assets::make_slug('admin-client'), Qcformbuilder_Forms_Render_Assets::make_url('admin-client'), $admin_client_dependencies, $version, true);
 
         wp_register_script(self::slug('admin'), Qcformbuilder_Forms_Render_Assets::make_url('admin'), array(
             self::slug('baldrick'),
             Qcformbuilder_Forms_Render_Assets::make_slug('conditionals'),
             'wp-pointer',
             'password-strength-meter',
-        ), $version);
+        ), $version, true);
 
 
 
         wp_register_script(self::slug('edit-fields'), Qcformbuilder_Forms_Render_Assets::make_url('fields'), array(
             'jquery',
             'wp-color-picker',
-        ), $version);
+        ), $version, true);
 
-        wp_register_script(self::slug('support-page'), Qcformbuilder_Forms_Render_Assets::make_url('support-page'), array('jquery'), $version);
+        wp_register_script(self::slug('support-page'), Qcformbuilder_Forms_Render_Assets::make_url('support-page'), array('jquery'), $version, true);
 
         wp_localize_script(self::slug('editor'), 'CF_ADMIN_TOOLTIPS', self::get_tooltips());
         /**
@@ -320,9 +320,9 @@ class Qcformbuilder_Forms_Admin_Assets
     public static function get_tooltips()
     {
         $tooltips = array(
-            'add_field_row' => esc_html__('Add field to row', 'qcformbuilder-forms'),
-            'split_row' => esc_html__('Split row.', 'qcformbuilder-forms'),
-            'delete_row' => esc_html__('Delete row.', 'qcformbuilder-forms'),
+            'add_field_row' => esc_html__('Add field to row', 'conversational-forms'),
+            'split_row' => esc_html__('Split row.', 'conversational-forms'),
+            'delete_row' => esc_html__('Delete row.', 'conversational-forms'),
         );
 
         /**
@@ -353,8 +353,10 @@ class Qcformbuilder_Forms_Admin_Assets
         $api_config = new Qcformbuilder_Forms_API_JsConfig;
         $data = array_merge($data, $api_config->toArray());
 
-        if (Qcformbuilder_Forms_Admin::is_edit()) {
-            $form_id = trim($_GET[Qcformbuilder_Forms_Admin::EDIT_KEY]);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( Qcformbuilder_Forms_Admin::is_edit() && isset( $_GET[ Qcformbuilder_Forms_Admin::EDIT_KEY ] ) ) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $form_id = sanitize_text_field( wp_unslash( $_GET[ Qcformbuilder_Forms_Admin::EDIT_KEY ] ) );
             $data['rest']['form'] = esc_url_raw(Qcformbuilder_Forms_API_Util::url('forms/' . $form_id, true));
             $data['rest']['revisions'] = esc_url_raw(Qcformbuilder_Forms_API_Util::url('forms/' . $form_id . '/revisions', true));
             $data['rest']['delete_entries'] = esc_url_raw(Qcformbuilder_Forms_API_Util::url('entries/' . $form_id . '/delete', true));

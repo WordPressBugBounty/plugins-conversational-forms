@@ -23,18 +23,18 @@ class TextFieldType extends FieldType
 	/** @inheritdoc */
     public static function getCategory ()
 	{
-		return __( 'Basic', 'qcformbuilder-forms' );
+		return __( 'Basic', 'conversational-forms');
 	}
 
 	/** @inheritdoc */
 	public static function getDescription ()
 	{
-		return __( 'Text Field With Super Powers', 'qcformbuilder-forms' );
+		return __( 'Text Field With Super Powers', 'conversational-forms');
 	}
 
 	/** @inheritdoc */
 	public static function getName ()
 	{
-		__( 'Text Field (CF2)', 'qcformbuilder-forms' );
+		__( 'Text Field (CF2)', 'conversational-forms');
 	}
 }

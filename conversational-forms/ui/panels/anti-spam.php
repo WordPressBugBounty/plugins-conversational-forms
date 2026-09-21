@@ -11,7 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @link
  * @copyright 2017 CalderaWP LLC
  */
-$element = $form = Qcformbuilder_Forms_Forms::get_form( esc_attr( $_GET[ 'edit' ] ) );
+if ( empty( $element ) || ! is_array( $element ) ) {
+	if ( ! empty( $form ) && is_array( $form ) ) {
+		$element = $form;
+	} elseif ( isset( $_GET['edit'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$form_id = sanitize_text_field( wp_unslash( $_GET['edit'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$element = $form = Qcformbuilder_Forms_Forms::get_form( $form_id );
+	}
+}
 if (empty($element['antispam'])) {
     $element['antispam'] = array();
 }
@@ -28,13 +35,13 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
 ?>
 <div id="anti-spam-settings-panel">
     <h3>
-        <?php esc_html_e('AntiSpam Settings', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e('AntiSpam Settings', 'conversational-forms'); ?>
     </h3>
 
     <div class="qcformbuilder-config-group">
         <fieldset>
             <legend>
-                <?php esc_html_e('Basic', 'qcformbuilder-forms'); ?>
+                <?php esc_html_e('Basic', 'conversational-forms'); ?>
             </legend>
             <div class="qcformbuilder-config-field">
                 <input
@@ -46,11 +53,11 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
                         aria-describedby="wfb-honey-desc"
                 />
                 <label for="wfb-honey">
-                    <?php esc_html_e('Enable', 'qcformbuilder-forms'); ?>
+                    <?php esc_html_e('Enable', 'conversational-forms'); ?>
                 </label>
 
                 <p class="description" id="wfb-honey-desc">
-                    <?php esc_html_e('Uses an anti-spam honeypot', 'qcformbuilder-forms'); ?>
+                    <?php esc_html_e('Uses an anti-spam honeypot', 'conversational-forms'); ?>
                 </p>
             </div>
         </fieldset>
@@ -58,7 +65,7 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
     <div class="qcformbuilder-config-group">
         <fieldset>
             <legend>
-                <?php esc_html_e('Advanced', 'qcformbuilder-forms'); ?>
+                <?php esc_html_e('Advanced', 'conversational-forms'); ?>
             </legend>
             <div class="qcformbuilder-config-field">
                 <input
@@ -71,14 +78,13 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
                         <?php if (!$wfb_pro_active) { ?>disabled<?php } ?>
                 />
                 <label for="wfb-pro-anti-spam">
-                    <?php esc_html_e('Enable'); ?>
+                    <?php esc_html_e('Enable', 'conversational-forms'); ?>
                 </label>
                 <p class="description" id="wfb-pro-anti-spam-desc">
                     <?php
-                    esc_html_e('Uses Qcformbuilder Forms Pro for spam scan and email address blacklist check.',
-                        'qcformbuilder-forms');
+                    esc_html_e('Uses Qcformbuilder Forms Pro for spam scan and email address blacklist check.', 'conversational-forms');
                     if (!$wfb_pro_active) {
-                        esc_html_e('Requires Qcformbuilder Forms Pro', 'qcformbuilder-forms');
+                        esc_html_e('Requires Qcformbuilder Forms Pro', 'conversational-forms');
                     }
                     ?>
                 </p>
@@ -90,7 +96,7 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
     <div class="qcformbuilder-config-group" id="qcformbuilder-anti-spam-settings-wrap">
         <div class="qcformbuilder-config-group">
             <label for="wfb-pro-anti-spam-sender-name">
-                <?php echo esc_html__('Sender Name', 'qcformbuilder-forms'); ?>
+                <?php echo esc_html__('Sender Name', 'conversational-forms'); ?>
             </label>
             <div class="qcformbuilder-config-field">
                 <input
@@ -106,13 +112,13 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
                         id="wfb-pro-anti-spam-sender-name-desc"
                         class="description"
                 >
-                    <?php esc_html_e('Field with the form submitter\'s name.', 'qcformbuilder-forms'); ?>
+                    <?php esc_html_e('Field with the form submitter\'s name.', 'conversational-forms'); ?>
                 </p>
             </div>
         </div>
         <div class="qcformbuilder-config-group">
             <label for="wfb-pro-anti-spam-sender-name-email">
-                <?php echo esc_html__('Email', 'qcformbuilder-forms'); ?>
+                <?php echo esc_html__('Email', 'conversational-forms'); ?>
             </label>
             <div class="qcformbuilder-config-field">
                 <input
@@ -128,7 +134,7 @@ $wfb_pro_active = qcformbuilder_forms_pro_is_active();
 
                         class="description"
                 >
-                    <?php esc_html_e('Field with the form submitter\'s email address', 'qcformbuilder-forms'); ?>
+                    <?php esc_html_e('Field with the form submitter\'s email address', 'conversational-forms'); ?>
                 </p>
             </div>
         </div>

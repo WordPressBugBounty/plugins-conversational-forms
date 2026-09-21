@@ -64,13 +64,13 @@ class papertrail
 
 
 		$destination = array_combine([ 'hostname', 'port' ], explode(':', self::$destination));
-		$program = parse_url(is_multisite() ? network_site_url() : site_url(), PHP_URL_HOST);
+		$program = wp_parse_url(is_multisite() ? network_site_url() : site_url(), PHP_URL_HOST);
 		$json = json_encode($data);
 
 		if ( empty($destination) || 2 != count($destination) || empty($destination[ 'hostname' ]) ) {
-			return new WP_Error('papertrail-invalid-destination',
-				sprintf(__('Invalid Papertrail destination (%s >> %s:%s).', 'papertrail'), self::$destination,
-					$destination[ 'hostname' ], $destination[ 'port' ]));
+			/* translators: 1: full destination, 2: hostname, 3: port */
+			$error_message = sprintf(__('Invalid Papertrail destination (%1$s >> %2$s:%3$s).', 'conversational-forms'), self::$destination, $destination[ 'hostname' ], $destination[ 'port' ]);
+			return new WP_Error('papertrail-invalid-destination', $error_message);
 		}
 
 		$syslog_message = '<22>' . date_i18n('M d H:i:s');
@@ -122,15 +122,20 @@ class papertrail
 			$page_info[ 'url' ] = 'https://';
 		}
 
-		$page_info[ 'url' ] .= $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'REQUEST_URI' ];
+		$http_host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+		$page_info[ 'url' ] .= $http_host . $request_uri;
 
 		$page_info[ 'url' ] = explode('?', $page_info[ 'url' ]);
 		$page_info[ 'url' ] = $page_info[ 'url' ][ 0 ];
 		$page_info[ 'url' ] = explode('#', $page_info[ 'url' ]);
 		$page_info[ 'url' ] = $page_info[ 'url' ][ 0 ];
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 		$page_info[ '$_GET' ] = $_GET;
 		$page_info[ '$_POST' ] = $_POST;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 
 		$page_info[ 'DOING_AJAX' ] = (defined('DOING_AJAX') && DOING_AJAX);
 		$page_info[ 'DOING_CRON' ] = (defined('DOING_CRON') && DOING_CRON);

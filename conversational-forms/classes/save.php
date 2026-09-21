@@ -163,7 +163,7 @@ class Qcformbuilder_Forms_Save_Final {
 
 		// do mailer!
 		if ( empty( $settings ) ) {
-			$sendername = __( 'Chatbot Forms Notification', 'qcformbuilder-forms' );
+			$sendername = __( 'Chatbot Forms Notification', 'conversational-forms');
 			if ( ! empty( $form['mailer']['sender_name'] ) ) {
 				$sendername = Qcformbuilder_Forms::do_magic_tags( $form['mailer']['sender_name'] );
 				if ( false !== strpos( $sendername, '%' ) ) {
@@ -366,6 +366,7 @@ class Qcformbuilder_Forms_Save_Final {
 				$labels = wp_list_pluck( $csv_data , 'label' );
 				$submission = wp_list_pluck( $csv_data, 'data' );
 				ob_start();
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 				$df = fopen( "php://output", 'w' );
 				$file_type = Qcformbuilder_Forms_CSV_Util::file_type( $form );
 				if ( 'tsv' == $file_type ) {
@@ -373,8 +374,11 @@ class Qcformbuilder_Forms_Save_Final {
 				} else {
 					$delimiter = ',';
 				}
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fputcsv
 				fputcsv( $df, $labels, $delimiter );
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fputcsv
 				fputcsv( $df, $submission, $delimiter );
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				fclose( $df );
 				$csv     = ob_get_clean();
 
@@ -427,7 +431,7 @@ class Qcformbuilder_Forms_Save_Final {
 		}
 
 		if( ! $mail['html']     ){
-			$mail[ 'message' ] = strip_tags( $mail['message'] );
+			$mail[ 'message' ] = wp_strip_all_tags( $mail['message'] );
 		}
 
 		$headers = implode("\r\n", $mail['headers']);
@@ -586,7 +590,7 @@ class Qcformbuilder_Forms_Save_Final {
 	protected static function unlink_csv( $csvfile ) {
 		if ( is_array( $csvfile ) && ! empty( $csvfile[ 'file' ] ) ) {
 			if ( file_exists( $csvfile[ 'file' ] ) ) {
-				unlink( $csvfile[ 'file' ] );
+				wp_delete_file( $csvfile[ 'file' ] );
 			}
 
 		}

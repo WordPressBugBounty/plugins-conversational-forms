@@ -36,9 +36,8 @@ class menu
 	{
 		add_submenu_page(
 			\Qcformbuilder_Forms::PLUGIN_SLUG,
-			__('Qcformbuilder Forms Pro', 'qcformbuilder-forms'),
-			'<span class="qcformbuilder-forms-menu-dashicon"><span class="dashicons dashicons-star-filled"></span>' . __('Qcformbuilder Forms Pro',
-				'qcformbuilder-forms') . '</span>',
+			__('Qcformbuilder Forms Pro', 'conversational-forms'),
+			'<span class="qcformbuilder-forms-menu-dashicon"><span class="dashicons dashicons-star-filled"></span>' . __('Qcformbuilder Forms Pro', 'conversational-forms') . '</span>',
 			'manage_options',
 			$this->slug,
 			[ $this, 'render' ]

@@ -11,7 +11,7 @@ if( ! defined( 'ABSPATH' ) ){
 		<?php if( current_user_can( Qcformbuilder_Forms::get_manage_cap( 'admin' ) ) && empty( $form['_external_form'] ) ){ ?>
 			<li class="qcformbuilder-forms-toolbar-item">
 				<a class="button" href="admin.php?page=qcformbuilder-forms&edit=<?php echo esc_attr( $form['ID'] ); ?>">
-					<?php esc_html_e( 'Edit' ); ?>
+					<?php esc_html_e( 'Edit' , 'conversational-forms'); ?>
 				</a>
 			</li>
 		<?php } ?>
@@ -19,10 +19,10 @@ if( ! defined( 'ABSPATH' ) ){
 </div>
 <div class="form-extend-page-wrap">
 <?php
-if( isset( $_GET[ 'wfb-alt-viewer' ] ) ){
-	$form = Qcformbuilder_Forms_Forms::get_form( $_GET[ 'wfb-alt-viewer' ] );
+if ( isset( $_GET['wfb-alt-viewer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$form = Qcformbuilder_Forms_Forms::get_form( sanitize_text_field( wp_unslash( $_GET['wfb-alt-viewer'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	echo wp_kses_post( Qcformbuilder_Forms_Entry_Viewer::form_entry_viewer_2( $form ) );
-}else{
+} else {
 	?>
 	<span class="form_entry_row highlight">
 	<?php echo wp_kses_post( Qcformbuilder_Forms_Entry_Viewer::entry_trigger( $form[ 'ID' ] ) ); ?>

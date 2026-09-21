@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 return array (
-	'name' => __( 'Contact Form', 'qcformbuilder-forms' ),
-	'description' => __( 'Basic starter contact form with auto-responder processor.', 'qcformbuilder-forms' ),
+	'name' => __( 'Contact Form', 'conversational-forms'),
+	'description' => __( 'Basic starter contact form with auto-responder processor.', 'conversational-forms'),
 	'db_support' => '1',
 	'hide_form' => '1',
-	'success' => __( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+	'success' => __( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
 	'avatar_field' => 'fld_6009157',
 	'form_ajax' => '1',
 	'layout_grid' => 
@@ -46,8 +46,8 @@ return array (
 			'config' => 
 			array (
 				'custom_class' => '',
-				'default' => '<h2>'.__( 'Your Details', 'qcformbuilder-forms' ).'</h2>
-<p>'.__( 'Let us know how to get back to you.', 'qcformbuilder-forms' ).'</p>
+				'default' => '<h2>'.__( 'Your Details', 'conversational-forms').'</h2>
+<p>'.__( 'Let us know how to get back to you.', 'conversational-forms').'</p>
 <hr>',
 			),
 			'conditions' => 
@@ -59,7 +59,7 @@ return array (
 		array (
 			'ID' => 'fld_8768091',
 			'type' => 'text',
-			'label' => __( 'First Name', 'qcformbuilder-forms' ),
+			'label' => __( 'First Name', 'conversational-forms'),
 			'slug' => 'first_name',
 			'required' => '1',
 			'caption' => '',
@@ -79,7 +79,7 @@ return array (
 		array (
 			'ID' => 'fld_9970286',
 			'type' => 'text',
-			'label' => __( 'Last Name', 'qcformbuilder-forms' ),
+			'label' => __( 'Last Name', 'conversational-forms'),
 			'slug' => 'last_name',
 			'required' => '1',
 			'caption' => '',
@@ -99,7 +99,7 @@ return array (
 		array (
 			'ID' => 'fld_6009157',
 			'type' => 'email',
-			'label' => __( 'Email Address', 'qcformbuilder-forms' ),
+			'label' => __( 'Email Address', 'conversational-forms'),
 			'slug' => 'email_address',
 			'required' => '1',
 			'caption' => '',
@@ -118,14 +118,14 @@ return array (
 		array (
 			'ID' => 'fld_2758980',
 			'type' => 'html',
-			'label' => __( 'Message', 'qcformbuilder-forms' ),
+			'label' => __( 'Message', 'conversational-forms'),
 			'slug' => 'message',
 			'caption' => '',
 			'config' => 
 			array (
 				'custom_class' => '',
-				'default' => '<h2>'.__( 'How can we help?', 'qcformbuilder-forms' ).'</h2>
-<p>'.__( 'Feel free to ask a question or simply leave a comment.', 'qcformbuilder-forms' ).'</p>
+				'default' => '<h2>'.__( 'How can we help?', 'conversational-forms').'</h2>
+<p>'.__( 'Feel free to ask a question or simply leave a comment.', 'conversational-forms').'</p>
 <hr>',
 			),
 			'conditions' => 
@@ -137,7 +137,7 @@ return array (
 		array (
 			'ID' => 'fld_7683514',
 			'type' => 'paragraph',
-			'label' => __( 'Comments / Questions', 'qcformbuilder-forms' ),
+			'label' => __( 'Comments / Questions', 'conversational-forms'),
 			'slug' => 'comments_questions',
 			'required' => '1',
 			'caption' => '',
@@ -157,7 +157,7 @@ return array (
 		array (
 			'ID' => 'fld_7908577',
 			'type' => 'button',
-			'label' => __( 'Send Message', 'qcformbuilder-forms' ),
+			'label' => __( 'Send Message', 'conversational-forms'),
 			'slug' => 'submit',
 			'caption' => '',
 			'config' => 
@@ -186,7 +186,7 @@ return array (
 			array (
 				'sender_name' => get_option( 'blogname' ),
 				'sender_email' => get_option( 'admin_email' ),
-				'subject' => __( 'Thank you for contacting us', 'qcformbuilder-forms' ),
+				'subject' => __( 'Thank you for contacting us', 'conversational-forms'),
 				'recipient_name' => '%first_name% %last_name%',
 				'recipient_email' => '%email_address%',
 				'message' => 'Hi %recipient_name%.
@@ -216,7 +216,7 @@ Here\'s a summary of your message:
 		'sender_email' => '%email_address',
 		'email_type' => 'html',
 		'recipients' => get_option( 'admin_email' ),
-		'email_subject' => __( 'Contact Form', 'qcformbuilder-forms' ),
+		'email_subject' => __( 'Contact Form', 'conversational-forms'),
 		'email_message' => '{summary}',
 	),
 );

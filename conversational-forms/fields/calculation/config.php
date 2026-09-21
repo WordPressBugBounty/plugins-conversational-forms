@@ -1,37 +1,37 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
-	<label for="{{_id}}_element"><?php echo esc_html__('Element', 'qcformbuilder-forms'); ?></label>
+	<label for="{{_id}}_element"><?php echo esc_html__('Element', 'conversational-forms'); ?></label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_element" type="text" class="input-block field-config" name="{{_name}}[element]" value="{{element}}">
 	</div>
 </div>
 <div class="qcformbuilder-config-group">
-	<label for="{{_id}}_classes"><?php echo esc_html__('Classes', 'qcformbuilder-forms'); ?></label>
+	<label for="{{_id}}_classes"><?php echo esc_html__('Classes', 'conversational-forms'); ?></label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_classes" type="text" class="input-block field-config" name="{{_name}}[classes]" value="{{classes}}">
 	</div>
 </div>
 <div class="qcformbuilder-config-group">
-	<label for="{{_id}}_before"><?php echo esc_html__('Before', 'qcformbuilder-forms'); ?></label>
+	<label for="{{_id}}_before"><?php echo esc_html__('Before', 'conversational-forms'); ?></label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_before" type="text" class="input-block field-config" name="{{_name}}[before]" value="{{before}}">
 	</div>
 </div>
 <div class="qcformbuilder-config-group">
-	<label for="{{_id}}_after"><?php echo esc_html__('After', 'qcformbuilder-forms'); ?></label>
+	<label for="{{_id}}_after"><?php echo esc_html__('After', 'conversational-forms'); ?></label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_after" type="text" class="input-block field-config" name="{{_name}}[after]" value="{{after}}">
 	</div>
 </div>
 <div class="qcformbuilder-config-group">
 	<div class="qcformbuilder-config-field">
-		<label><input id="{{_id}}_fixed" type="checkbox" class="field-config" name="{{_name}}[fixed]" value="1" {{#if fixed}}checked="checked"{{/if}}> <?php echo esc_html__('Money Format', 'qcformbuilder-forms'); ?></label>
+		<label><input id="{{_id}}_fixed" type="checkbox" class="field-config" name="{{_name}}[fixed]" value="1" {{#if fixed}}checked="checked"{{/if}}> <?php echo esc_html__('Money Format', 'conversational-forms'); ?></label>
 	</div>
 </div>
 
 <div class="qcformbuilder-config-group" id="{{_id}}_thousand_separator">
 	<label for="{{_id}}_sep">
-		<?php esc_html_e('Thousands Separator', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Thousands Separator', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_sep" type="text" class="field-config" name="{{_name}}[thousand_separator]" value="{{#if thousand_separator}}{{thousand_separator}}{{else}},{{/if}}">
@@ -39,7 +39,7 @@
 </div>
 <div class="qcformbuilder-config-group" id="{{_id}}_decimal_separator">
 	<label for="{{_id}}_sep_decimal">
-		<?php esc_html_e('Decimal Separator', 'qcformbuilder-forms'); ?>
+		<?php esc_html_e('Decimal Separator', 'conversational-forms'); ?>
 	</label>
 	<div class="qcformbuilder-config-field">
 		<input id="{{_id}}_sep_decimal" type="text" class="field-config" name="{{_name}}[decimal_separator]" value="{{#if decimal_separator}}{{decimal_separator}}{{else}}.{{/if}}">
@@ -48,7 +48,7 @@
 
 <div class="qcformbuilder-config-group">
 	<div class="qcformbuilder-config-field">
-		<label><input id="{{_id}}_manual" type="checkbox" class="field-config" name="{{_name}}[manual]" value="1" {{#if manual}}checked="checked"{{/if}}> <?php echo esc_html__('Manual Formula', 'qcformbuilder-forms'); ?></label>
+		<label><input id="{{_id}}_manual" type="checkbox" class="field-config" name="{{_name}}[manual]" value="1" {{#if manual}}checked="checked"{{/if}}> <?php echo esc_html__('Manual Formula', 'conversational-forms'); ?></label>
 	</div>
 </div>
 <div id="{{_id}}_autobox">
@@ -61,7 +61,7 @@
 		data-id="{{_id}}"
 		data-request="calc_add_group"
 		data-callback="init_calc_group"
-		><?php echo esc_html__('Add Operator Group', 'qcformbuilder-forms'); ?></button>
+		><?php echo esc_html__('Add Operator Group', 'conversational-forms'); ?></button>
 	</div>
 	<br>
 	<div id="{{_id}}_operator_groups" class="calculation-groups-wrap"></div>
@@ -70,7 +70,10 @@
 </div>
 <div id="{{_id}}_manualbox" style="display:none;">
 	<textarea name="{{_name}}[manual_formula]" class="field-config block-input">{{manual_formula}}</textarea>
-	<p class="description"><?php echo esc_html__('Use %field_slug% as field value variables', 'qcformbuilder-forms'); ?></p>
+	<p class="description"><?php
+		/* translators: %field_slug% is a template tag syntax */
+		echo esc_html__('Use %field_slug% as field value variables', 'conversational-forms');
+	?></p>
 </div>
 <br><br><br>
 {{#script}}

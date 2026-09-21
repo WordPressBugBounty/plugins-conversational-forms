@@ -3,7 +3,7 @@
 	<ul class="qcformbuilder-editor-header-nav">
 		<li class="qcformbuilder-editor-logo">
 			<span class="dashicons-wfb-logo"></span>
-			<?php echo esc_html__('Chatbot Form Builder', 'qcformbuilder-forms'); ?>
+			<?php echo esc_html__('Chatbot Form Builder', 'conversational-forms'); ?>
 		</li>
 		
 	</ul>

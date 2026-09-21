@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
   '_last_updated' => 'Tue, 31 Jan 2017 13:03:37 +0000',
   'ID' => 'job-application',
   'wfb_version' => '1.5.0-b-2',
-  'name' => __( 'Job Application', 'qcformbuilder-forms' ),
+  'name' => __( 'Job Application', 'conversational-forms'),
   'scroll_top' => 1,
   'description' => '							',
-  'success' => __( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+  'success' => __( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
   'db_support' => 1,
   'pinned' => 0,
   'hide_form' => 1,
@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_1529543',
       'type' => 'dropdown',
-      'label' => __( 'Title', 'qcformbuilder-forms' ),
+      'label' => __( 'Title', 'conversational-forms'),
       'slug' => 'title',
       'conditions' => 
       array(
@@ -77,32 +77,32 @@ if ( ! defined( 'ABSPATH' ) ) {
           'opt1421110' => 
           array(
             'value' => 'Choose One',
-            'label' => __( 'Choose One', 'qcformbuilder-forms' ),
+            'label' => __( 'Choose One', 'conversational-forms'),
           ),
           'opt1521658' => 
           array(
             'value' => 'Mr.',
-            'label' => __( 'Mr.', 'qcformbuilder-forms' ),
+            'label' => __( 'Mr.', 'conversational-forms'),
           ),
           'opt1664029' => 
           array(
             'value' => 'Ms.',
-            'label' => __( 'Ms.', 'qcformbuilder-forms' ),
+            'label' => __( 'Ms.', 'conversational-forms'),
           ),
           'opt1467463' => 
           array(
             'value' => 'Mrs.',
-            'label' => __( 'Mrs.', 'qcformbuilder-forms' ),
+            'label' => __( 'Mrs.', 'conversational-forms'),
           ),
           'opt1876827' => 
           array(
             'value' => 'Prof.',
-            'label' => __( 'Prof.', 'qcformbuilder-forms' ),
+            'label' => __( 'Prof.', 'conversational-forms'),
           ),
           'opt1641302' => 
           array(
             'value' => 'Dr.',
-            'label' => __( 'Dr.', 'qcformbuilder-forms' ),
+            'label' => __( 'Dr.', 'conversational-forms'),
           ),
         ),
       ),
@@ -111,7 +111,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_3688899',
       'type' => 'text',
-      'label' => __( 'First Name', 'qcformbuilder-forms' ),
+      'label' => __( 'First Name', 'conversational-forms'),
       'slug' => 'first_name',
       'conditions' => 
       array(
@@ -132,7 +132,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_6829296',
       'type' => 'text',
-      'label' => __( 'Last Name', 'qcformbuilder-forms' ),
+      'label' => __( 'Last Name', 'conversational-forms'),
       'slug' => 'last_name',
       'conditions' => 
       array(
@@ -153,7 +153,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_6830845',
       'type' => 'email',
-      'label' => __( 'Email Address', 'qcformbuilder-forms' ),
+      'label' => __( 'Email Address', 'conversational-forms'),
       'slug' => 'user_email',
       'conditions' => 
       array(
@@ -172,7 +172,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_645468',
       'type' => 'phone_better',
-      'label' => __( 'Contact Number', 'qcformbuilder-forms' ),
+      'label' => __( 'Contact Number', 'conversational-forms'),
       'slug' => 'home_number',
       'conditions' => 
       array(
@@ -192,7 +192,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_193439',
       'type' => 'phone_better',
-      'label' => __( 'Alternate Contact Number', 'qcformbuilder-forms' ),
+      'label' => __( 'Alternate Contact Number', 'conversational-forms'),
       'slug' => 'alternate_contact_number',
       'conditions' => 
       array(
@@ -212,7 +212,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_1720034',
       'type' => 'advanced_file',
-      'label' => __( 'Upload CV', 'qcformbuilder-forms' ),
+      'label' => __( 'Upload CV', 'conversational-forms'),
       'slug' => 'cv',
       'conditions' => 
       array(
@@ -231,7 +231,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_6566084',
       'type' => 'paragraph',
-      'label' => __( 'Message / Comments', 'qcformbuilder-forms' ),
+      'label' => __( 'Message / Comments', 'conversational-forms'),
       'slug' => 'messagecomments',
       'conditions' => 
       array(
@@ -250,7 +250,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_7007738',
       'type' => 'button',
-      'label' => __( 'Preview Information', 'qcformbuilder-forms' ),
+      'label' => __( 'Preview Information', 'conversational-forms'),
       'slug' => 'preview_info',
       'conditions' => 
       array(
@@ -286,7 +286,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_3540500',
       'type' => 'live_gravatar',
-      'label' => __( 'Profile', 'qcformbuilder-forms' ),
+      'label' => __( 'Profile', 'conversational-forms'),
       'slug' => 'profile',
       'conditions' => 
       array(
@@ -308,7 +308,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_8862269',
       'type' => 'summary',
-      'label' => __( 'Summary', 'qcformbuilder-forms' ),
+      'label' => __( 'Summary', 'conversational-forms'),
       'hide_label' => 1,
       'slug' => 'summary',
       'conditions' => 
@@ -325,7 +325,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_3202325',
       'type' => 'button',
-      'label' => __( 'Edit information', 'qcformbuilder-forms' ),
+      'label' => __( 'Edit information', 'conversational-forms'),
       'slug' => 'edit_information',
       'conditions' => 
       array(
@@ -344,7 +344,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_8728190',
       'type' => 'button',
-      'label' => __( 'Submit', 'qcformbuilder-forms' ),
+      'label' => __( 'Submit', 'conversational-forms'),
       'slug' => 'submit',
       'conditions' => 
       array(

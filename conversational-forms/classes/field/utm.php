@@ -117,7 +117,8 @@ class Qcformbuilder_Forms_Field_Utm {
 		$utm_field_config[ 'slug' ] = $field[ 'slug' ] . '_' . $tag;
 		$utm_field_config[ 'ID' ] = $field[ 'ID' ] . '_' . $tag;
 		$utm_field_config[ 'label' ] = $field[ 'label' ] . ': ' . $tag;
-		$utm_field_config[ 'config' ][ 'default' ] = ( isset( $_GET[ $tag ] ) ?  Qcformbuilder_Forms_Sanitize::sanitize( $_GET[ $tag ] ) : '' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$utm_field_config[ 'config' ][ 'default' ] = ( isset( $_GET[ $tag ] ) ?  sanitize_text_field( wp_unslash( $_GET[ $tag ] ) ) : '' );
 
 		return $utm_field_config;
 	}
@@ -151,8 +152,10 @@ class Qcformbuilder_Forms_Field_Utm {
 	protected static function find_in_post( $utm_field ){
 		$_value = '';
 		$tag_key = $utm_field[ 'ID' ] . '_' . self::get_count();
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST[ $tag_key ] ) ) {
-			$_value = Qcformbuilder_Forms_Sanitize::sanitize( $_POST[ $tag_key ] );
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$_value = sanitize_text_field( wp_unslash( $_POST[ $tag_key ] ) );
 		}
 
 		if( ! is_string( $_value ) ){

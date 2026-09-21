@@ -83,8 +83,10 @@ abstract  class Qcformbuilder_Forms_Field_HTML   {
 	 * @return mixed
 	 */
 	public static function find_default( array $field, array $form ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $field[ 'slug' ] ) && isset( $_GET[ $field[ 'slug' ] ] ) ) {
-			$default = Qcformbuilder_Forms_Sanitize::sanitize( $_GET[ $field[ 'slug' ] ] );
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$default = sanitize_text_field( wp_unslash( $_GET[ $field[ 'slug' ] ] ) );
 		}elseif ( isset( $field[ 'config' ][ 'default' ] ) ){
 			$default = Qcformbuilder_Forms::do_magic_tags( $field[ 'config' ][ 'default' ], null, $form );
 		}else{

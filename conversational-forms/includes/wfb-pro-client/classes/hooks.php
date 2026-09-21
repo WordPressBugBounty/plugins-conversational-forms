@@ -308,10 +308,12 @@ class hooks
 	 */
 	public function add_pdf_link_not_ajax($notices, $form)
 	{
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( !isset($_GET[ 'wfb_id' ]) || !isset($_GET[ 'wfb_su' ]) ) {
 			return $notices;
 		}
-		$entry_id = absint($_GET[ 'wfb_id' ]);
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$entry_id = absint( wp_unslash( $_GET[ 'wfb_id' ] ) );
 		$message = container::get_instance()->get_messages_db()->get_by_entry_id($entry_id);
 		if ( $message && !is_wp_error($message) ) {
 			$link = $message->get_pdf_link();
@@ -371,7 +373,7 @@ class hooks
 	 */
 	public function delete_file($file)
 	{
-		unlink($file);
+		wp_delete_file($file);
 	}
 
 	/**

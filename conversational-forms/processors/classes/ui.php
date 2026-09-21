@@ -387,7 +387,9 @@ class Qcformbuilder_Forms_Processor_UI {
 			return;
 		}
 
-		return sprintf( '<div class="error"><p>%1s</p></div>', __( sprintf( '%1s requires a valid SSL certificate. It will only function in test mode unless SSL/HTTPS is used. Your site does not appear to be using the secure HTTPS protocol.', $name ), 'qcformbuilder-forms' ) );
+		/* translators: %s: Processor or Add-on name */
+		$message = sprintf( __( '%s requires a valid SSL certificate. It will only function in test mode unless SSL/HTTPS is used. Your site does not appear to be using the secure HTTPS protocol.', 'conversational-forms' ), $name );
+		return sprintf( '<div class="error"><p>%s</p></div>', esc_html( $message ) );
 
 	}
 

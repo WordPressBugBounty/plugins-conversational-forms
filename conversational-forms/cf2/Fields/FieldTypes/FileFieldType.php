@@ -22,19 +22,19 @@ class FileFieldType extends FieldType
 	/** @inheritdoc */
 	public static function getCategory ()
 	{
-		return __( 'File', 'qcformbuilder-forms' );
+		return __( 'File', 'conversational-forms');
 	}
 
 	/** @inheritdoc */
 	public static function getDescription ()
 	{
-		return __( 'File upload field with more features than standard HTML5 input.', 'qcformbuilder-forms' );
+		return __( 'File upload field with more features than standard HTML5 input.', 'conversational-forms');
 	}
 
 	/** @inheritdoc */
 	public static function getName ()
 	{
-		return __( 'Advanced File Uploader (2.0)', 'qcformbuilder-forms' );
+		return __( 'Advanced File Uploader (2.0)', 'conversational-forms');
 	}
 
 	/** @inheritdoc */

@@ -213,7 +213,7 @@ class Qcformbuilder_Forms_GDPR
                         'value' => $field_value->get_value()
                     ],
                     [
-                        'name' => __('Date', 'qcformbuilder-forms'),
+                        'name' => __('Date', 'conversational-forms'),
                         'value' => $entry['date']
                     ]
                 ];
@@ -221,13 +221,13 @@ class Qcformbuilder_Forms_GDPR
                 if (!empty($entry['user'])) {
                     if (!empty($entry['user']['name'])) {
                         $data[] = [
-                            'name' => __('WordPress User Name', 'qcformbuilder-forms'),
+                            'name' => __('WordPress User Name', 'conversational-forms'),
                             'value' => $entry['user']['name']
                         ];
                     }
                     if (!empty($entry['user']['email'])) {
                         $data[] = [
-                            'name' => __('WordPress User Email', 'qcformbuilder-forms'),
+                            'name' => __('WordPress User Email', 'conversational-forms'),
                             'value' => $entry['user']['email']
                         ];
                     }

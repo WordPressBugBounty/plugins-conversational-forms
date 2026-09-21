@@ -30,7 +30,7 @@ if( ! defined( 'ABSPATH' ) ){
 			active			= obj.rawData.active,
 			toggles			= jQuery('.status_toggles'),
 			exporter		= jQuery('.qcformbuilder-entry-exporter'),
-			tense			= ( total === 1 ? ' <?php esc_attr_e('item'); ?>' : ' <?php esc_attr_e('items'); ?>' ),
+			tense			= ( total === 1 ? ' <?php esc_attr_e('item', 'conversational-forms'); ?>' : ' <?php esc_attr_e('items', 'conversational-forms'); ?>' ),
 			pages			= obj.rawData.pages,
 			current			= obj.rawData.current_page,
 			form			= obj.params.trigger.data('form'),
@@ -305,8 +305,8 @@ if( ! defined( 'ABSPATH' ) ){
 			<thead>
 			<tr>
 				<th style="width:16px;"><input type="checkbox" class="wfb-bulkcheck"></th>
-				<th><?php esc_html_e('ID', 'qcformbuilder-forms' ); ?></th>
-				<th><?php esc_html_e('Submitted', 'qcformbuilder-forms' ); ?></th>
+				<th><?php esc_html_e('ID', 'conversational-forms'); ?></th>
+				<th><?php esc_html_e('Submitted', 'conversational-forms'); ?></th>
 				{{#each fields}}
 				<th>{{this}}</th>
 				{{/each}}
@@ -331,13 +331,13 @@ if( ! defined( 'ABSPATH' ) ){
 			</tr>
 			{{/each}}
 			{{else}}
-			<tr><td colspan="100"><?php esc_html_e('No entries found', 'qcformbuilder-forms' ); ?></td></tr>
+			<tr><td colspan="100"><?php esc_html_e('No entries found', 'conversational-forms'); ?></td></tr>
 			{{/if}}
 			</tbody>
 		</table>
 	</div>
 	{{else}}
-	<p class="description"><?php esc_html_e('No entries yet.', 'qcformbuilder-forms' ); ?></p>
+	<p class="description"><?php esc_html_e('No entries yet.', 'conversational-forms'); ?></p>
 	{{/if}}
 </script>
 
@@ -348,9 +348,9 @@ if( ! defined( 'ABSPATH' ) ){
 	</div>
 	{{/if}}
 
-	<div id="main-entry-panel" class="tab-detail-panel" data-tab="<?php esc_html_e('Entry', 'qcformbuilder-forms' ); ?>">
+	<div id="main-entry-panel" class="tab-detail-panel" data-tab="<?php esc_html_e('Entry', 'conversational-forms'); ?>">
 		<h4>
-			<?php  esc_html_e('Submitted', 'qcformbuilder-forms' ); ?> <small class="description">{{date}}</small>
+			<?php  esc_html_e('Submitted', 'conversational-forms'); ?> <small class="description">{{date}}</small>
 		</h4>
 		<hr>
 		{{#each data}}

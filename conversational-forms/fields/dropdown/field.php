@@ -3,8 +3,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 	echo wp_kses_post( $wrapper_before );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $field[ 'slug' ] ) && isset( $_GET[ $field[ 'slug' ] ] ) ) {
-		$field_value = Qcformbuilder_Forms_Sanitize::sanitize( $_GET[ $field[ 'slug' ] ] );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$field_value = sanitize_text_field( wp_unslash( $_GET[ $field[ 'slug' ] ] ) );
 	}
 
 $attrs = array(

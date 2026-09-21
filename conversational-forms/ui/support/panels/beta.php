@@ -13,23 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 ?>
 
-	<h2><?php esc_html_e( 'Options For Getting The Latest Version of Qcformbuilder Forms:', 'qcformbuilder-forms' ); ?></h2>
+	<h2><?php esc_html_e( 'Options For Getting The Latest Version of Qcformbuilder Forms:', 'conversational-forms'); ?></h2>
 
 	<ul>
 		<li>
-			<?php esc_html_e( 'You can install the QcformbuilderWP License manager plugin to automatically update to the latest beta of Qcformbuilder Forms.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'You can install the QcformbuilderWP License manager plugin to automatically update to the latest beta of Qcformbuilder Forms.', 'conversational-forms'); ?>
 		</li>
 		<li style="margin-left:10px">
 			<em><a href="https://github.com/QcformbuilderWP/qcformbuilderwp-license-manager/archive/master.zip" target="_blank">https://github.com/QcformbuilderWP/qcformbuilderwp-license-manager/archive/master.zip</a></em>
 		</li>
 		<li>
-			<?php esc_html_e( 'You can use the GitHub Updater plugin.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'You can use the GitHub Updater plugin.', 'conversational-forms'); ?>
 		</li>
 		<li style="margin-left:10px">
 			<em><a href="https://github.com/afragen/github-updater/archive/develop.zip" target="_blank">https://github.com/afragen/github-updater/archive/develop.zip</a></em>
 		</li>
 		<li>
-			<?php esc_html_e( 'If you have installed the plugin via Git, you can pull the "develop" branch.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'If you have installed the plugin via Git, you can pull the "develop" branch.', 'conversational-forms'); ?>
 		</li>
 		<li style="margin-left:10px">
 			<em><a href="https://github.com/QcformbuilderWP/Qcformbuilder-Forms/tree/develop" target="_blank">https://github.com/QcformbuilderWP/Qcformbuilder-Forms/tree/develop</a></em>
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<pre>git checkout develop</pre>
 		</li>
 		<li>
-			<?php esc_html_e( 'You can download the latest beta as a zip file and install it manually.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'You can download the latest beta as a zip file and install it manually.', 'conversational-forms'); ?>
 		</li>
 		<li style="margin-left:10px">
 			<em><a href="http://qcformbuilderforms.com/wfb-latest-beta"

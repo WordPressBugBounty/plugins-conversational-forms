@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="qcformbuilder-forms-clippy-zone" style="background-image: url( '<?php echo esc_url( WFBCORE_URL . 'assets/images/qcformbuilder-globe-logo-sm.png' ); ?>' );">
 		<div class="qcformbuilder-forms-clippy-zone-inner-wrap">
 			<div class="qcformbuilder-forms-clippy">
-				<h2><?php esc_html_e( 'Documentation', 'qcformbuilder-forms' ); ?></h2>
+				<h2><?php esc_html_e( 'Documentation', 'conversational-forms'); ?></h2>
 				<div>
 					<ul v-for="result in important">
 						<li>
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</ul>
 				</div>
 				<a href="https://quantumcloud.com/documentation/qcformbuilder-forms-documentation?utm-source=wp-admin&utm_campaign=clippy&utm_term=docs" target="_blank" class="bt-btn btn btn-green">
-					<?php esc_html_e( 'All Documentation', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'All Documentation', 'conversational-forms'); ?>
 				</a>
 			</div>
 		</div>
@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h4 v-if="product.name != 'Qcformbuilder Forms Pro'">{{product.name}}</h4>
 				<p v-html="product.excerpt"></p>
 				<a v-bind:href="link( product, 'extend' )" target="_blank" class="bt-btn btn btn-orange">
-					<?php esc_html_e( 'Learn More', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Learn More', 'conversational-forms'); ?>
 				</a>
 			</div>
 

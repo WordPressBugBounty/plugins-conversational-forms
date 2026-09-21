@@ -19,8 +19,8 @@ if( ! defined( 'ABSPATH' ) ){
 
 <div class="postbox" style="margin-top: 75px;padding: 8px;">
 	<?php
-        $message = __( 'Qcformbuilder Forms Pro could not be loaded because your site\'s version of PHP is out of date. Qcformbuilder Forms Pro requires PHP 5.6 or later.', 'qcformbuilder-forms' );
+        $message = __( 'Qcformbuilder Forms Pro could not be loaded because your site\'s version of PHP is out of date. Qcformbuilder Forms Pro requires PHP 5.6 or later.', 'conversational-forms');
         printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( 'notice notice-error' ), esc_html( $message ) );
-        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( 'notice notice-warning' ), wp_kses_post( __( 'For more information, please see: ', 'wfb-pro' ) . ' <a href="https://quantumcloud.com/php?utm_source=wp-admin&utm_keyword=php_version">QcformbuilderForms.com/php</a>' ) );
+        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( 'notice notice-warning' ), wp_kses_post( __( 'For more information, please see: ', 'conversational-forms') . ' <a href="https://quantumcloud.com/php?utm_source=wp-admin&utm_keyword=php_version">QcformbuilderForms.com/php</a>' ) );
     ?>
 </div>

@@ -402,7 +402,7 @@ return array(
     'qcformbuilderwp\\qcformbuilderforms\\pro\\api\\message' => $baseDir . '/includes/wfb-pro-client/classes/api/message.php',
     'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\Exception' => $baseDir . '/includes/wfb-pro-client/classes/attachments/Exception.php',
     'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\attachments' => $baseDir . '/includes/wfb-pro-client/classes/attachments/attachments.php',
-    'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\phpmailer' => $baseDir . '/includes/wfb-pro-client/classes/attachments/phpmailer.php',
+    'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\mailer' => $baseDir . '/includes/wfb-pro-client/classes/attachments/mailer.php',
     'qcformbuilderwp\\qcformbuilderforms\\pro\\container' => $baseDir . '/includes/wfb-pro-client/classes/container.php',
     'qcformbuilderwp\\qcformbuilderforms\\pro\\exceptions\\Exception' => $baseDir . '/includes/wfb-pro-client/classes/exceptions/Exception.php',
     'qcformbuilderwp\\qcformbuilderforms\\pro\\hooks' => $baseDir . '/includes/wfb-pro-client/classes/hooks.php',

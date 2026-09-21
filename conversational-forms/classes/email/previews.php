@@ -52,7 +52,7 @@ class Qcformbuilder_Forms_Email_Previews {
 				include WFBCORE_PATH . 'ui/emails/email-preview.php';
 				exit;
 			}else{
-				wp_die( esc_html__( 'There is no saved email preview. Please submit this form with email previewing on and then try again.', 'qcformbuilder-forms' ) );
+				wp_die( esc_html__( 'There is no saved email preview. Please submit this form with email previewing on and then try again.', 'conversational-forms') );
 			}
 
 		}
@@ -138,7 +138,7 @@ class Qcformbuilder_Forms_Email_Previews {
 	 */
 	protected function record( Qcformbuilder_Forms_Email_Preview $preview ){
 		if ( false == get_option( $this->key( ) ) ){
-			add_option( $this->key(), wp_json_encode( $preview ), false );
+			add_option( $this->key(), wp_json_encode( $preview ), '', false );
 		}else{
 			update_option( $this->key(), wp_json_encode( $preview ), false );
 		}

@@ -42,7 +42,7 @@ class FieldTypeFactory implements FieldTypeFactoryContract
 	/** @inheritdoc */
 	public function get($id){
 		if( ! $this->has( $id ) ){
-			throw new NotFoundInContainerException( esc_html__( 'Field type not found', 'qcformbuilder-forms' ), '404' );
+			throw new NotFoundInContainerException( esc_html__( 'Field type not found', 'conversational-forms'), '404' );
 		}
 		return $this->fields[$id];
 	}

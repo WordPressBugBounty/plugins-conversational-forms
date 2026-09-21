@@ -71,18 +71,18 @@ class FileUpload
 		$i = 0;
 		foreach ( $files as $file ) {
 			if ( !$this->isAllowedType($file) ) {
-				throw new Exception( esc_html__( 'A file type is not allowed. Please try another.', 'qcformbuilder-forms' ), 415 );
+				throw new Exception( esc_html__( 'A file type is not allowed. Please try another.', 'conversational-forms'), 415 );
 			}
 
 			if( $this->isFileTooLarge($file)){
-				throw new Exception( esc_html__( 'A file is too large. Please try another.', 'qcformbuilder-forms' ), 415 );
+				throw new Exception( esc_html__( 'A file is too large. Please try another.', 'conversational-forms'), 415 );
 			}
 
 			$hashFromRequest = $hashes[ $i ];
 			$actualHash = md5_file($file[ 'tmp_name' ]);
 
 			if ( !hash_equals($actualHash, $hashFromRequest) ) {
-				throw new Exception( esc_html__( 'Content hash did not match expected.' ), 412 );
+				throw new Exception( esc_html__( 'Content hash did not match expected.' , 'conversational-forms'), 412 );
 			}
 
 			$isPrivate = \Qcformbuilder_Forms_Files::is_private($this->field);

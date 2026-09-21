@@ -32,7 +32,7 @@ function qcformbuilder_forms_sanitize( $input, $params = array() ){
  * @return string
  */
 function qcformbuilder_forms_very_safe_string( $string ){
-	return Qcformbuilder_Forms_Sanitize::remove_scripts(trim( strip_tags( stripslashes_deep( $string ) ) ) );
+	return Qcformbuilder_Forms_Sanitize::remove_scripts(trim( wp_strip_all_tags( stripslashes_deep( $string ) ) ) );
 }
 
 
@@ -48,7 +48,8 @@ function qcformbuilder_forms_fix_license_manger_link(){
 		return;
 	}
 	global $pagenow;
-	if( 'options-general.php' == $pagenow && isset( $_GET[ 'page' ] ) && 'qcformbuilderwp_license_manager' == $_GET[ 'page' ]  ){
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if( 'options-general.php' == $pagenow && isset( $_GET[ 'page' ] ) && 'qcformbuilderwp_license_manager' === sanitize_text_field( wp_unslash( $_GET[ 'page' ] ) )  ){
 		wfb_redirect( add_query_arg( 'page', 'qcformbuilderwp_license_manager', self_admin_url( 'wp-admin/admin.php') ) );
 	}
 }

@@ -143,7 +143,8 @@ class Qcformbuilder_Forms_Forms {
 		}
 
 		// remove submit on editing
-		if( !empty( $_GET['modal'] ) && $_GET['modal'] == 'view_entry' && !empty( $_GET['group'] ) && $_GET['group'] == 'editentry' ){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if( !empty( $_GET['modal'] ) && sanitize_text_field( wp_unslash( $_GET['modal'] ) ) == 'view_entry' && !empty( $_GET['group'] ) && sanitize_text_field( wp_unslash( $_GET['group'] ) ) == 'editentry' ){
 			if( !empty( $form['fields'] ) ){
 				foreach( $form['fields'] as $field_id=>$field ){
 					if( $field['type'] == 'button' && $field['config']['type'] == 'submit' ){
@@ -167,6 +168,7 @@ class Qcformbuilder_Forms_Forms {
 	 * @return array
 	 */
 	public static function get_forms( $with_details = false, $internal_only = false, $orderby = false ){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if( isset( $_GET[ 'wfb-cache-clear' ] ) ){
 			self::clear_cache();
 		}
@@ -525,7 +527,7 @@ class Qcformbuilder_Forms_Forms {
 			}
 		}
 
-		$data[ '_last_updated' ] = date('r');
+		$data[ '_last_updated' ] = gmdate('r');
 		$data[ 'version' ] = WFBCORE_VER;
 
 		/**
@@ -596,7 +598,7 @@ class Qcformbuilder_Forms_Forms {
 			"ID" 			=> $id,
 			"name" 			=> '',
 			"description" 	=> '',
-			"success"		=>	__( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+			"success"		=>	__( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
 			"form_ajax"		=> 1,
 			"hide_form"		=> 1,
 			"check_honey" 	=> 1,

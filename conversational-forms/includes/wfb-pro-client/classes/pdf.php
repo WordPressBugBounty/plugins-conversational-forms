@@ -78,7 +78,7 @@ class pdf {
 	 */
 	public function delete_file(){
 		if ( $this->file && file_exists( $this->file ) ) {
-			unlink( $this->file );
+			wp_delete_file( $this->file );
 		}
 	}
 

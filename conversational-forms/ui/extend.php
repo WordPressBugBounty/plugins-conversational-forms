@@ -50,13 +50,13 @@
 			<span class="qcformbuilder-forms-name">Chatbot Form Builder</span>
 		</li>
 		<li class="qcformbuilder-forms-toolbar-item active">
-			<a href="https://quantumcloud.com/qcformbuilder-forms-add-ons?utm_source=dashboard&utm_medium=extend-submenu&utm_campaign=qcformbuilder-forms" title="<?php esc_attr_e( 'View Qcformbuilder Forms Add-ons', 'qcformbuilder-forms' ); ?>" target="_blank">
-				<?php esc_html_e( 'Add-ons', 'qcformbuilder-forms' ); ?>
+			<a href="https://quantumcloud.com/qcformbuilder-forms-add-ons?utm_source=dashboard&utm_medium=extend-submenu&utm_campaign=qcformbuilder-forms" title="<?php esc_attr_e( 'View Qcformbuilder Forms Add-ons', 'conversational-forms'); ?>" target="_blank">
+				<?php esc_html_e( 'Add-ons', 'conversational-forms'); ?>
 			</a>
 		</li>
 		<li class="qcformbuilder-forms-toolbar-item">
-			<a href="https://quantumcloud.com/pro?utm_source=dashboard&utm_medium=extend-submenu&utm_campaign=qcformbuilder-forms" title="<?php esc_attr_e( 'View Qcformbuilder Forms Bundles', 'qcformbuilder-forms' ); ?>" target="_blank">
-				<?php esc_html_e( 'Save With Pro', 'qcformbuilder-forms' ); ?>
+			<a href="https://quantumcloud.com/pro?utm_source=dashboard&utm_medium=extend-submenu&utm_campaign=qcformbuilder-forms" title="<?php esc_attr_e( 'View Qcformbuilder Forms Bundles', 'conversational-forms'); ?>" target="_blank">
+				<?php esc_html_e( 'Save With Pro', 'conversational-forms'); ?>
 			</a>
 		</li>
 	</ul>
@@ -104,7 +104,7 @@
 			<div class="panel-footer">
 
 				<a class="button" href="{{link}}" target="_blank" rel="nofollow">
-					<?php esc_html_e( 'Learn More', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Learn More', 'conversational-forms'); ?>
 				</a>
 
 			</div>

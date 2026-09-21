@@ -17,23 +17,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<ul class="qcformbuilder-editor-header-nav">
 		<li class="qcformbuilder-editor-logo">
 			<span class="qcformbuilder-forms-name">
-				<?php esc_html_e( 'Qcformbuilder Forms: Support', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Qcformbuilder Forms: Support', 'conversational-forms'); ?>
 			</span>
 
 		</li>
 		<li class="qcformbuilder-forms-toolbar-link" id="support-nav-info">
 			<a href="#info">
-				<?php esc_html_e( 'How To Get Support', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'How To Get Support', 'conversational-forms'); ?>
 			</a>
 		</li>
 		<li class="qcformbuilder-forms-toolbar-link" id="support-nav-debug">
 			<a href="#debug">
-				<?php esc_html_e( 'Debug Information', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Debug Information', 'conversational-forms'); ?>
 			</a>
 		</li>
 		<li class="qcformbuilder-forms-toolbar-link" id="support-nav-beta">
 			<a href="#beta">
-				<?php esc_html_e( 'Get Latest Beta', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Get Latest Beta', 'conversational-forms'); ?>
 			</a>
 		</li>
 

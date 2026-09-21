@@ -25,7 +25,7 @@ class Qcformbuilder_Forms_Entry_Token {
 	public static function verify_token( $test_token, $entry_id, $form_id ){
 		$compare_token = self::make_test_token( $entry_id, Qcformbuilder_Forms_Forms::get_form( $form_id ) );
 		if( ! hash_equals(  $compare_token, $test_token ) ){
-			return new WP_Error( 'error', __( "Permission denied.", 'qcformbuilder-forms' ) );
+			return new WP_Error( 'error', __( "Permission denied.", 'conversational-forms') );
 
 		}
 
@@ -60,7 +60,7 @@ class Qcformbuilder_Forms_Entry_Token {
 	 */
 	protected static function check_token( $test_token, $compare_token ){
 		if( ! hash_equals(  $compare_token, $test_token ) ){
-			return new WP_Error( 'error', __( "Permission denied.", 'qcformbuilder-forms' ) );
+			return new WP_Error( 'error', __( "Permission denied.", 'conversational-forms') );
 
 		}
 		return true;

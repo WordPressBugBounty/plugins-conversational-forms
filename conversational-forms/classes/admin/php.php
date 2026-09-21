@@ -118,14 +118,14 @@ class Qcformbuilder_Forms_Admin_PHP{
      * @return string Output is escaped
      */
     public static function get_deprecated_notice(){
-        return sprintf('%s %s',
-            esc_html__( sprintf('You are using a VERY out of date version of PHP: %s. Qcformbuilder Forms 1.7 will require PHP Version %s or later.',
-                PHP_VERSION, self::get_minimum_tested_version()
-            ), 'qcformbuilder-forms'),
-            sprintf('<a style="color:#fff;" href="https://quantumcloud.com/php?utm_source=wp-admin&utm_campaign=php_deprecated" target="__blank">%s</a>',
-                esc_html__('Learn More', 'qcformbuilder-forms' )
-            )
+        /* translators: 1: current PHP version, 2: minimum tested PHP version */
+        $translated = esc_html__( 'You are using a VERY out of date version of PHP: %1$s. Qcformbuilder Forms 1.7 will require PHP Version %2$s or later.', 'conversational-forms' );
+        $message    = sprintf( $translated, PHP_VERSION, self::get_minimum_tested_version() );
+        $link       = sprintf(
+            '<a style="color:#fff;" href="https://quantumcloud.com/php?utm_source=wp-admin&utm_campaign=php_deprecated" target="__blank">%s</a>',
+            esc_html__( 'Learn More', 'conversational-forms' )
         );
+        return sprintf( '%s %s', $message, $link );
 
     }
 

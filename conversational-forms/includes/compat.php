@@ -44,7 +44,7 @@ function wfb_http_build_url( $url, $parts = array(), $flags = HTTP_URL_REPLACE, 
 	}
 
 	// Parse the original URL
-	$parse_url = parse_url( $url );
+	$parse_url = wp_parse_url( $url );
 
 	// Scheme and Host are always replaced
 	if ( isset( $parts[ 'scheme' ] ) ) {

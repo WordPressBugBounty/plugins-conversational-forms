@@ -4,7 +4,7 @@ Donate link: https://www.wpbot.pro
 Tags: chatbot, form builder, forms, booking form, contact form
 Requires at least: 4.6
 Tested up to: 7.1
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.wpbot.pro
@@ -142,6 +142,9 @@ A pro version is coming soon, which will allow this feature
 
 
 == Changelog ==
+
+= 1.5.1 =
+# Improved Security
 
 = 1.5.0 =
 # Improved Security

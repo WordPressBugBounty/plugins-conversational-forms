@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			return;
 		}
 		$screen = get_current_screen();
-		if( is_object($screen) && $screen->base === 'plugins' && !empty($_REQUEST['plugin_status']) && $_REQUEST['plugin_status'] === 'qcformbuilder_forms'){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if( is_object($screen) && $screen->base === 'plugins' && !empty($_REQUEST['plugin_status']) && 'qcformbuilder_forms' === sanitize_text_field( wp_unslash( $_REQUEST['plugin_status'] ) ) ){
 			$status = 'qcformbuilder_forms';
 		}
 
@@ -50,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			if( $status == 'qcformbuilder_forms' ){
 				$class = 'current';
 			}
-			$views['qcformbuilder_forms'] = '<a class="' . $class . '" href="plugins.php?plugin_status=qcformbuilder_forms">' . __('Qcformbuilder Forms', 'qcformbuilder-forms') .' <span class="count">(' . count( $plugins['qcformbuilder_forms'] ) . ')</span></a>';
+			$views['qcformbuilder_forms'] = '<a class="' . $class . '" href="plugins.php?plugin_status=qcformbuilder_forms">' . __('Qcformbuilder Forms', 'conversational-forms') .' <span class="count">(' . count( $plugins['qcformbuilder_forms'] ) . ')</span></a>';
 		}
 		return $views;
 	}

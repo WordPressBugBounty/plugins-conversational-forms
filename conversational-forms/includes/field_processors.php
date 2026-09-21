@@ -62,12 +62,13 @@ function wfb_handle_file_upload( $entry, $field, $form ){
 
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if( isset($_POST[ '_wfb_frm_edt' ] ) ) {
 		if ( ! isset( $_FILES )
 		     || ( isset( $_FILES[ $field[ 'ID' ] ][ 'size' ][0] ) && 0 == $_FILES[ $field[ 'ID' ] ][ 'size' ][0] )
 			|| ( isset( $_FILES[ $field[ 'ID' ] ][ 'size' ] ) && 0 == $_FILES[ $field[ 'ID' ] ][ 'size' ]  )
 		) {
-			$entry = Qcformbuilder_Forms::get_field_data( $field[ 'ID' ], $form, absint( $_POST[ '_wfb_frm_edt' ] ) );
+			$entry = Qcformbuilder_Forms::get_field_data( $field[ 'ID' ], $form, absint( wp_unslash( $_POST[ '_wfb_frm_edt' ] ) ) );
 
 			return $entry;
 		}
@@ -104,13 +105,16 @@ function wfb_handle_file_upload( $entry, $field, $form ){
 		}
 
 		// check each file now
-		foreach( (array) $_FILES[$field['ID']]['name'] as $file_name ){
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$file_names = isset( $_FILES[ $field['ID'] ]['name'] ) ? (array) $_FILES[ $field['ID'] ]['name'] : array();
+		foreach( $file_names as $file_name ){
+			$file_name = sanitize_file_name( wp_unslash( $file_name ) );
 			if( empty( $file_name ) ){
 				return $entry;
 			}
 			$filetype = wp_check_filetype( basename( $file_name ), null );
 			if( empty( $field['config']['allowed'][ strtolower( $filetype['ext'] ) ] ) ){
-				return new WP_Error( 'fail', __('This file type is not allowed. Please try another.', 'qcformbuilder-forms') );
+				return new WP_Error( 'fail', __('This file type is not allowed. Please try another.', 'conversational-forms') );
 			}
 		}
 
@@ -119,11 +123,14 @@ function wfb_handle_file_upload( $entry, $field, $form ){
         }
 		
 		$files = array();
-		foreach( (array) $_FILES[$field['ID']] as $file_key=>$file_parts ){
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$raw_file_field = isset( $_FILES[ $field['ID'] ] ) ? (array) $_FILES[ $field['ID'] ] : array();
+		foreach( $raw_file_field as $file_key=>$file_parts ){
 			foreach( (array) $file_parts as $part_index=>$part_value ){
 				$files[ $part_index ][ $file_key ] = $part_value;
 			}
 		}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$uploads = array();
 		foreach( $files as $file ){
@@ -149,7 +156,8 @@ function wfb_handle_file_upload( $entry, $field, $form ){
 			if( is_callable( $uploader) ){
 				$upload = call_user_func( $uploader, $file, $upload_args );
 			}else{
-				return new WP_Error( 'invalid-upload-handler', sprintf( __( 'Invalid file upload handler. See %s', 'qcformbuilder-forms'), 'https://quantumcloud.com/doc/alternative-file-upload-directory/') );
+				/* translators: %s: Documentation URL */
+				return new WP_Error( 'invalid-upload-handler', sprintf( __( 'Invalid file upload handler. See %s', 'conversational-forms'), 'https://quantumcloud.com/doc/alternative-file-upload-directory/') );
 			}
 
 			if( !empty( $upload['error'] ) ){
@@ -205,7 +213,8 @@ add_filter( 'qcformbuilder_forms_render_get_field_type-hidden', 'qcformbuilder_f
  * @return mixed
  */
 function qcformbuilder_forms_allow_edit_hidden_fields( $field ){
-	if( ( ! empty( $_GET[ 'modal' ] ) && 'view_entry' == $_GET[ 'modal' ]  ) || ( ! empty( $_POST[ '_wfb_frm_edt' ] ) )  ){
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+	if( ( ! empty( $_GET[ 'modal' ] ) && 'view_entry' === sanitize_text_field( wp_unslash( $_GET[ 'modal' ] ) ) ) || ( ! empty( $_POST[ '_wfb_frm_edt' ] ) )  ){
 		$field[ 'type' ] = 'text';
 	}
 	return $field;
@@ -231,7 +240,7 @@ function qcformbuilder_forms_validate_phone_better( $entry, $field, $form ){
 	}
 
 	if( false !== strpos( $entry, '+' ) && 4 >= strlen( $entry ) ){
-		return new WP_Error( 400, __( 'Country code is required', 'qcformbuilder-forms' ) );
+		return new WP_Error( 400, __( 'Country code is required', 'conversational-forms') );
 	}
 
 	return $entry;
@@ -255,7 +264,7 @@ add_filter( 'qcformbuilder_forms_validate_field_star_rating', 'qcformbuilder_for
  */
 function qcformbuilder_forms_validate_field_star_rating( $entry, $field, $form ){
 	if( ! empty( $field[ 'required' ] ) && empty( $entry ) ){
-		return new WP_Error( 400, __( 'Value is required', 'qcformbuilder-forms' ) );
+		return new WP_Error( 400, __( 'Value is required', 'conversational-forms') );
 	}
 
 	return $entry;
@@ -282,7 +291,7 @@ function qcformbuilder_forms_validate_field_email( $entry, $field, $form ){
     }
 
     if( ! is_email( $entry ) ){
-        return new WP_Error( 400, __( 'Not a valid email address', 'qcformbuilder-forms' ) );
+        return new WP_Error( 400, __( 'Not a valid email address', 'conversational-forms') );
     }
 
     return $entry;
@@ -308,7 +317,7 @@ function qcformbuilder_forms_validate_field_number( $entry, $field, $form ){
     }
 
     if( ! is_numeric( $entry ) ){
-        return new WP_Error( 400, __( 'Not a number', 'qcformbuilder-forms' ) );
+        return new WP_Error( 400, __( 'Not a number', 'conversational-forms') );
     }
 
     return $entry;

@@ -24,7 +24,7 @@ function setup_pagination(obj){
 		active			= obj.rawData.active,		
 		toggles			= jQuery('.status_toggles'),
 		exporter		= jQuery('.qcformbuilder-entry-exporter'),
-		tense			= ( total === 1 ? ' <?php esc_attr_e('item'); ?>' : ' <?php esc_attr_e('items'); ?>' ),
+		tense			= ( total === 1 ? ' <?php esc_attr_e('item', 'conversational-forms'); ?>' : ' <?php esc_attr_e('items', 'conversational-forms'); ?>' ),
 		pages			= obj.rawData.pages,
 		current			= obj.rawData.current_page,
 		form			= obj.params.trigger.data('form'),

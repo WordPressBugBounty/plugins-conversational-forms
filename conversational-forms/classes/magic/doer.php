@@ -202,8 +202,10 @@ class Qcformbuilder_Forms_Magic_Doer {
 				if ( count( $magic ) == 2 ) {
 					switch ( strtolower( $magic[ 0 ] ) ) {
 						case 'get':
+							// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 							if ( isset( $_GET[ $magic[ 1 ] ] ) ) {
-								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( $_GET[ $magic[ 1 ] ] );
+								// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( wp_unslash( $_GET[ $magic[ 1 ] ] ) );
 							} else {
 								// check on referer.
 								if ( isset( $referrer[ 'query' ][ $magic[ 1 ] ] ) ) {
@@ -214,15 +216,19 @@ class Qcformbuilder_Forms_Magic_Doer {
 							}
 							break;
 						case 'post':
+							// phpcs:ignore WordPress.Security.NonceVerification.Missing
 							if ( isset( $_POST[ $magic[ 1 ] ] ) ) {
-								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( $_POST[ $magic[ 1 ] ] );
+								// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( wp_unslash( $_POST[ $magic[ 1 ] ] ) );
 							} else {
 								$magic_tag = null;
 							}
 							break;
 						case 'request':
+							// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 							if ( isset( $_REQUEST[ $magic[ 1 ] ] ) ) {
-								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( $_REQUEST[ $magic[ 1 ] ] );
+								// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								$magic_tag = Qcformbuilder_Forms_Sanitize::sanitize( wp_unslash( $_REQUEST[ $magic[ 1 ] ] ) );
 							} else {
 								$magic_tag = null;
 							}
@@ -242,7 +248,7 @@ class Qcformbuilder_Forms_Magic_Doer {
 							}
 							break;
 						case 'date':
-							$magic_tag = get_date_from_gmt( date( 'Y-m-d H:i:s' ), $magic[ 1 ] );
+							$magic_tag = get_date_from_gmt( gmdate( 'Y-m-d H:i:s' ), $magic[ 1 ] );
 							break;
 						case 'user':
 							if ( is_user_logged_in() ) {
@@ -321,8 +327,10 @@ class Qcformbuilder_Forms_Magic_Doer {
 							$magic_tag = Qcformbuilder_Forms::get_field_data( '_entry_id', $form );
 							if ( $magic_tag === null ) {
 								// check if theres an entry
+								// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 								if ( ! empty( $_GET[ 'wfb_ee' ] ) ) {
-									$entry = Qcformbuilder_Forms::get_entry_detail( $_GET[ 'wfb_ee' ], $form );
+									// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+									$entry = Qcformbuilder_Forms::get_entry_detail( sanitize_text_field( wp_unslash( $_GET[ 'wfb_ee' ] ) ), $form );
 									if ( ! empty( $entry ) ) {
 										$magic_tag = $entry[ 'id' ];
 									}
@@ -334,18 +342,18 @@ class Qcformbuilder_Forms_Magic_Doer {
 							break;
 						case 'ip':
 
-							$ip = $_SERVER[ 'REMOTE_ADDR' ];
+							$ip = isset( $_SERVER[ 'REMOTE_ADDR' ] ) ? sanitize_text_field( wp_unslash( $_SERVER[ 'REMOTE_ADDR' ] ) ) : '';
 							if ( ! empty( $_SERVER[ 'HTTP_CLIENT_IP' ] ) ) {
-								$ip = $_SERVER[ 'HTTP_CLIENT_IP' ];
+								$ip = sanitize_text_field( wp_unslash( $_SERVER[ 'HTTP_CLIENT_IP' ] ) );
 							} elseif ( ! empty( $_SERVER[ 'HTTP_X_FORWARDED_FOR' ] ) ) {
-								$ip = $_SERVER[ 'HTTP_X_FORWARDED_FOR' ];
+								$ip = sanitize_text_field( wp_unslash( $_SERVER[ 'HTTP_X_FORWARDED_FOR' ] ) );
 							}
 
 							$magic_tag = $ip;
 
 							break;
 						case 'ua':
-							$magic_tag = $_SERVER[ 'HTTP_USER_AGENT' ];
+							$magic_tag = isset( $_SERVER[ 'HTTP_USER_AGENT' ] ) ? sanitize_text_field( wp_unslash( $_SERVER[ 'HTTP_USER_AGENT' ] ) ) : '';
 							break;
 						case 'summary':
 							if ( ! empty( $form[ 'fields' ] ) ) {

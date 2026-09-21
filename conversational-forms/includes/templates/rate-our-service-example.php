@@ -7,10 +7,10 @@ if ( ! defined( 'ABSPATH' ) ) {
   '_last_updated' => 'Mon, 30 Jan 2017 13:53:00 +0000',
   'ID' => 'rate-our-service',
   'wfb_version' => '1.5.0-b-2',
-  'name' => __( 'Rate our service', 'qcformbuilder-forms' ),
+  'name' => __( 'Rate our service', 'conversational-forms'),
   'scroll_top' => 1,
   'description' => '														',
-  'success' => __( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+  'success' => __( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
   'db_support' => 1,
   'pinned' => 0,
   'hide_form' => 1,
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_9014900',
       'type' => 'text',
-      'label' => __( 'Full Name', 'qcformbuilder-forms' ),
+      'label' => __( 'Full Name', 'conversational-forms'),
       'slug' => 'full_name',
       'conditions' => 
       array(
@@ -57,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_8004623',
       'type' => 'email',
-      'label' => __( 'Email', 'qcformbuilder-forms' ),
+      'label' => __( 'Email', 'conversational-forms'),
       'slug' => 'email',
       'conditions' => 
       array(
@@ -76,7 +76,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_841260',
       'type' => 'star_rating',
-      'label' => __( 'How would you rate your experience', 'qcformbuilder-forms' ),
+      'label' => __( 'How would you rate your experience', 'conversational-forms'),
       'slug' => 'how_would_you_rate_your_experience',
       'conditions' => 
       array(
@@ -99,7 +99,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_4412757',
       'type' => 'paragraph',
-      'label' => __( 'Message / Comments', 'qcformbuilder-forms' ),
+      'label' => __( 'Message / Comments', 'conversational-forms'),
       'slug' => 'messagecomments',
       'conditions' => 
       array(
@@ -118,7 +118,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     array(
       'ID' => 'fld_1889239',
       'type' => 'button',
-      'label' => __( 'Submit', 'qcformbuilder-forms' ),
+      'label' => __( 'Submit', 'conversational-forms'),
       'slug' => 'submit',
       'conditions' => 
       array(
@@ -141,13 +141,13 @@ if ( ! defined( 'ABSPATH' ) ) {
   'mailer' => 
   array(
     'on_insert' => 1,
-    'sender_name' => __( 'Rate our service', 'qcformbuilder-forms' ),
+    'sender_name' => __( 'Rate our service', 'conversational-forms'),
     'sender_email' => 'myemail@email.com',
     'reply_to' => '',
     'email_type' => 'html',
     'recipients' => '',
     'bcc_to' => '',
-    'email_subject' => __( 'Rate our service', 'qcformbuilder-forms' ),
+    'email_subject' => __( 'Rate our service', 'conversational-forms'),
     'email_message' => '{summary}',
   ),
   'conditional_groups' => 

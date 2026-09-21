@@ -152,10 +152,10 @@ class Qcformbuilder_Forms_Processor_Load {
 		$processor = wp_parse_args( $processor, $dependencies );
 
 		$fail = false;
-		$pattern = '%1 requires %2s version %3s or later. Current version is %4s.';
 		if ( false != $processor[ 'wfb_ver' ] ) {
 			if ( ! version_compare( WFBCORE_VER, $processor[ 'wfb_ver' ], '>=' ) ) {
-				$this->add_notice(  __( sprintf( $pattern, $processor[ 'name'], 'Qcformbuilder Forms', $processor[ 'wfb_ver' ], WFBCORE_VER  ) ) );
+				/* translators: 1: Processor name, 2: Dependency name, 3: Required version, 4: Current version */
+				$this->add_notice( sprintf( __( '%1$s requires %2$s version %3$s or later. Current version is %4$s.', 'conversational-forms' ), $processor[ 'name' ], 'Qcformbuilder Forms', $processor[ 'wfb_ver' ], WFBCORE_VER ) );
 				$fail = true;
 			}
 
@@ -163,7 +163,8 @@ class Qcformbuilder_Forms_Processor_Load {
 
 		if ( false != $processor[ 'php_ver' ] ) {
 			if ( ! version_compare( PHP_VERSION, $processor[ 'php_ver' ], '>=' ) ) {
-				$this->add_notice(  __( sprintf( $pattern, $processor[ 'name'], 'PHP', $processor[ 'php_ver' ], WFBCORE_VER  ) ) );
+				/* translators: 1: Processor name, 2: Dependency name, 3: Required version, 4: Current version */
+				$this->add_notice( sprintf( __( '%1$s requires %2$s version %3$s or later. Current version is %4$s.', 'conversational-forms' ), $processor[ 'name' ], 'PHP', $processor[ 'php_ver' ], PHP_VERSION ) );
 				$fail = true;
 			}
 
@@ -172,7 +173,8 @@ class Qcformbuilder_Forms_Processor_Load {
 		if ( false != $processor[ 'wp_ver' ] ) {
 			global $wp_version;
 			if ( ! version_compare( $wp_version, $processor[ 'wp_ver' ], '>=' ) ) {
-				$this->add_notice( __( sprintf( $pattern, $processor[ 'name' ], 'WordPress ', $processor[ 'wp_ver' ], WFBCORE_VER  ) ) );
+				/* translators: 1: Processor name, 2: Dependency name, 3: Required version, 4: Current version */
+				$this->add_notice( sprintf( __( '%1$s requires %2$s version %3$s or later. Current version is %4$s.', 'conversational-forms' ), $processor[ 'name' ], 'WordPress', $processor[ 'wp_ver' ], $wp_version ) );
 				$fail = true;
 
 			}
@@ -180,7 +182,12 @@ class Qcformbuilder_Forms_Processor_Load {
 		}
 
 		if ( isset( $processor[ 'icon' ] ) ) {
-			$works = (@fopen($processor[ 'icon' ],"r")==true);
+			$works = false;
+			if ( filter_var( $processor[ 'icon' ], FILTER_VALIDATE_URL ) ) {
+				$works = (bool) wp_http_validate_url( $processor[ 'icon' ] );
+			} elseif ( file_exists( $processor[ 'icon' ] ) ) {
+				$works = true;
+			}
 			if ( ! $works ) {
 				unset( $processor[ 'icon' ] );
 			}

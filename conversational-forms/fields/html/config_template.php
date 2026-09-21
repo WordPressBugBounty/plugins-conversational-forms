@@ -1,7 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="qcformbuilder-config-group">
 	<label for="{{_id}}editor">
-        <?php esc_html_e('Content', 'qcformbuilder-forms'); ?>
+        <?php esc_html_e('Content', 'conversational-forms'); ?>
     </label>
 </div>
 
@@ -13,7 +13,7 @@
 <!--
 <div class="qcformbuilder-config-group">
         <label for="{{_id}}_show_in_summary">
-			<?php echo esc_html__('Email Summary?', 'qcformbuilder-forms' ); ?>
+			<?php echo esc_html__('Email Summary?', 'conversational-forms'); ?>
         </label>
         <div class="qcformbuilder-config-field">
             <input
@@ -28,7 +28,7 @@
             <p
                     id="{{_id}}_show_in_summary-desc"
             >
-				<?php echo esc_html__('HTML field content is not shown in emails. Check here to add this content to the {summary} magic tag.', 'qcformbuilder-forms' ); ?>
+				<?php echo esc_html__('HTML field content is not shown in emails. Check here to add this content to the {summary} magic tag.', 'conversational-forms'); ?>
             </p>
     </div>
 </div>-->

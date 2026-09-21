@@ -10,13 +10,13 @@ if(!isset($element['variables'])){
 
 ?>
 <div class="qcformbuilder-config-group">
-	<label><?php echo esc_html__('Name'); ?></label>
+	<label><?php echo esc_html__('Name', 'conversational-forms'); ?></label>
 	<div class="qcformbuilder-config-field" style="margin: 0px; padding: 4px 0px; width: 401px;">
-		<div><?php echo esc_html__('Value', 'qcformbuilder-forms'); ?></div>
+		<div><?php echo esc_html__('Value', 'conversational-forms'); ?></div>
 	</div>
-	<?php echo esc_html__('Behaviour', 'qcformbuilder-forms'); ?>
+	<?php echo esc_html__('Behaviour', 'conversational-forms'); ?>
 </div>
-<div id="variable_entry_list_none" <?php if(!empty($element['variables'])){ echo 'style="display:none;"'; } ?>><p class="description"><?php echo esc_html__('No variables defined', 'qcformbuilder-forms'); ?></p></div>
+<div id="variable_entry_list_none" <?php if(!empty($element['variables'])){ echo 'style="display:none;"'; } ?>><p class="description"><?php echo esc_html__('No variables defined', 'conversational-forms'); ?></p></div>
 <div id="variable_entry_list">
 
 <?php
@@ -29,9 +29,9 @@ if(!isset($element['variables'])){
 					<input type="text" class="field-config var-value block-input magic-tag-enabled" name="config[variables][values][]" value="<?php echo esc_attr( $element['variables']['values'][$var_index] ); ?>">
 				</div>
 				<select name="config[variables][types][]" class="field-config" style="vertical-align: baseline;">
-					<option value="static" <?php if( $element['variables']['types'][$var_index] == 'static'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Static', 'qcformbuilder-forms'); ?></option>
-					<option value="passback" <?php if( $element['variables']['types'][$var_index] == 'passback'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Passback', 'qcformbuilder-forms'); ?></option>
-					<option value="entryitem" <?php if( $element['variables']['types'][$var_index] == 'entryitem'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Entry List', 'qcformbuilder-forms'); ?></option>
+					<option value="static" <?php if( $element['variables']['types'][$var_index] == 'static'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Static', 'conversational-forms'); ?></option>
+					<option value="passback" <?php if( $element['variables']['types'][$var_index] == 'passback'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Passback', 'conversational-forms'); ?></option>
+					<option value="entryitem" <?php if( $element['variables']['types'][$var_index] == 'entryitem'){ echo 'selected="selected"'; } ?>><?php echo esc_html__('Entry List', 'conversational-forms'); ?></option>
 				</select>
 				&nbsp;<button type="button" class="button remove-this-variable">&times;</button>
 			</div>
@@ -49,9 +49,9 @@ if(!isset($element['variables'])){
 			<input type="text" class="field-config var-value block-input magic-tag-enabled" name="config[variables][values][]" value="">
 		</div>
 		<select name="config[variables][types][]" class="field-config" style="vertical-align: baseline;">
-			<option value="static"><?php echo esc_html__('Static', 'qcformbuilder-forms'); ?></option>
-			<option value="passback"><?php echo esc_html__('Passback', 'qcformbuilder-forms'); ?></option>
-			<option value="entryitem"><?php echo esc_html__('Entry List', 'qcformbuilder-forms'); ?></option>
+			<option value="static"><?php echo esc_html__('Static', 'conversational-forms'); ?></option>
+			<option value="passback"><?php echo esc_html__('Passback', 'conversational-forms'); ?></option>
+			<option value="entryitem"><?php echo esc_html__('Entry List', 'conversational-forms'); ?></option>
 		</select>
 		&nbsp;<button type="button" class="button remove-this-variable">&times;</button>
 	</div>
@@ -83,7 +83,7 @@ if(!isset($element['variables'])){
 			tags	:	{
 				vars	: []
 			},
-			type	:	"<?php echo esc_html( __('Variables', 'qcformbuilder-forms') ); ?>",
+			type	:	"<?php echo esc_html( __('Variables', 'conversational-forms') ); ?>",
 			wrap	:	['{','}']
 		};
 		// add values

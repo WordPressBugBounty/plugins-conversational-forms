@@ -13,16 +13,16 @@ if(!isset($element['layout_grid']['structure'])){
 //dump($element);
 $element['layout_grid']['structure'] = explode("#", $element['layout_grid']['structure']);
 
-echo "<span id=\"row-remove-fields-message\" class=\"hidden\">" . esc_html__('This will remove all the fields in this row. Are you sure?', 'qcformbuilder-forms') . "</span>";
-echo '<div class="toggle_option_tab" data-title="'. esc_attr__('Page', 'qcformbuilder-forms').'" style="float:none;' . ( count($element['layout_grid']['structure']) === 1 ? ' display:none;' : '' ) . '" id="page-toggles">';
+echo "<span id=\"row-remove-fields-message\" class=\"hidden\">" . esc_html__('This will remove all the fields in this row. Are you sure?', 'conversational-forms') . "</span>";
+echo '<div class="toggle_option_tab" data-title="'. esc_attr__('Page', 'conversational-forms').'" style="float:none;' . ( count($element['layout_grid']['structure']) === 1 ? ' display:none;' : '' ) . '" id="page-toggles">';
 $pgid = uniqid('pg');
 if(count($element['layout_grid']['structure']) >= 1){
 	for($i = 1; $i<=count($element['layout_grid']['structure']) ; $i++){
-		$name = __('Page', 'qcformbuilder-forms') . ' ' . $i;
+		$name = __('Page', 'conversational-forms') . ' ' . $i;
 		if(isset($element['page_names'][($i-1)])){
 			$name = htmlspecialchars($element['page_names'][($i-1)]);
 		}
-		echo '<button type="button" data-page="' . esc_attr( $pgid . $i ) .'" data-name="' . esc_attr( $name ) . '" class="page-toggle button' . ( $i === 1 ? ' button-primary' : '' ) . '">' . esc_html__('Page', 'qcformbuilder-forms') . ' ' . esc_attr( $i ) . '</button> ';
+		echo '<button type="button" data-page="' . esc_attr( $pgid . $i ) .'" data-name="' . esc_attr( $name ) . '" class="page-toggle button' . ( $i === 1 ? ' button-primary' : '' ) . '">' . esc_html__('Page', 'conversational-forms') . ' ' . esc_attr( $i ) . '</button> ';
 	
 	}	
 }
@@ -107,10 +107,10 @@ foreach( (array) $element['layout_grid']['structure'] as $page_key=>$page_struct
 	</div>	
 <?php } ?>
 </div>
-<div class="add-new-item qcformbuilder-add-group qcformbuilder-add-row"><span class="dashicons dashicons-plus" data-toggle="tooltip" data-placement="bottom" title="<?php esc_attr_e( 'Click to add a new row to layout.', 'qcformbuilder-forms' ); ?>"></span></div>
+<div class="add-new-item qcformbuilder-add-group qcformbuilder-add-row"><span class="dashicons dashicons-plus" data-toggle="tooltip" data-placement="bottom" title="<?php esc_attr_e( 'Click to add a new row to layout.', 'conversational-forms'); ?>"></span></div>
 <?php do_action( 'qcformbuilder_forms_layout_config', $element ); ?>
 <script type="text/html" id="grid-page-tmpl">
-	<div class="layout-grid-panel layout-grid" data-page="{{page_no}}" data-name="<?php echo esc_attr__('Page', 'qcformbuilder-forms'); ?> {{count}}" style="display:none;" id="{{page_no}}">
+	<div class="layout-grid-panel layout-grid" data-page="{{page_no}}" data-name="<?php echo esc_attr__('Page', 'conversational-forms'); ?> {{count}}" style="display:none;" id="{{page_no}}">
 		<div class="first-row-level row">
 			<div class="col-xs-12">
 				<div class="layout-column column-container">

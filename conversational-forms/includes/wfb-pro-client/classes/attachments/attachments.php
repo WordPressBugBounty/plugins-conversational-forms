@@ -11,13 +11,13 @@ namespace qcformbuilderwp\qcformbuilderforms\pro\attachments;
 class attachments
 {
 	/**
-	 * @var phpmailer
+	 * @var mailer
 	 */
 	protected $phpMailer;
 
 	public function __construct()
 	{
-		$this->phpMailer = new phpmailer;
+		$this->phpMailer = new mailer;
 	}
 
 	/**

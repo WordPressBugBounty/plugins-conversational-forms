@@ -19,7 +19,7 @@
 {{#if message}}
 	<div class="alert updated"><p>{{{message}}}</p></div>
 {{else}}
-	<div class="alert error"><p><?php echo esc_html__('Unable to connect or no extensions available.', 'qcformbuilder-forms'); ?></p></div>
+	<div class="alert error"><p><?php echo esc_html__('Unable to connect or no extensions available.', 'conversational-forms'); ?></p></div>
 {{/if}}
 {{/if}}
 </script>

@@ -201,8 +201,15 @@ class Qcformbuilder_Forms_Files{
 		$uploads = wp_get_upload_dir();
         $dir = $uploads[ 'basedir' ] . '/' . self::secret_dir($field_id, $form_id);
         if (is_dir($dir)) {
-            array_map('unlink', glob($dir . '/*'));
-            rmdir($dir);
+            array_map('wp_delete_file', glob($dir . '/*'));
+            global $wp_filesystem;
+            if ( empty( $wp_filesystem ) ) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+            if ( $wp_filesystem ) {
+                $wp_filesystem->rmdir( $dir );
+            }
         }
 
     }

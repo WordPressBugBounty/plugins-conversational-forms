@@ -614,7 +614,7 @@ class Qcformbuilder_Forms_Render_Assets
      * @return int
      */
 	protected static function get_client_modified_time(){
-	    return rand();
+	    return wp_rand();
         if( ! self::$client_modified_time ){
             $dir = dirname(__FILE__,3). '/clients/admin/build/index.min.js' ;
             self::$client_modified_time = filemtime($dir);
@@ -737,19 +737,17 @@ class Qcformbuilder_Forms_Render_Assets
 				],
 				'strings' => [
 					'cf2FileField' => [
-						'removeFile' => esc_attr__('Remove file', 'qcformbuilder-forms'),
-						'defaultButtonText' => esc_attr__('Drop files or click to select files to Upload',
-							'qcformbuilder-forms'),
-						'fileUploadError1' => esc_attr__('Error: ', 'qcformbuilder-forms'),
-						'fileUploadError2' => esc_attr__(' could not be processed', 'qcformbuilder-forms'),
-						'invalidFiles' => esc_attr__('These Files have been rejected : ', 'qcformbuilder-forms'),
-						'checkMessage' => esc_attr__('Please check files type and size', 'qcformbuilder-forms'),
-						'invalidFileResponse' => esc_attr__('Unknown File Process Error', 'qcformbuilder-forms'),
-						'fieldIsRequired' => esc_attr__('Field is required', 'qcformbuilder-forms'),
-						'filesUnit' => esc_attr__('bytes', 'qcformbuilder-forms'),
-						'maxSizeAlert' => esc_attr__('This file is too large. Maxium size is ', 'qcformbuilder-forms'),
-						'wrongTypeAlert' => esc_attr__('This file type is not allowed. Allowed types are ',
-							'qcformbuilder-forms'),
+						'removeFile' => esc_attr__('Remove file', 'conversational-forms'),
+						'defaultButtonText' => esc_attr__('Drop files or click to select files to Upload', 'conversational-forms'),
+						'fileUploadError1' => esc_attr__('Error: ', 'conversational-forms'),
+						'fileUploadError2' => esc_attr__(' could not be processed', 'conversational-forms'),
+						'invalidFiles' => esc_attr__('These Files have been rejected : ', 'conversational-forms'),
+						'checkMessage' => esc_attr__('Please check files type and size', 'conversational-forms'),
+						'invalidFileResponse' => esc_attr__('Unknown File Process Error', 'conversational-forms'),
+						'fieldIsRequired' => esc_attr__('Field is required', 'conversational-forms'),
+						'filesUnit' => esc_attr__('bytes', 'conversational-forms'),
+						'maxSizeAlert' => esc_attr__('This file is too large. Maxium size is ', 'conversational-forms'),
+						'wrongTypeAlert' => esc_attr__('This file type is not allowed. Allowed types are ', 'conversational-forms'),
 					],
 				],
 				'nonce' => [
@@ -943,28 +941,37 @@ class Qcformbuilder_Forms_Render_Assets
 			}
 			if ($print_strings) {
 				wp_localize_script(self::make_slug('validator'), 'CF_VALIDATOR_STRINGS', [
-					'defaultMessage' => __( "This value seems to be invalid.", 'qcformbuilder-forms' ),
+					'defaultMessage' => __( "This value seems to be invalid.", 'conversational-forms'),
 					'type' => [
-						'email' => __("This value should be a valid email.", 'qcformbuilder-forms' ),
-						'url' => __("This value should be a valid url.", 'qcformbuilder-forms' ),
-						'number' => __("This value should be a valid number.", 'qcformbuilder-forms' ),
-						'integer' => __("This value should be a valid integer.", 'qcformbuilder-forms' ),
-						'digits' => __("This value should be digits.", 'qcformbuilder-forms' ),
-						'alphanum' => __("This value should be alphanumeric.", 'qcformbuilder-forms' ),
+						'email' => __("This value should be a valid email.", 'conversational-forms'),
+						'url' => __("This value should be a valid url.", 'conversational-forms'),
+						'number' => __("This value should be a valid number.", 'conversational-forms'),
+						'integer' => __("This value should be a valid integer.", 'conversational-forms'),
+						'digits' => __("This value should be digits.", 'conversational-forms'),
+						'alphanum' => __("This value should be alphanumeric.", 'conversational-forms'),
 					],
-					'notblank' => __("This value should not be blank.", 'qcformbuilder-forms' ),
-					'required' => __("This value is required", 'qcformbuilder-forms' ),
-					'pattern' => __("This value seems to be invalid.", 'qcformbuilder-forms' ),
-					'min' =>__( "This value should be greater than or equal to %s.", 'qcformbuilder-forms' ),
-					'max' => __("This value should be lower than or equal to %s.", 'qcformbuilder-forms' ),
-					'range' =>__( "This value should be between %s and %s.", 'qcformbuilder-forms' ),
-					'minlength' => __("This value is too short. It should have %s characters or more.", 'qcformbuilder-forms' ),
-					'maxlength' => __("This value is too long. It should have %s characters or fewer.", 'qcformbuilder-forms' ),
-					'length' => __("This value length is invalid. It should be between %s and %s characters long.", 'qcformbuilder-forms' ),
-					'mincheck' => __("You must select at least %s choices.", 'qcformbuilder-forms' ),
-					'maxcheck' => __("You must select %s choices or fewer.", 'qcformbuilder-forms' ),
-					'check' => __("You must select between %s and %s choices.", 'qcformbuilder-forms' ),
-					'equalto' => __("This value should be the same.", 'qcformbuilder-forms' ),
+					'notblank' => __("This value should not be blank.", 'conversational-forms'),
+					'required' => __("This value is required", 'conversational-forms'),
+					'pattern' => __("This value seems to be invalid.", 'conversational-forms'),
+					/* translators: %s: Minimum value */
+					'min' => __( "This value should be greater than or equal to %s.", 'conversational-forms'),
+					/* translators: %s: Maximum value */
+					'max' => __( "This value should be lower than or equal to %s.", 'conversational-forms'),
+					/* translators: 1: Minimum value, 2: Maximum value */
+					'range' => __( "This value should be between %s and %s.", 'conversational-forms'), // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- ParsleyJS replaces sequential %s placeholders in JavaScript
+					/* translators: %s: Minimum character length */
+					'minlength' => __( "This value is too short. It should have %s characters or more.", 'conversational-forms'),
+					/* translators: %s: Maximum character length */
+					'maxlength' => __( "This value is too long. It should have %s characters or fewer.", 'conversational-forms'),
+					/* translators: 1: Minimum character length, 2: Maximum character length */
+					'length' => __( "This value length is invalid. It should be between %s and %s characters long.", 'conversational-forms'), // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- ParsleyJS replaces sequential %s placeholders in JavaScript
+					/* translators: %s: Minimum number of choices */
+					'mincheck' => __( "You must select at least %s choices.", 'conversational-forms'),
+					/* translators: %s: Maximum number of choices */
+					'maxcheck' => __( "You must select %s choices or fewer.", 'conversational-forms'),
+					/* translators: 1: Minimum number of choices, 2: Maximum number of choices */
+					'check' => __( "You must select between %s and %s choices.", 'conversational-forms'), // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- ParsleyJS replaces sequential %s placeholders in JavaScript
+					'equalto' => __("This value should be the same.", 'conversational-forms'),
 				]);
 				$script = "<script>window.Parsley.addMessages( '$code', CF_VALIDATOR_STRINGS ); window.Parsley.setLocale( '$locale' );</script>";
 				wp_dequeue_script( self::make_slug( 'validator-i18n' ) );
@@ -972,7 +979,7 @@ class Qcformbuilder_Forms_Render_Assets
 				$script = "<script> setTimeout(function(){window.Parsley.setLocale('$code'); }, 2000 );</script>";
 
 			}
-			Qcformbuilder_Forms_Render_Util::add_inline_data($script, ['ID' => rand()]);
+			Qcformbuilder_Forms_Render_Util::add_inline_data($script, ['ID' => wp_rand()]);
 			self::enqueue_validator_i18n();
 		}
 
@@ -1095,8 +1102,11 @@ class Qcformbuilder_Forms_Render_Assets
 	 */
 	protected static function is_elementor_editor()
 	{
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return isset($_GET) && (
-			isset($_GET[ 'action' ]) && 'elementor' === $_GET[ 'action' ]
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			( isset($_GET[ 'action' ]) && 'elementor' === sanitize_text_field( wp_unslash( $_GET[ 'action' ] ) ) )
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			|| isset($_GET[ 'elementor-preview' ])
 		);
 	}
@@ -1109,6 +1119,7 @@ class Qcformbuilder_Forms_Render_Assets
 	 * @return bool
 	 */
 	protected static function is_beaver_builder_editor(){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return isset($_GET, $_GET[ 'fl_builder']);
 	}
 

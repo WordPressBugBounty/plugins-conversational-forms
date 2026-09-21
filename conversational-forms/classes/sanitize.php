@@ -90,7 +90,16 @@ class Qcformbuilder_Forms_Sanitize {
              */
             global $wpdb;
 
-            $output = $wpdb->prepare( $params[ 'type' ], $output );
+            if ( '%d' === $params['type'] ) {
+                $output = $wpdb->prepare( '%d', $output );
+            } elseif ( '%f' === $params['type'] ) {
+                $output = $wpdb->prepare( '%f', $output );
+            } elseif ( '%s' === $params['type'] ) {
+                $output = $wpdb->prepare( '%s', $output );
+            } else {
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+                $output = $wpdb->prepare( $params[ 'type' ], $output );
+            }
         }
         else {
             $output = wp_slash( $input );
@@ -101,7 +110,7 @@ class Qcformbuilder_Forms_Sanitize {
         }
 
         if( true === $params[ 'strip_tags' ] ){
-            $output = strip_tags( $output );
+            $output = wp_strip_all_tags( $output );
         }
 
         return $output;
@@ -117,7 +126,7 @@ class Qcformbuilder_Forms_Sanitize {
 	 *
 	 * @since 1.1.10
 	 *
-	 * @see like_escape
+	 * @see wpdb::esc_like()
 	 */
 	public static function sanitize_like( $input ) {
 
@@ -144,14 +153,7 @@ class Qcformbuilder_Forms_Sanitize {
 		else {
 			global $wpdb;
 
-			//backwords-compat check for pre WP4.0
-			if ( method_exists( 'wpdb', 'esc_like' ) ) {
-				$output = $wpdb->esc_like( self::sanitize( $input ) );
-			}
-			else {
-				// like_escape is deprecated in WordPress 4.0
-				$output = like_escape( self::sanitize( $input ) );
-			}
+			$output = $wpdb->esc_like( self::sanitize( $input ) );
 		}
 
 		return $output;

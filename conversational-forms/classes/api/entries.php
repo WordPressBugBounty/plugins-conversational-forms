@@ -112,9 +112,9 @@ class Qcformbuilder_Forms_API_Entries extends Qcformbuilder_Forms_API_CRUD {
 
 		$result = Qcformbuilder_Forms_Entry_Bulk::delete_entries( array( $request[ 'entry_id' ] ) );
 		if( $result ){
-			return new Qcformbuilder_Forms_API_Response( __( 'Entry Deleted', 'qcformbuilder-forms' ), 200, array() );
+			return new Qcformbuilder_Forms_API_Response( __( 'Entry Deleted', 'conversational-forms'), 200, array() );
 		}else{
-			return new Qcformbuilder_Forms_API_Error( 'not-deleted', __( 'Entry Not Deleted', 'qcformbuilder-forms' ) );
+			return new Qcformbuilder_Forms_API_Error( 'not-deleted', __( 'Entry Not Deleted', 'conversational-forms') );
 		}
 	}
 
@@ -135,7 +135,7 @@ class Qcformbuilder_Forms_API_Entries extends Qcformbuilder_Forms_API_CRUD {
         if( false === Qcformbuilder_Forms_Forms::is_internal_form( $formID ) ){
             $data = array(
                 'deleted' => false,
-                'message' =>  __( 'Form not found', 'qcformbuilder-forms')
+                'message' =>  __( 'Form not found', 'conversational-forms')
             );
             return new Qcformbuilder_Forms_API_Response( $data, 404, array() );
         }
@@ -151,14 +151,14 @@ class Qcformbuilder_Forms_API_Entries extends Qcformbuilder_Forms_API_CRUD {
             Qcformbuilder_Forms_Entry_Bulk::delete_entries( $entryIds );
             $data = array(
                 'deleted' => true,
-                'message' =>  __( 'Entries deleted', 'qcformbuilder-forms')
+                'message' =>  __( 'Entries deleted', 'conversational-forms')
             );
             return new Qcformbuilder_Forms_API_Response( $data, 200, array() );
 
         } else {
             $data = array(
                 'deleted' => false,
-                'message' =>  __( 'No entries found', 'qcformbuilder-forms')
+                'message' =>  __( 'No entries found', 'conversational-forms')
             );
             return new Qcformbuilder_Forms_API_Response( $data, 404, array() );
         }

@@ -527,7 +527,7 @@ class ComposerStaticInitde8e4f17527a322e8e7f40d08cb85b45
         'qcformbuilderwp\\qcformbuilderforms\\pro\\api\\message' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/api/message.php',
         'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\Exception' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/attachments/Exception.php',
         'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\attachments' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/attachments/attachments.php',
-        'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\phpmailer' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/attachments/phpmailer.php',
+        'qcformbuilderwp\\qcformbuilderforms\\pro\\attachments\\mailer' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/attachments/mailer.php',
         'qcformbuilderwp\\qcformbuilderforms\\pro\\container' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/container.php',
         'qcformbuilderwp\\qcformbuilderforms\\pro\\exceptions\\Exception' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/exceptions/Exception.php',
         'qcformbuilderwp\\qcformbuilderforms\\pro\\hooks' => __DIR__ . '/../..' . '/includes/wfb-pro-client/classes/hooks.php',

@@ -60,7 +60,7 @@ class Qcformbuilder_Forms_Admin_Clippy {
 	public function assets(){
 
 		Qcformbuilder_Forms_Render_Assets::enqueue_script( 'vue' );
-		wp_enqueue_script( $this->script_handle, WFBCORE_URL . 'assets/js/qcformbuilder-clippy.js', array( 'jquery', Qcformbuilder_Forms_Render_Assets::make_slug( 'vue' ) ), Qcformbuilder_Forms::VERSION );
+		wp_enqueue_script( $this->script_handle, WFBCORE_URL . 'assets/js/qcformbuilder-clippy.js', array( 'jquery', Qcformbuilder_Forms_Render_Assets::make_slug( 'vue' ) ), Qcformbuilder_Forms::VERSION, true );
 		wp_localize_script( $this->script_handle, 'CF_CLIPPY', $this->localizer() );
 
 	}
@@ -107,7 +107,7 @@ class Qcformbuilder_Forms_Admin_Clippy {
 	protected function randoms( $length = 4 ){
 		$str = '';
 		for( $i = 0; $i <= $length; $i++ ){
-			$str .= rand( 1,9 );
+			$str .= wp_rand( 1, 9 );
 		}
 
 		return $str;
@@ -141,13 +141,13 @@ class Qcformbuilder_Forms_Admin_Clippy {
 	protected function email_clippy(){
 		$clippy = array(
 			'title' => array(
-				'content' => __( 'Email Stats', 'qcformbuilder-forms' ),
+				'content' => __( 'Email Stats', 'conversational-forms'),
 			),
 			'content' => array(
 				'content' => '',
 			),
 			'btn' => array(
-				'content' => __( 'Email Resources', 'qcformbuilder-forms' ),
+				'content' => __( 'Email Resources', 'conversational-forms'),
 				'grey' => 'orange'
 			),
 			'link' => array(
@@ -159,10 +159,11 @@ class Qcformbuilder_Forms_Admin_Clippy {
 		if( Qcformbuilder_Forms_Tracking::tracking_allowed() ){
 			$stats = new Qcformbuilder_Forms_Email_TrackData();
 			$stats = $stats->get_stats(  );
-			$clippy[ 'content' ][ 'content' ] = sprintf( __( 'Success rate for emails is %d percent of %s total emails.', 'qcformbuilder-forms' ), 100 * $stats[ 'success_rate' ], $stats[ 'total' ] );
+			/* translators: 1: email success rate percentage, 2: total number of emails */
+			$clippy[ 'content' ][ 'content' ] = sprintf( __( 'Success rate for emails is %1$d percent of %2$s total emails.', 'conversational-forms'), 100 * $stats[ 'success_rate' ], $stats[ 'total' ] );
 		}else{
 			$url = Qcformbuilder_Forms_Tracking::allow_url();
-			$clippy[ 'content' ][ 'content' ] = __( 'Enable usage tracking to get email stats.', 'qcformbuilder-forms' );
+			$clippy[ 'content' ][ 'content' ] = __( 'Enable usage tracking to get email stats.', 'conversational-forms');
 			$clippy[ 'link' ][ 'url' ] = add_query_arg( 'clippy', 1, $url );
 			$clippy[ 'link' ][ 'bt' ] = 'tracking-optin';
 
@@ -175,13 +176,13 @@ class Qcformbuilder_Forms_Admin_Clippy {
 	{
 		$clippy = array(
 			'title' => array(
-				'content' => __( 'Need Help Creating A Form?', 'qcformbuilder-forms' ),
+				'content' => __( 'Need Help Creating A Form?', 'conversational-forms'),
 			),
 			'content' => array(
 				'content' => 'Click the "New Form" button at the top of the page, or read or getting started guide for creating forms.',
 			),
 			'btn' => array(
-				'content' => __( 'Read The Guide', 'qcformbuilder-forms' ),
+				'content' => __( 'Read The Guide', 'conversational-forms'),
 				'color' => 'orange'
 			),
 			'link' => array(
@@ -203,13 +204,13 @@ class Qcformbuilder_Forms_Admin_Clippy {
 	protected function fallback_clippy(){
 		return array(
 			'title' => array(
-				'content' => __( 'New To Qcformbuilder Forms?', 'qcformbuilder-forms' ),
+				'content' => __( 'New To Qcformbuilder Forms?', 'conversational-forms'),
 			),
 			'content' => array(
-				'content' => __( 'We have a complete getting started guide for new users.', 'qcformbuilder-forms' ),
+				'content' => __( 'We have a complete getting started guide for new users.', 'conversational-forms'),
 			),
 			'btn' => array(
-				'content' => __( 'Read Now', 'qcformbuilder-forms' ),
+				'content' => __( 'Read Now', 'conversational-forms'),
 				'color' => 'orange'
 			),
 			'link' => array(
@@ -244,20 +245,20 @@ class Qcformbuilder_Forms_Admin_Clippy {
 			$date_diff = date_diff( DateTime::createFromFormat( 'U', $first_time ), DateTime::createFromFormat( 'U', time() ) );
 		} else {
 			$date_diff = new stdClass();
-			$date_diff->d = rand( 5, 15 );
+			$date_diff->d = wp_rand( 5, 15 );
 		}
 
 		if( 10 > $date_diff->d ){
-			$this->extend_title = __( 'Get A Free Add-on For Qcformbuilder Forms', 'qcformbuilder-forms' );
+			$this->extend_title = __( 'Get A Free Add-on For Qcformbuilder Forms', 'conversational-forms');
 			return $endpoints[ 'free' ];
 		}
 
 
-		if( 1 == rand(1,10) ){
-			$this->extend_title = __( 'Extend Qcformbuilder Forms With Our Add-ons', 'qcformbuilder-forms' );
+		if( 1 == wp_rand(1, 10) ){
+			$this->extend_title = __( 'Extend Qcformbuilder Forms With Our Add-ons', 'conversational-forms');
 			return $endpoints[ 'featured' ];
 		}else{
-			$this->extend_title = __( 'Have You Tried Qcformbuilder Forms Pro Yet?', 'qcformbuilder-forms' );
+			$this->extend_title = __( 'Have You Tried Qcformbuilder Forms Pro Yet?', 'conversational-forms');
 			return $endpoints[ 'pro' ];
 		}
 

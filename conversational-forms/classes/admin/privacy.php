@@ -54,7 +54,7 @@ class Qcformbuilder_Forms_Admin_Privacy{
 			$description_id_attr = $id_attr . '_description';
 			$is_personally_identifying = Qcformbuilder_Forms_Field_Util::is_personally_identifying($field_id, $this->form );
 			/* translators: it's abbreviation for Personally Identifying Information */
-			$pii_text = esc_html__( 'PII', 'qcformbuilder-forms' );
+			$pii_text = esc_html__( 'PII', 'conversational-forms');
 			printf( '
 				<div class="qcformbuilder-config-group privacy-field personally-identifying-field">
 					<label for="%s">
@@ -87,9 +87,9 @@ class Qcformbuilder_Forms_Admin_Privacy{
 				$is_personally_identifying ? 'checked=checked' : '',
 				esc_attr($description_id_attr),
 				sprintf( '%s <a href="%s" target="_blank">%s</a>',
-					esc_html__( 'Does field contain Personally Identifying Information (PII)?', 'qcformbuilder-forms' ),
+					esc_html__( 'Does field contain Personally Identifying Information (PII)?', 'conversational-forms'),
 					'https://quantumcloud.com/gdpr#pii?utm_source=wp-admin&utm_medium=form-editor&utm_content=pii-learn-more',
-					esc_html__( 'Learn More', 'qcformbuilder-forms' )
+					esc_html__( 'Learn More', 'conversational-forms')
 				)
 			);
 		}

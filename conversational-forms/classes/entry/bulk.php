@@ -27,11 +27,11 @@ class Qcformbuilder_Forms_Entry_Bulk {
 		$entry_ids = array_map( 'absint', $entry_ids );
 		$placeholders = implode( ',', array_fill( 0, count( $entry_ids ), '%d' ) );
 
-		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entries` WHERE `id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
-		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_values` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
-		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM `" . $wpdb->prefix . "wfb_form_entry_meta` WHERE `entry_id` IN ($placeholders)", $entry_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		/**
 		 * Fires after Qcformbuilder Forms entries are deleted

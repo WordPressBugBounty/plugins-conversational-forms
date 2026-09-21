@@ -77,8 +77,8 @@ class Qcformbuilder_Forms_Field_Honey{
         $field = "<div class=\"hide\" style=\"display:none; overflow:hidden;height:0;width:0;\">\r\n";
 
         $honey_words = self::words( $form );
-        $word        = $honey_words[ rand( 0, count( $honey_words ) - 1 ) ];
-        $field .= "<label>" . esc_html__( ucwords( str_replace( '_', ' ', $word ) ) ) . "</label><input type=\"text\" name=\"" . esc_attr( $word ) . "\" value=\"\" autocomplete=\"off\">\r\n";
+        $word        = $honey_words[ wp_rand( 0, count( $honey_words ) - 1 ) ];
+        $field .= "<label>" . esc_html( ucwords( str_replace( '_', ' ', $word ) ) ) . "</label><input type=\"text\" name=\"" . esc_attr( $word ) . "\" value=\"\" autocomplete=\"off\">\r\n";
         $field .= "</div>";
         return $field;
 

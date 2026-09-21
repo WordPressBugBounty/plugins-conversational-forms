@@ -41,10 +41,12 @@ class Qcformbuilder_Forms_Entry_Shortcode {
 	 * @return string
 	 */
 	public static function shortcode_callback( $atts ){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$wfb_id = isset( $_GET['wfb_id'] ) ? sanitize_text_field( wp_unslash( $_GET['wfb_id'] ) ) : null;
 		$atts = shortcode_atts( array(
-			'form_id' => strip_tags( ! isset( $_GET[ 'wfb_id' ] ) ? null : $_GET[ 'wfb_id' ] ),
-			'id' => strip_tags( ! isset( $_GET[ 'wfb_id' ] ) ? null : $_GET[ 'wfb_id' ] ),
-			'ID' => strip_tags( ! isset( $_GET[ 'wfb_id' ] ) ? null : $_GET[ 'wfb_id' ] ),
+			'form_id' => $wfb_id,
+			'id' => $wfb_id,
+			'ID' => $wfb_id,
 			'type' => '2',
 			'with_toolbar' => false,
 			'role' => 'admin'

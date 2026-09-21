@@ -200,7 +200,7 @@ class Qcformbuilder_Forms_Field_JS implements JsonSerializable {
 		$field = $this->form[ 'fields' ][ $field_id ];
 		$options = array();
 		if( ! empty( $field[ 'config' ]['language' ] ) ){
-			$options[ 'lang' ] = strip_tags( $field[ 'config' ]['language' ] );
+			$options[ 'lang' ] = wp_strip_all_tags( $field[ 'config' ]['language' ] );
 		}
 
 		/**
@@ -233,11 +233,11 @@ class Qcformbuilder_Forms_Field_JS implements JsonSerializable {
 		$args =  array(
 			'options' => $this->better_phone_field_js_options( $field ),
 			'messages' => array(
-				'generic' => __( 'Invalid number', 'qcformbuilder-forms' ),
-				'1' => __( 'Invalid country code', 'qcformbuilder-forms' ),
-				'4' => __( 'Not a number', 'qcformbuilder-forms' ),
-				'3' => __( 'Number is too long', 'qcformbuilder-forms' ),
-				'2' => __( 'Number is too short', 'qcformbuilder-forms' )
+				'generic' => __( 'Invalid number', 'conversational-forms'),
+				'1' => __( 'Invalid country code', 'conversational-forms'),
+				'4' => __( 'Not a number', 'conversational-forms'),
+				'3' => __( 'Number is too long', 'conversational-forms'),
+				'2' => __( 'Number is too short', 'conversational-forms')
 
 			)
 		);
@@ -511,7 +511,7 @@ class Qcformbuilder_Forms_Field_JS implements JsonSerializable {
 	protected function credit_card_number( $field_id, $field ){
 
 		$this->data[ $field_id ] = $this->create_config_array( $field_id, __FUNCTION__, array(
-			'invalid' => __( 'Invalid Card Number', 'qcformbuilder-forms' ),
+			'invalid' => __( 'Invalid Card Number', 'conversational-forms'),
 			'cvc' => false,
 			'exp' => false,
 		) );
@@ -543,7 +543,7 @@ class Qcformbuilder_Forms_Field_JS implements JsonSerializable {
 	protected function credit_card_exp( $field_id, $field ){
 
 		$this->data[ $field_id ] = $this->create_config_array( $field_id, __FUNCTION__, array(
-			'invalid' => __( 'Invalid Expiration Date', 'qcformbuilder-forms' ),
+			'invalid' => __( 'Invalid Expiration Date', 'conversational-forms'),
 			'ccField' => false
 		) );
 
@@ -565,7 +565,7 @@ class Qcformbuilder_Forms_Field_JS implements JsonSerializable {
 	protected function credit_card_cvc( $field_id, $field ){
 
 		$this->data[ $field_id ] = $this->create_config_array( $field_id, __FUNCTION__, array(
-			'invalid' => __( 'Invalid Security Code', 'qcformbuilder-forms' ),
+			'invalid' => __( 'Invalid Security Code', 'conversational-forms'),
 			'ccField' => false
 		) );
 

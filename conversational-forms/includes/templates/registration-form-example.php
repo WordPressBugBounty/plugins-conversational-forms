@@ -16,13 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 return array (
 	'_last_updated' => 'Fri, 21 Aug 2015 20:42:39 +0000',
 	'ID' => 'CF55d78d3e3624f',
-	'name' => __( 'Registration Form', 'qcformbuilder-forms' ),
+	'name' => __( 'Registration Form', 'conversational-forms'),
 	'description' => '',
 	'db_support' => 1,
 	'pinned' => 0,
 	'hide_form' => 1,
 	'check_honey' => 1,
-	'success' => __( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+	'success' => __( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
 	'avatar_field' => '',
 	'form_ajax' => 1,
 	'custom_callback' => '',
@@ -47,7 +47,7 @@ return array (
 				array (
 					'ID' => 'fld_1327818',
 					'type' => 'toggle_switch',
-					'label' => __( 'Number of People', 'qcformbuilder-forms' ),
+					'label' => __( 'Number of People', 'conversational-forms'),
 					'slug' => 'number_of_people',
 					'conditions' =>
 						array (
@@ -70,17 +70,17 @@ return array (
 									'opt1186018' =>
 										array (
 											'value' => '',
-											'label' => __( 'One', 'qcformbuilder-forms' ),
+											'label' => __( 'One', 'conversational-forms'),
 										),
 									'opt1400463' =>
 										array (
 											'value' => '',
-											'label' => __( 'Two', 'qcformbuilder-forms' ),
+											'label' => __( 'Two', 'conversational-forms'),
 										),
 									'opt1453751' =>
 										array (
 											'value' => '',
-											'label' => __( 'Three', 'qcformbuilder-forms' ),
+											'label' => __( 'Three', 'conversational-forms'),
 										),
 								),
 						),
@@ -89,7 +89,7 @@ return array (
 				array (
 					'ID' => 'fld_1812913',
 					'type' => 'text',
-					'label' => __( 'Person One Name', 'qcformbuilder-forms' ),
+					'label' => __( 'Person One Name', 'conversational-forms'),
 					'slug' => 'person_one_name',
 					'conditions' =>
 						array (
@@ -109,7 +109,7 @@ return array (
 				array (
 					'ID' => 'fld_7290902',
 					'type' => 'email',
-					'label' => __( 'Person One Email', 'qcformbuilder-forms' ),
+					'label' => __( 'Person One Email', 'conversational-forms'),
 					'slug' => 'person_one_email',
 					'conditions' =>
 						array (
@@ -128,7 +128,7 @@ return array (
 				array (
 					'ID' => 'fld_6900741',
 					'type' => 'text',
-					'label' => __( 'Person Two Name', 'qcformbuilder-forms' ),
+					'label' => __( 'Person Two Name', 'conversational-forms'),
 					'slug' => 'person_two_name',
 					'conditions' =>
 						array (
@@ -148,7 +148,7 @@ return array (
 				array (
 					'ID' => 'fld_1561974',
 					'type' => 'email',
-					'label' => __( 'Person Two Email', 'qcformbuilder-forms' ),
+					'label' => __( 'Person Two Email', 'conversational-forms'),
 					'slug' => 'person_two_email',
 					'conditions' =>
 						array (
@@ -167,7 +167,7 @@ return array (
 				array (
 					'ID' => 'fld_2458053',
 					'type' => 'email',
-					'label' => __( 'Person Three Email', 'qcformbuilder-forms' ),
+					'label' => __( 'Person Three Email', 'conversational-forms'),
 					'slug' => 'person_three_email',
 					'conditions' =>
 						array (
@@ -186,7 +186,7 @@ return array (
 				array (
 					'ID' => 'fld_6241168',
 					'type' => 'text',
-					'label' => __( 'Person Three Name', 'qcformbuilder-forms' ),
+					'label' => __( 'Person Three Name', 'conversational-forms'),
 					'slug' => 'person_three_name',
 					'conditions' =>
 						array (
@@ -206,7 +206,7 @@ return array (
 				array (
 					'ID' => 'fld_2668148',
 					'type' => 'button',
-					'label' => __( 'Submit', 'qcformbuilder-forms' ),
+					'label' => __( 'Submit', 'conversational-forms'),
 					'slug' => 'submit',
 					'conditions' =>
 						array (
@@ -233,7 +233,7 @@ return array (
 					'con_9457156563497745' =>
 						array (
 							'id' => 'con_9457156563497745',
-							'name' => __( 'Two People', 'qcformbuilder-forms' ),
+							'name' => __( 'Two People', 'conversational-forms'),
 							'type' => 'show',
 							'fields' =>
 								array (
@@ -267,7 +267,7 @@ return array (
 					'con_4812944559945067' =>
 						array (
 							'id' => 'con_4812944559945067',
-							'name' => __( 'Three People', 'qcformbuilder-forms' ),
+							'name' => __( 'Three People', 'conversational-forms'),
 							'type' => 'show',
 							'group' =>
 								array (
@@ -299,7 +299,7 @@ return array (
 	'mailer' =>
 		array (
 			'enable_mailer' => 1,
-			'sender_name' => __( 'Chatbot Forms Notification', 'qcformbuilder-forms' ),
+			'sender_name' => __( 'Chatbot Forms Notification', 'conversational-forms'),
 			'sender_email' => 'admin@local.dev',
 			'reply_to' => '',
 			'email_type' => 'html',

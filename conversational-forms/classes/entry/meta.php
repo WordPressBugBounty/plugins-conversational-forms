@@ -37,7 +37,7 @@ class Qcformbuilder_Forms_Entry_Meta extends Qcformbuilder_Forms_Entry_Object {
 		if( is_array( $value ) ){
 			$this->meta_value = $value;
 		} elseif( is_serialized( $value  ) ){
-			$this->meta_value = unserialize( $value );
+			$this->meta_value = maybe_unserialize( $value );
 		}elseif( 0 === strpos( $value, '{' ) && is_object( $_value = json_decode( $value ) ) ){
 			$this->meta_value = (array) $_value;
 		}else{

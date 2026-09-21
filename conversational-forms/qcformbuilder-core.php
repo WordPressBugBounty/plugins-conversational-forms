@@ -5,13 +5,16 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.5.0
+ * Version: 1.5.1
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
- * Requires at least: 4.6
- * Tested up to: 7.1
- * Text Domain: conversational-form-builder
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires at least: 5.2
+ * Tested up to: 7.1.1
+ * Text Domain: conversational-forms
+ * Domain Path: /languages/
 */
 
 
@@ -29,19 +32,29 @@ if ( is_plugin_active( 'wpbot-pro-master/qcld-wpwbot.php' ) || is_plugin_active(
 }
 
 // Also abort if we are currently activating the Pro plugin
+// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 if ( isset($_REQUEST['action']) ) {
-	if ( $_REQUEST['action'] == 'activate' && isset($_REQUEST['plugin']) && ( ( strpos($_REQUEST['plugin'], 'wpbot-pro-master') !== false ) || ( strpos($_REQUEST['plugin'], 'wpbot-pro-professional') !== false ) ) ) {
-		return;
+	$req_action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
+	if ( $req_action === 'activate' && isset($_REQUEST['plugin']) ) {
+		$req_plugin = sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) );
+		if ( ( strpos($req_plugin, 'wpbot-pro-master') !== false ) || ( strpos($req_plugin, 'wpbot-pro-professional') !== false ) ) {
+			return;
+		}
 	}
-	if ( $_REQUEST['action'] == 'activate-selected' && isset($_POST['checked']) && ( in_array('wpbot-pro-master/qcld-wpwbot.php', $_POST['checked']) || in_array('wpbot-pro-professional/qcld-wpwbot.php', $_POST['checked']) ) ) {
-		return;
+	if ( $req_action === 'activate-selected' && isset($_POST['checked']) && is_array($_POST['checked']) ) {
+		$checked = array_map( 'sanitize_text_field', wp_unslash( $_POST['checked'] ) );
+		if ( in_array('wpbot-pro-master/qcld-wpwbot.php', $checked, true) || in_array('wpbot-pro-professional/qcld-wpwbot.php', $checked, true) ) {
+			return;
+		}
 	}
 }
+// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 
 add_action( 'init', function(){
     //hack to make code splitting work.
-    if( false !== strpos( $_SERVER['REQUEST_URI'], 'wp-admin/clients/') ){
-        wfb_redirect(plugin_dir_url(__FILE__).str_replace( '/wp-admin/', '',$_SERVER['REQUEST_URI']));exit;
+    if( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'wp-admin/clients/') ){
+        $req_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+        wfb_redirect(plugin_dir_url(__FILE__).str_replace( '/wp-admin/', '', $req_uri));exit;
     }
 
 });
@@ -53,8 +66,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		?>
         <div class="notice notice-error">
             <p>
-				<?php esc_html_e('Your version of PHP is incompatible with Qcformbuilder Forms and can not be used.',
-					'qcformbuilder-forms'); ?>
+				<?php esc_html_e('Your version of PHP is incompatible with Qcformbuilder Forms and can not be used.', 'conversational-forms'); ?>
 				</p>
         </div>
 		<?php
@@ -69,8 +81,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		?>
         <div class="notice notice-error">
             <p>
-				<?php esc_html_e('Your version of WordPress is incompatible with Qcformbuilder Forms and can not be used.',
-					'qcformbuilder-forms'); ?>
+				<?php esc_html_e('Your version of WordPress is incompatible with Qcformbuilder Forms and can not be used.', 'conversational-forms'); ?>
             </p>
         </div>
 		<?php
@@ -87,7 +98,7 @@ if ( !version_compare(PHP_VERSION, '5.6.0', '>=') ) {
 		define('WFBCORE_URL', plugin_dir_url(__FILE__));
 	}
 	if ( ! defined('WFBCORE_VER') ) {
-		define( 'WFBCORE_VER', '1.5.0' );
+		define( 'WFBCORE_VER', '1.5.1' );
 	}
 	if ( ! defined('WFBCORE_EXTEND_URL') ) {
 		define('WFBCORE_EXTEND_URL', 'https://api.qcformbuilderforms.com/1.0/');
@@ -202,10 +213,10 @@ if( ! function_exists('qcformbuilder_forms_fallback_shortcode') ){
 	function qcformbuilder_forms_fallback_shortcode()
 	{
 		if ( current_user_can('edit_posts') ) {
-			return esc_html__('Your version of WordPress or PHP is incompatible with Qcformbuilder Forms.', 'qcformbuilder-forms');
+			return esc_html__('Your version of WordPress or PHP is incompatible with Qcformbuilder Forms.', 'conversational-forms');
 		}
 
-		return esc_html__('Form could not be loaded. Contact the site administrator.', 'qcformbuilder-forms');
+		return esc_html__('Form could not be loaded. Contact the site administrator.', 'conversational-forms');
 
 	}
 }
@@ -265,7 +276,8 @@ if(!function_exists('qcld_condition_check')){
 		return $result;
 	}
 }
-if( ( !empty($_GET['page']) && $_GET['page'] == 'qcformbuilder-form-wpbot') ){
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+if( ( !empty($_GET['page']) && 'qcformbuilder-form-wpbot' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) ){
 //	add_action( 'admin_notices', 'qcld_condition_promotion_notice');
 }
 function qcld_condition_promotion_notice(){
@@ -328,12 +340,13 @@ if(!function_exists('wpbot_get_form')){
 	function wpbot_get_form(){
 		global $wpdb;
 
-		$formid = sanitize_text_field($_POST['formid']);
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$formid = isset( $_POST['formid'] ) ? sanitize_text_field( wp_unslash( $_POST['formid'] ) ) : '';
 		$table = $wpdb->prefix.'wfb_forms';
 
 		$result = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 
-		$form = unserialize($result->config);
+		$form = maybe_unserialize($result->config);
 		$fields = $form['fields'];
 		if(isset($form['layout_grid']['fields']) && !empty($form['layout_grid']['fields'])){
 			
@@ -352,11 +365,13 @@ if(!function_exists('wpbot_capture_form_value')){
 	function wpbot_capture_form_value(){
 		global $wpdb;
 
-		$formid = sanitize_text_field($_POST['formid']);
-		$fieldid = sanitize_text_field($_POST['fieldid']);
-		$answer = $_POST['answer'];
-		$entry = sanitize_text_field($_POST['entry']);
-		$name = sanitize_text_field($_POST['name']);
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$formid  = isset( $_POST['formid'] ) ? sanitize_text_field( wp_unslash( $_POST['formid'] ) ) : '';
+		$fieldid = isset( $_POST['fieldid'] ) ? sanitize_text_field( wp_unslash( $_POST['fieldid'] ) ) : '';
+		$answer  = isset( $_POST['answer'] ) ? ( is_array( $_POST['answer'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['answer'] ) ) : sanitize_text_field( wp_unslash( $_POST['answer'] ) ) ) : '';
+		$entry   = isset( $_POST['entry'] ) ? sanitize_text_field( wp_unslash( $_POST['entry'] ) ) : '';
+		$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	
 		if($entry==0){
 
@@ -392,7 +407,7 @@ if(!function_exists('wpbot_capture_form_value')){
 
 		$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE form_id = %s and type='primary'",$formid)); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix + constant
 
-		$form = unserialize($result->config);
+		$form = maybe_unserialize($result->config);
 		
 		$fields = $form['fields'];
 		$mailer = $form['mailer'];
@@ -477,8 +492,8 @@ if(!function_exists('qcld_wb_chatbot_send_form_query')){
 		$subject = (isset($mailer['email_subject']) && $mailer['email_subject']!=''?$mailer['email_subject']:'Conversational form data from Chatbot');
 		//Extract Domain
 		$url = get_site_url();
-		$url = parse_url($url);
-		$domain = $url['host'];
+		$url = wp_parse_url($url);
+		$domain = isset( $url['host'] ) ? $url['host'] : '';
 		
 		$admin_email = get_option('admin_email');
 		$toEmail = get_option('qlcd_wp_chatbot_admin_email') != '' ? get_option('qlcd_wp_chatbot_admin_email') : $admin_email;
@@ -489,7 +504,7 @@ if(!function_exists('qcld_wb_chatbot_send_form_query')){
 		if(isset($mailer['sender_name']) && $mailer['sender_name']!=''){
 			$name = $mailer['sender_name'];
 		}
-		$conversation_details_text = get_option('qlcd_wp_chatbot_conversation_details') ? get_option('qlcd_wp_chatbot_conversation_details') : esc_html__('Conversation Details', 'wpchatbot');
+		$conversation_details_text = get_option('qlcd_wp_chatbot_conversation_details') ? get_option('qlcd_wp_chatbot_conversation_details') : esc_html__('Conversation Details', 'conversational-forms');
 		$bodyContent = "";
 		$bodyContent .= '<p><strong>' . $conversation_details_text . ':</strong></p><hr>';
 		
@@ -501,7 +516,7 @@ if(!function_exists('qcld_wb_chatbot_send_form_query')){
 
 		}
 			
-		$bodyContent .= '<p>' . esc_html__('Mail Generated on', 'wpchatbot') . ': ' . the_time('F j, Y g:i a') . '</p>';
+		$bodyContent .= '<p>' . esc_html__('Mail Generated on', 'conversational-forms') . ': ' . the_time('F j, Y g:i a') . '</p>';
 		$body = $bodyContent;
 		
 		if(isset($mailer['recipients']) && $mailer['recipients']!=''){
@@ -534,8 +549,8 @@ if(!function_exists('add_menu_wpbot_adding_page')){
 	function add_menu_wpbot_adding_page(){
 		add_submenu_page(
 			'qcformbuilder-forms',
-			__( 'ChatBot WPBot', 'qcformbuilder-forms' ),
-			__( 'ChatBot WPBot', 'qcformbuilder-forms' ),
+			__( 'ChatBot WPBot', 'conversational-forms'),
+			__( 'ChatBot WPBot', 'conversational-forms'),
 			'manage_options',
 			'qcformbuilder-form-wpbot',
 			'set_wpbot_page'

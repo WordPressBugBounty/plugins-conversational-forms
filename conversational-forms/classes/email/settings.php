@@ -138,16 +138,16 @@ class Qcformbuilder_Forms_Email_Settings {
 			wp_die();
 		}
 		
-		if( isset( $_POST[ 'nonce' ] ) && wp_verify_nonce( $_POST[ 'nonce' ], self::$nonce_action ) ){
+		if( isset( $_POST[ 'nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'nonce' ] ) ), self::$nonce_action ) ){
 			if( isset( $_POST[ 'method' ] ) ){
-				if ( self::is_allowed_method( $_POST[ 'method' ] ) ) {
-					self::$settings[ 'method' ] = $_POST[ 'method' ];
+				if ( self::is_allowed_method( sanitize_text_field( wp_unslash( $_POST[ 'method' ] ) ) ) ) {
+					self::$settings[ 'method' ] = sanitize_text_field( wp_unslash( $_POST[ 'method' ] ) );
 				}
 			}
 
 			foreach( self::allowed_apis() as $api ){
 				if( isset( $_POST[ $api ] ) && is_string( $_POST[ $api ] ) ){
-					self::save_key( $api, trim( strip_tags( $_POST[ $api ] )  ), false );
+					self::save_key( $api, trim( sanitize_text_field( wp_unslash( $_POST[ $api ] ) ) ), false );
 				}
 			}
 
@@ -256,7 +256,7 @@ class Qcformbuilder_Forms_Email_Settings {
 	 */
 	public static function ui() {
 		if (  ! version_compare( PHP_VERSION, '5.4.0', '>=' ) ) {
-            echo'<div id="wfb-email-settings-ui" aria-hidden="true" style="visibility: hidden;">' . esc_html__( 'Switching email services requires PHP 5.4 or later. PHP 5.6 is strongly recommended.', 'qcformbuilder-forms' ) .'</div>';
+            echo'<div id="wfb-email-settings-ui" aria-hidden="true" style="visibility: hidden;">' . esc_html__( 'Switching email services requires PHP 5.4 or later. PHP 5.6 is strongly recommended.', 'conversational-forms') .'</div>';
 		}else{
 			include WFBCORE_PATH . '/ui/emails/settings.php';
 

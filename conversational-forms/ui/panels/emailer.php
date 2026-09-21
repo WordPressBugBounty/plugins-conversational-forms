@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if(!isset($element['mailer']['sender_name'])){
-	$element['mailer']['sender_name'] = __('Chatbot Forms Notification', 'qcformbuilder-forms');
+	$element['mailer']['sender_name'] = __('Chatbot Forms Notification', 'conversational-forms');
 }
 if(!isset($element['mailer']['sender_email'])){
 	$element['mailer']['sender_email'] = Qcformbuilder_Forms_Email_Fallback::get_fallback( $element );
@@ -32,31 +32,31 @@ if ( ! empty( $element['mailer']['enable_mailer'] ) ) {
 <div class="mailer-control-panel wrapper-instance-pane wfb-email-settings">
 
 	<div class="qcformbuilder-config-group wfb-email-mailer-toggle">
-		<label class="screen-reader-text"><?php esc_html_e('Use The Mailer', 'qcformbuilder-forms'); ?> </label>
+		<label class="screen-reader-text"><?php esc_html_e('Use The Mailer', 'conversational-forms'); ?> </label>
 		<div class="qcformbuilder-config-field">
 			<div class="toggle_processor_event">
 
-				<label title="<?php echo esc_attr( __( 'Enable Or Disable Mailer', 'qcformbuilder-forms') ); ?>" class="button button-small <?php if( !empty( $element['mailer']['on_insert'] ) ){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[mailer][on_insert]" <?php if( !empty( $element['mailer']['on_insert'] ) ){ echo 'checked="checked"'; } ?>>
-				<span class="is_active" <?php if( empty( $element['mailer']['on_insert'] ) ){ ?> style="display:none;visibility: hidden;"<?php } ?>><?php esc_html_e( 'Disable Mailer', 'qcformbuilder-forms' ); ?></span>
-				<span class="not_active" <?php if( !empty( $element['mailer']['on_insert'] ) ){ ?> style="display:none;visibility: hidden;"<?php } ?>><?php esc_html_e( 'Enable Mailer', 'qcformbuilder-forms' ); ?></span>
+				<label title="<?php echo esc_attr( __( 'Enable Or Disable Mailer', 'conversational-forms') ); ?>" class="button button-small <?php if( !empty( $element['mailer']['on_insert'] ) ){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[mailer][on_insert]" <?php if( !empty( $element['mailer']['on_insert'] ) ){ echo 'checked="checked"'; } ?>>
+				<span class="is_active" <?php if( empty( $element['mailer']['on_insert'] ) ){ ?> style="display:none;visibility: hidden;"<?php } ?>><?php esc_html_e( 'Disable Mailer', 'conversational-forms'); ?></span>
+				<span class="not_active" <?php if( !empty( $element['mailer']['on_insert'] ) ){ ?> style="display:none;visibility: hidden;"<?php } ?>><?php esc_html_e( 'Enable Mailer', 'conversational-forms'); ?></span>
 				</label>
 			</div>
 		</div>
 	</div>
 
 	<div class="mailer_config_panel qcformbuilder-config-processor-notice" style="display:<?php if( empty( $element['mailer']['on_insert'] ) && empty( $element['mailer']['on_insert'] ) ){ ?> block;<?php }else{ ?>none;<?php }?>clear: both;">
-		<p class="description wfb-email-disabled-note"><?php esc_html_e('Mailer is currently disabled', 'qcformbuilder-forms'); ?></p>
+		<p class="description wfb-email-disabled-note"><?php esc_html_e('Mailer is currently disabled', 'conversational-forms'); ?></p>
 	</div>
 
 	<div class="mailer_config_panel qcformbuilder-config-processor-setup" <?php if( empty( $element['mailer']['on_insert'] ) && empty( $element['mailer']['on_insert'] ) ){ echo 'style="display:none;"'; } ?>>
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-email-from-name">
-				<?php  esc_html_e( 'From Name', 'qcformbuilder-forms' ); ?> 
+				<?php  esc_html_e( 'From Name', 'conversational-forms'); ?> 
 			</label>
 			<div class="qcformbuilder-config-field">
 				<input type="text" class="field-config" name="config[mailer][sender_name]" value="<?php echo esc_attr( $element['mailer']['sender_name'] ); ?>" id="wfb-email-from-name" aria-describedby="wfb-email-from-name-description" >
 				<p class="description" id="wfb-email-from-name-description">
-					<?php esc_html_e( 'Name for email sender', 'qcformbuilder-forms'); ?>
+					<?php esc_html_e( 'Name for email sender', 'conversational-forms'); ?>
 				</p>
 			</div>
 		</div>
@@ -64,14 +64,14 @@ if ( ! empty( $element['mailer']['enable_mailer'] ) ) {
 
         <div class="qcformbuilder-config-group">
             <label for="wfb-email-from-email" class="no-pro-enhanced">
-                <?php esc_html_e('From Email', 'qcformbuilder-forms'); ?>
+                <?php esc_html_e('From Email', 'conversational-forms'); ?>
             </label>
             
 
             <div class="qcformbuilder-config-field">
                 <input type="email" class="field-config" name="config[mailer][sender_email]" value="" id="wfb-email-from-email" aria-describedby="wfb-email-from-email-description">
                 <p class="description no-pro-enhanced" id="wfb-email-from-email-description">
-                    <?php esc_html_e( 'Email Address for sender. You can leave it blank for default.', 'qcformbuilder-forms'); ?>                    
+                    <?php esc_html_e( 'Email Address for sender. You can leave it blank for default.', 'conversational-forms'); ?>                    
                 </p>                
             </div>
         </div>
@@ -79,11 +79,11 @@ if ( ! empty( $element['mailer']['enable_mailer'] ) ) {
 
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-email-recipients">
-				<?php esc_html_e('Email Recipients', 'qcformbuilder-forms'); ?> </label>
+				<?php esc_html_e('Email Recipients', 'conversational-forms'); ?> </label>
 			<div class="qcformbuilder-config-field">
 				<input type="text" class="field-config" name="config[mailer][recipients]" value="<?php echo esc_attr( $element['mailer']['recipients'] ); ?>" id="wfb-email-recipients" aria-describedby="wfb-email-recipients-description" />
 				<p class="description" id="wfb-email-recipients-description">
-					<?php esc_html_e( 'Who to send email to? Use a comma separated list of email addresses to send to more than one address.', 'qcformbuilder-forms'); ?>
+					<?php esc_html_e( 'Who to send email to? Use a comma separated list of email addresses to send to more than one address.', 'conversational-forms'); ?>
 				</p>
 			</div>
 
@@ -92,7 +92,7 @@ if ( ! empty( $element['mailer']['enable_mailer'] ) ) {
 
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-email-subject">
-				<?php esc_html_e('Email Subject', 'qcformbuilder-forms'); ?>
+				<?php esc_html_e('Email Subject', 'conversational-forms'); ?>
 			</label>
 			<div class="qcformbuilder-config-field">
 				<input type="text" class="field-config" name="config[mailer][email_subject]" value="<?php echo esc_attr( $element['mailer']['email_subject'] ); ?>" id="wfb-email-subject" aria-describedby="wfb-email-subject-description">

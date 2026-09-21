@@ -26,7 +26,7 @@ header( "Cache-Control: no-cache, must-revalidate, post-check=0, pre-check=0" );
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><?php esc_html_e( 'Qcformbuilder Forms Email Preview', 'qcformbuilder-forms' ); ?></title>
+	<title><?php esc_html_e( 'Qcformbuilder Forms Email Preview', 'conversational-forms'); ?></title>
 	<style>
 		body {
 			background-color: #DFDFDF;

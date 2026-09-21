@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php wp_nonce_field( 'wfb_toolbar', 'wfb_toolbar_actions' ); ?>
 			<span class="wfb-tools-row">
 				<?php if( empty( $is_pinned ) ){ ?>
-				<button id="wfb_forms_toggle" type="button" class="button hide-forms" title="<?php esc_attr_e( 'Click to close entry viewer', 'qcformbuilder-forms' ); ?>" style="padding: 3px; margin-top: 1px; margin-right: 18px; color: rgb(143, 143, 143);">				
+				<button id="wfb_forms_toggle" type="button" class="button hide-forms" title="<?php esc_attr_e( 'Click to close entry viewer', 'conversational-forms'); ?>" style="padding: 3px; margin-top: 1px; margin-right: 18px; color: rgb(143, 143, 143);">				
 					<span class="dashicons dashicons-admin-collapse"></span>
 					<span class="screen-reader-text">
-						<?php esc_html_e( 'Close', 'qcformbuilder-forms' ); ?>
+						<?php esc_html_e( 'Close', 'conversational-forms'); ?>
 					</span>
 				</button>
 				<?php } ?>				
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						data-page="1"
 					    data-nonce="<?php echo esc_attr( wp_create_nonce( 'view_entries' ) ); ?>"
 						data-status="active"
-					><?php esc_html_e('Active', 'qcformbuilder-forms'); ?> <span class="current-status-count"></span></button>
+					><?php esc_html_e('Active', 'conversational-forms'); ?> <span class="current-status-count"></span></button>
 					<button type="button" class="status_toggles button ajax-trigger" style="margin-top: 1px; margin-right: 10px;"
 						data-before="wfb_set_limits"
 						data-action="browse_entries"
@@ -46,10 +46,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 						data-page="1"
 					    data-nonce="<?php echo esc_attr( wp_create_nonce( 'view_entries' ) ); ?>"
 				        data-status="trash"
-					><?php esc_html_e( 'Trash', 'qcformbuilder-forms' ); ?> <span class="current-status-count"></span></button>
+					><?php esc_html_e( 'Trash', 'conversational-forms'); ?> <span class="current-status-count"></span></button>
 				</span>
 				<button href="#" class="button qcformbuilder-forms-entry-exporter">
-					<?php esc_html_e( 'Export All', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Export All', 'conversational-forms'); ?>
 				</button>
 				
 			</span>
@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<select id="wfb_bulk_action" name="action" style="vertical-align: top;">
 				</select>
 				<button type="button" class="button wfb-bulk-action">
-					<?php esc_html_e( 'Apply', 'qcformbuilder-forms' ); ?>
+					<?php esc_html_e( 'Apply', 'conversational-forms'); ?>
 				</button>
 			</span>
 

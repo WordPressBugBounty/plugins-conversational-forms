@@ -8,7 +8,7 @@ if( !empty( $element['conditional_groups']['fields'] ) ){
 	unset( $element['conditional_groups']['fields'] );
 }
 ?>
-<button style="width:250px;" id="new-conditional" class="button ajax-trigger" data-request="wfb_new_condition_group" data-template="#conditions-tmpl" data-target="#qcformbuilder-forms-conditions-panel" type="button"><?php esc_html_e( 'Add Conditional Group', 'qcformbuilder-forms' ); ?></button>
+<button style="width:250px;" id="new-conditional" class="button ajax-trigger" data-request="wfb_new_condition_group" data-template="#conditions-tmpl" data-target="#qcformbuilder-forms-conditions-panel" type="button"><?php esc_html_e( 'Add Conditional Group', 'conversational-forms'); ?></button>
 <input type="hidden" name="_magic" value="<?php echo esc_attr( json_encode( $magic_tags['system']['tags'] ) ); ?>">
 <input type="hidden" id="wfb-conditions-db" name="config[conditional_groups]" value="<?php echo esc_attr( json_encode( $element['conditional_groups'] ) ); ?>" 
 class="ajax-trigger"
@@ -57,7 +57,7 @@ data-autoload="true"
 			{{#if name}}
 				<div class="condition-point-{{id}}" style="width: 550px; float: left;">
 					<div class="qcformbuilder-config-group">
-						<label for="{{id}}_lable"><?php esc_html_e( 'Name', 'qcformbuilder-forms' ); ?></label>
+						<label for="{{id}}_lable"><?php esc_html_e( 'Name', 'conversational-forms'); ?></label>
 						<div class="qcformbuilder-config-field">
 							<input type="text" name="conditions[{{id}}][name]" id="condition-group-name-{{id}}" data-sync="#condition-group-{{id}}" value="{{name}}" required class="required block-input">
 						</div>
@@ -68,31 +68,31 @@ data-autoload="true"
 						<div class="qcformbuilder-config-field">
 							<select name="conditions[{{id}}][type]" data-live-sync="true">
 								<option value=""></option>
-								<option value="show" {{#is type value="show"}}selected="selected"{{/is}}><?php esc_html_e('Show', 'qcformbuilder-forms'); ?></option>
+								<option value="show" {{#is type value="show"}}selected="selected"{{/is}}><?php esc_html_e('Show', 'conversational-forms'); ?></option>
 								
 							</select>
 							{{#if type}}
-								<button type="button" data-add-group="{{id}}" class="pull-right button button-small"><?php echo esc_html__('Add Conditional Line', 'qcformbuilder-forms'); ?></button>
+								<button type="button" data-add-group="{{id}}" class="pull-right button button-small"><?php echo esc_html__('Add Conditional Line', 'conversational-forms'); ?></button>
 							{{/if}}
 						</div>
 					</div>
 					{{#each group}}
 						{{#unless @first}}
-							<span style="display: block; margin: 0px 0px 8px;"><?php esc_html_e( 'or', 'qcformbuilder-forms' ); ?></span>
+							<span style="display: block; margin: 0px 0px 8px;"><?php esc_html_e( 'or', 'conversational-forms'); ?></span>
 						{{/unless}}
 						<div class="qcformbuilder-condition-group qcformbuilder-condition-lines">
 						{{#each this}}
 							<div class="qcformbuilder-condition-line condition-line-{{@key}}">
 								<input type="hidden" name="conditions[{{../../id}}][group][{{parent}}][{{@key}}][parent]" value="{{parent}}">
 								<span style="display:inline-block;">{{#if @first}}
-									<?php esc_html_e( 'if', 'qcformbuilder-forms' ); ?>
+									<?php esc_html_e( 'if', 'conversational-forms'); ?>
 								{{else}}
-									<?php esc_html_e( 'and', 'qcformbuilder-forms' ); ?>
+									<?php esc_html_e( 'and', 'conversational-forms'); ?>
 								{{/if}}</span>
 								<input type="hidden" name="conditions[{{../../../id}}][fields][{{@key}}]" value="{{field}}" id="condition-bound-field-{{@key}}" data-live-sync="true">
 								<select style="max-width:120px;vertical-align: inherit;" name="conditions[{{../../id}}][group][{{parent}}][{{@key}}][field]" data-sync="#condition-bound-field-{{@key}}">
 									<option></option>
-									<optgroup label="<?php esc_attr_e('Fields', 'qcformbuilder-forms'); ?>">
+									<optgroup label="<?php esc_attr_e('Fields', 'conversational-forms'); ?>">
 									{{#each @root/fields}}
 										<option value="{{ID}}" {{#is ../field value=ID}}selected="selected"{{/is}} {{#is conditions/type value=../../../id}}disabled="disabled"{{/is}}>{{label}} [{{slug}}]</option>
 									{{/each}}
@@ -104,8 +104,8 @@ data-autoload="true"
 									</optgroup>*/ ?>
 								</select>
 								<select style="max-width:110px;vertical-align: inherit;" name="conditions[{{../../id}}][group][{{parent}}][{{@key}}][compare]">
-									<option value="is" {{#is compare value="is"}}selected="selected"{{/is}}><?php esc_html_e( 'is', 'qcformbuilder-forms' ); ?></option>
-									<option value="contains" {{#is compare value="contains"}}selected="selected"{{/is}}><?php esc_html_e( 'contains', 'qcformbuilder-forms' ); ?></option>
+									<option value="is" {{#is compare value="is"}}selected="selected"{{/is}}><?php esc_html_e( 'is', 'conversational-forms'); ?></option>
+									<option value="contains" {{#is compare value="contains"}}selected="selected"{{/is}}><?php esc_html_e( 'contains', 'conversational-forms'); ?></option>
 								</select>
 								<span data-value="" class="qcformbuilder-conditional-field-value" style="padding: 0 12px 0; display:inline-block; width:200px;">
 								{{#find @root/fields field}}
@@ -117,25 +117,25 @@ data-autoload="true"
 											{{/each}}
 										</select>
 									{{else}}
-										<input type="text" class="magic-tag-enabled block-input" name="conditions[{{../../../../id}}][group][{{../../parent}}][{{@key}}][value]" value="{{../../value}}" {{#unless ../../field}}placeholder="<?php echo esc_html__( 'Select field first', 'qcformbuilder-forms' ); ?>" disabled=""{{/unless}}>
+										<input type="text" class="magic-tag-enabled block-input" name="conditions[{{../../../../id}}][group][{{../../parent}}][{{@key}}][value]" value="{{../../value}}" {{#unless ../../field}}placeholder="<?php echo esc_html__( 'Select field first', 'conversational-forms'); ?>" disabled=""{{/unless}}>
 									{{/if}}
 								{{else}}
-									<input type="text" class="magic-tag-enabled block-input" name="conditions[{{../../../../id}}][group][{{../parent}}][{{@key}}][value]" value="{{../value}}" {{#unless ../field}}placeholder="<?php echo esc_html__( 'Select field first', 'qcformbuilder-forms' ); ?>" disabled=""{{/unless}}>
+									<input type="text" class="magic-tag-enabled block-input" name="conditions[{{../../../../id}}][group][{{../parent}}][{{@key}}][value]" value="{{../value}}" {{#unless ../field}}placeholder="<?php echo esc_html__( 'Select field first', 'conversational-forms'); ?>" disabled=""{{/unless}}>
 								{{/find}}
 								</span>
 								<button class="button pull-right" data-remove-line="{{@key}}" type="button"><i class="icon-join"></i></button>
 							</div>
 						{{/each}}
-						<div style="margin: 12px 0 0;"><button class="button button-small" data-add-line="{{@key}}" data-group="{{../id}}" type="button"><?php esc_html_e( 'Add Condition', 'qcformbuilder-forms' ); ?></button></div>
+						<div style="margin: 12px 0 0;"><button class="button button-small" data-add-line="{{@key}}" data-group="{{../id}}" type="button"><?php esc_html_e( 'Add Condition', 'conversational-forms'); ?></button></div>
 						</div>
 					{{/each}}
 
-					<button style="margin: 12px 0 12px;" type="button" class="block-input button" data-confirm="<?php echo esc_attr( __('Are you sure you want to remove this condition?', 'qcformbuilder forms') ); ?>" data-remove-group="{{id}}"><?php esc_html_e( 'Remove Condition', 'qcformbuilder-forms' ); ?></button>
+					<button style="margin: 12px 0 12px;" type="button" class="block-input button" data-confirm="<?php echo esc_attr( __('Are you sure you want to remove this condition?', 'conversational-forms') ); ?>" data-remove-group="{{id}}"><?php esc_html_e( 'Remove Condition', 'conversational-forms'); ?></button>
 				</div>
 				<div style="float: left; width: 288px; padding-left: 12px;">
 				{{#if @root/fields}}
-					<h4 style="border-bottom: 1px solid rgb(191, 191, 191); margin: 0px 0px 6px; padding: 0px 0px 6px;"><?php esc_html_e('Applied Fields', 'qcformbuilder-forms'); ?></h4>
-					<p class="description"><?php esc_html_e('Select the fields to apply this condition to.', 'qcformbuilder-forms' ); ?></p>
+					<h4 style="border-bottom: 1px solid rgb(191, 191, 191); margin: 0px 0px 6px; padding: 0px 0px 6px;"><?php esc_html_e('Applied Fields', 'conversational-forms'); ?></h4>
+					<p class="description"><?php esc_html_e('Select the fields to apply this condition to.', 'conversational-forms'); ?></p>
 					{{#each @root/fields}}
 
 						<label style="display: block; margin-left: 20px;{{#find ../../fields ID}}opacity:0.7;{{/find}}"><input style="margin-left: -20px;" type="checkbox" data-bind-condition="#field-condition-type-{{ID}}" value="{{../id}}" {{#is conditions/type value=../id}}checked="checked"{{else}}{{#find @root/conditions conditions/type}}disabled="disabled"{{/find}}{{/is}} {{#find ../../fields ID}}disabled="disabled"{{/find}}>{{label}} [{{slug}}]</label>

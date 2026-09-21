@@ -166,11 +166,10 @@ class Qcformbuilder_Forms_Transient  {
 
 		$like = '%' . $wpdb->esc_like( 'cftransdata' ) . '%';
 
-		$query = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s ", $like );
-
 		$return = [];
 		
-		$results = $wpdb->get_results( $query,ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s", $like ), ARRAY_A );
 
 		if( ! empty( $results) ){
 			foreach ($results as $result ){

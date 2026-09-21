@@ -32,30 +32,30 @@ if ( $data && ! is_wp_error( $data ) ) {
 ?>
 <div class="wrap wfb-wpbot-page">
 	<div class="wfb-wpbot-page__header">
-		<h2><?php esc_html_e( 'ChatBot WPBot', 'qcformbuilder-forms' ); ?></h2>
-		<p><?php esc_html_e( 'Connect Conversational Forms with WPBot ChatBot.', 'qcformbuilder-forms' ); ?></p>
+		<h2><?php esc_html_e( 'ChatBot WPBot', 'conversational-forms'); ?></h2>
+		<p><?php esc_html_e( 'Connect Conversational Forms with WPBot ChatBot.', 'conversational-forms'); ?></p>
 	</div>
 
 	<div class="wfb-wpbot-page__card wfb-wpbot-page__info">
 		<p>
-			<strong><?php esc_html_e( 'Conversational Form', 'qcformbuilder-forms' ); ?></strong>
-			<?php esc_html_e( 'Builder works with', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( 'WPBot ChatBot.', 'qcformbuilder-forms' ); ?></strong>
+			<strong><?php esc_html_e( 'Conversational Form', 'conversational-forms'); ?></strong>
+			<?php esc_html_e( 'Builder works with', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( 'WPBot ChatBot.', 'conversational-forms'); ?></strong>
 		</p>
 		<p>
-			<?php esc_html_e( 'After creating a', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( 'Conversational Form,', 'qcformbuilder-forms' ); ?></strong>
-			<?php esc_html_e( 'you can add it to the', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( "ChatBot's Start Menu", 'qcformbuilder-forms' ); ?></strong>
-			<?php esc_html_e( 'from the', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( 'ChatBot Settings → Start Menu', 'qcformbuilder-forms' ); ?></strong>
+			<?php esc_html_e( 'After creating a', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( 'Conversational Form,', 'conversational-forms'); ?></strong>
+			<?php esc_html_e( 'you can add it to the', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( "ChatBot's Start Menu", 'conversational-forms'); ?></strong>
+			<?php esc_html_e( 'from the', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( 'ChatBot Settings → Start Menu', 'conversational-forms'); ?></strong>
 		</p>
 		<p>
-			<?php esc_html_e( 'You can use conversational forms for', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( 'Lead Generation,', 'qcformbuilder-forms' ); ?></strong>
-			<?php esc_html_e( 'to collect information from users, and to', 'qcformbuilder-forms' ); ?>
-			<strong><?php esc_html_e( 'create Button (menu)', 'qcformbuilder-forms' ); ?></strong>
-			<?php esc_html_e( 'driven conversations.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'You can use conversational forms for', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( 'Lead Generation,', 'conversational-forms'); ?></strong>
+			<?php esc_html_e( 'to collect information from users, and to', 'conversational-forms'); ?>
+			<strong><?php esc_html_e( 'create Button (menu)', 'conversational-forms'); ?></strong>
+			<?php esc_html_e( 'driven conversations.', 'conversational-forms'); ?>
 		</p>
 	</div>
 
@@ -83,18 +83,20 @@ if ( $data && ! is_wp_error( $data ) ) {
 				case 'install':
 					if ( $status['url'] ) {
 						if ( $compatible_php && $compatible_wp ) {
+							/* translators: %s: Plugin name */
+							$aria_label = sprintf( _x( 'Install %s now',  'plugin' , 'conversational-forms'), $name );
 							$action_links[] = sprintf(
 								'<a class="install-now button" data-slug="%s" href="%s" aria-label="%s" data-name="%s">%s</a>',
 								esc_attr( $plugin['slug'] ),
 								esc_url( $status['url'] ),
-								esc_attr( sprintf( _x( 'Install %s now', 'plugin' ), $name ) ),
+								esc_attr( $aria_label ),
 								esc_attr( $name ),
-								__( 'Install Now' )
+								__( 'Install Now' , 'conversational-forms')
 							);
 						} else {
 							$action_links[] = sprintf(
 								'<button type="button" class="button button-disabled" disabled="disabled">%s</button>',
-								_x( 'Cannot Install', 'plugin' )
+								_x( 'Cannot Install',  'plugin' , 'conversational-forms')
 							);
 						}
 					}
@@ -103,19 +105,21 @@ if ( $data && ! is_wp_error( $data ) ) {
 				case 'update_available':
 					if ( $status['url'] ) {
 						if ( $compatible_php && $compatible_wp ) {
+							/* translators: %s: Plugin name */
+							$aria_label = sprintf( _x( 'Update %s now',  'plugin' , 'conversational-forms'), $name );
 							$action_links[] = sprintf(
 								'<a class="update-now button aria-button-if-js" data-plugin="%s" data-slug="%s" href="%s" aria-label="%s" data-name="%s">%s</a>',
 								esc_attr( $status['file'] ),
 								esc_attr( $plugin['slug'] ),
 								esc_url( $status['url'] ),
-								esc_attr( sprintf( _x( 'Update %s now', 'plugin' ), $name ) ),
+								esc_attr( $aria_label ),
 								esc_attr( $name ),
-								__( 'Update Now' )
+								__( 'Update Now' , 'conversational-forms')
 							);
 						} else {
 							$action_links[] = sprintf(
 								'<button type="button" class="button button-disabled" disabled="disabled">%s</button>',
-								_x( 'Cannot Update', 'plugin' )
+								_x( 'Cannot Update',  'plugin' , 'conversational-forms')
 							);
 						}
 					}
@@ -126,11 +130,12 @@ if ( $data && ! is_wp_error( $data ) ) {
 					if ( is_plugin_active( $status['file'] ) ) {
 						$action_links[] = sprintf(
 							'<button type="button" class="button button-disabled" disabled="disabled">%s</button>',
-							_x( 'Active', 'plugin' )
+							_x( 'Active',  'plugin' , 'conversational-forms')
 						);
 					} elseif ( current_user_can( 'activate_plugin', $status['file'] ) ) {
-						$button_text  = __( 'Activate' );
-						$button_label = _x( 'Activate %s', 'plugin' );
+						$button_text  = __( 'Activate' , 'conversational-forms');
+						/* translators: %s: Plugin name */
+						$button_label = _x( 'Activate %s',  'plugin' , 'conversational-forms');
 						$activate_url = add_query_arg(
 							array(
 								'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $status['file'] ),
@@ -141,8 +146,9 @@ if ( $data && ! is_wp_error( $data ) ) {
 						);
 
 						if ( is_network_admin() ) {
-							$button_text  = __( 'Network Activate' );
-							$button_label = _x( 'Network Activate %s', 'plugin' );
+							$button_text  = __( 'Network Activate' , 'conversational-forms');
+							/* translators: %s: Plugin name */
+							$button_label = _x( 'Network Activate %s',  'plugin' , 'conversational-forms');
 							$activate_url = add_query_arg( array( 'networkwide' => 1 ), $activate_url );
 						}
 
@@ -155,7 +161,7 @@ if ( $data && ! is_wp_error( $data ) ) {
 					} else {
 						$action_links[] = sprintf(
 							'<button type="button" class="button button-disabled" disabled="disabled">%s</button>',
-							_x( 'Installed', 'plugin' )
+							_x( 'Installed',  'plugin' , 'conversational-forms')
 						);
 					}
 					break;
@@ -184,47 +190,47 @@ if ( $data && ! is_wp_error( $data ) ) {
 					<p>
 						<?php
 						if ( ! $compatible_php && ! $compatible_wp ) {
-							esc_html_e( 'This plugin doesn&#8217;t work with your versions of WordPress and PHP.' );
+							esc_html_e( 'This plugin doesn&#8217;t work with your versions of WordPress and PHP.' , 'conversational-forms');
 							if ( current_user_can( 'update_core' ) && current_user_can( 'update_php' ) ) {
 								printf(
 									' <a href="%1$s">%2$s</a>, %3$s <a href="%4$s">%5$s</a>.',
 									esc_url( self_admin_url( 'update-core.php' ) ),
-									esc_html__( 'Please update WordPress' ),
-									esc_html__( 'and then' ),
+									esc_html__( 'Please update WordPress' , 'conversational-forms'),
+									esc_html__( 'and then' , 'conversational-forms'),
 									esc_url( wp_get_update_php_url() ),
-									esc_html__( 'learn more about updating PHP' )
+									esc_html__( 'learn more about updating PHP' , 'conversational-forms')
 								);
 								wp_update_php_annotation( '</p><p><em>', '</em>' );
 							} elseif ( current_user_can( 'update_core' ) ) {
 								printf(
 									' <a href="%s">%s</a>.',
 									esc_url( self_admin_url( 'update-core.php' ) ),
-									esc_html__( 'Please update WordPress' )
+									esc_html__( 'Please update WordPress' , 'conversational-forms')
 								);
 							} elseif ( current_user_can( 'update_php' ) ) {
 								printf(
 									' <a href="%s">%s</a>.',
 									esc_url( wp_get_update_php_url() ),
-									esc_html__( 'Learn more about updating PHP' )
+									esc_html__( 'Learn more about updating PHP' , 'conversational-forms')
 								);
 								wp_update_php_annotation( '</p><p><em>', '</em>' );
 							}
 						} elseif ( ! $compatible_wp ) {
-							esc_html_e( 'This plugin doesn&#8217;t work with your version of WordPress.' );
+							esc_html_e( 'This plugin doesn&#8217;t work with your version of WordPress.' , 'conversational-forms');
 							if ( current_user_can( 'update_core' ) ) {
 								printf(
 									' <a href="%s">%s</a>.',
 									esc_url( self_admin_url( 'update-core.php' ) ),
-									esc_html__( 'Please update WordPress' )
+									esc_html__( 'Please update WordPress' , 'conversational-forms')
 								);
 							}
 						} elseif ( ! $compatible_php ) {
-							esc_html_e( 'This plugin doesn&#8217;t work with your version of PHP.' );
+							esc_html_e( 'This plugin doesn&#8217;t work with your version of PHP.' , 'conversational-forms');
 							if ( current_user_can( 'update_php' ) ) {
 								printf(
 									' <a href="%s">%s</a>.',
 									esc_url( wp_get_update_php_url() ),
-									esc_html__( 'Learn more about updating PHP' )
+									esc_html__( 'Learn more about updating PHP' , 'conversational-forms')
 								);
 								wp_update_php_annotation( '</p><p><em>', '</em>' );
 							}
@@ -253,12 +259,12 @@ if ( $data && ! is_wp_error( $data ) ) {
 						<?php endforeach; ?>
 					</ul>
 				<?php endif; ?>
-				<a class="wfb-wpbot-more-details wpbot_installModal" href="#"><?php esc_html_e( 'More Details', 'qcformbuilder-forms' ); ?></a>
+				<a class="wfb-wpbot-more-details wpbot_installModal" href="#"><?php esc_html_e( 'More Details', 'conversational-forms'); ?></a>
 			</div>
 
 			<div class="wfb-wpbot-modal" id="wfb-wpbot-plugin-modal" role="dialog" aria-labelledby="wfb-wpbot-plugin-modal-title" aria-hidden="true">
 				<div class="wfb-wpbot-modal__dialog">
-					<button type="button" class="wfb-wpbot-modal__close" aria-label="<?php esc_attr_e( 'Close', 'qcformbuilder-forms' ); ?>">&times;</button>
+					<button type="button" class="wfb-wpbot-modal__close" aria-label="<?php esc_attr_e( 'Close', 'conversational-forms'); ?>">&times;</button>
 					<div class="wfb-wpbot-modal__body">
 						<iframe title="<?php echo esc_attr( $title ); ?>" src="<?php echo esc_url( $details_link ); ?>"></iframe>
 					</div>

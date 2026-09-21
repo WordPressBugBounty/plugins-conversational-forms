@@ -174,9 +174,14 @@ class Qcformbuilder_Forms
 			$id = null;
 
 			$view = false;
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (isset($_GET['wfb-email-preview'], $_GET['wfb-email-preview-form'])) {
-				if (wp_verify_nonce($_GET['wfb-email-preview'], $_GET['wfb-email-preview-form'])) {
-					$id = $_GET['wfb-email-preview-form'];
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$preview_nonce = sanitize_text_field(wp_unslash($_GET['wfb-email-preview']));
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$preview_form = sanitize_text_field(wp_unslash($_GET['wfb-email-preview-form']));
+				if (wp_verify_nonce($preview_nonce, $preview_form)) {
+					$id = $preview_form;
 					$view = true;
 				}
 			}
@@ -407,7 +412,7 @@ class Qcformbuilder_Forms
 	public function load_plugin_textdomain()
 	{
 
-		load_plugin_textdomain($this->plugin_slug, false, basename(WFBCORE_PATH) . '/languages');
+		load_plugin_textdomain( 'conversational-forms' );
 	}
 
 	/**
@@ -433,8 +438,10 @@ class Qcformbuilder_Forms
 			$force_update = false;
 
 			// ensure that admin can only force update
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (Qcformbuilder_Forms::get_manage_cap('admin') && isset($_GET['cal_db_update'])) {
-				$force_update = (bool)wp_verify_nonce($_GET['cal_db_update']);
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$force_update = (bool)wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['cal_db_update'])));
 			}
 
 			include_once WFBCORE_PATH . 'includes/updater.php';
@@ -676,21 +683,24 @@ class Qcformbuilder_Forms
 	{
 		return true;
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (!isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
 			return new WP_Error('error');
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$recaptcha_response = isset($_POST['g-recaptcha-response']) ? sanitize_text_field(wp_unslash($_POST['g-recaptcha-response'])) : '';
 		$args = array(
 			'secret' => $field['config']['private_key'],
-			'response' => sanitize_text_field($_POST['g-recaptcha-response'])
+			'response' => $recaptcha_response
 		);
 
 		$request = wp_remote_get('https://www.google.com/recaptcha/api/siteverify?' . build_query($args));
 		$result = json_decode(wp_remote_retrieve_body($request));
 		if (empty($result->success)) {
-			return new WP_Error('error', __("The captcha wasn't entered correctly.",
-					'qcformbuilder-forms') . ' <a href="#" class="reset_' . sanitize_text_field($_POST[$field['ID']]) . '">' . __('Reset',
-					'qcformbuilder-forms') . '<a>.');
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$reset_class = isset($_POST[$field['ID']]) ? sanitize_text_field(wp_unslash($_POST[$field['ID']])) : '';
+			return new WP_Error('error', __("The captcha wasn't entered correctly.", 'conversational-forms') . ' <a href="#" class="reset_' . esc_attr($reset_class) . '">' . __('Reset', 'conversational-forms') . '<a>.');
 		}
 
 
@@ -741,6 +751,7 @@ class Qcformbuilder_Forms
 		}
 
 		foreach ((array)$new_data as $entry_data) {
+			$entry_data = Qcformbuilder_Forms_Sanitize::sanitize($entry_data);
 			// no entry - add first
 			$new_entry = array(
 				'entry_id' => $entry_id,
@@ -859,16 +870,20 @@ class Qcformbuilder_Forms
 
 		$entryid = null;
 		// check submit type (new or update)
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_edt'])) {
 			// is edit
 			//check user can edit this item.
 			$user_id = get_current_user_id();
-			$details = Qcformbuilder_Forms::get_entry_detail($_POST['_wfb_frm_edt'], $form);
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$details = Qcformbuilder_Forms::get_entry_detail(absint(wp_unslash($_POST['_wfb_frm_edt'])), $form);
 
 			// check token
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if (is_array($details) && isset($_POST['_wfb_frm_edt_tkn'])) {
 
-				$validated = Qcformbuilder_Forms_Entry_Token::verify_token($_POST['_wfb_frm_edt_tkn'], $details['id'],
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$validated = Qcformbuilder_Forms_Entry_Token::verify_token(sanitize_text_field(wp_unslash($_POST['_wfb_frm_edt_tkn'])), $details['id'],
 					$form['ID']);
 				if (is_wp_error($validated)) {
 					return $validated;
@@ -884,9 +899,10 @@ class Qcformbuilder_Forms
 					if (!empty($details)) {
 						// check user can edit
 						if (current_user_can('edit_posts') || absint($details['user_id'] ) === $user_id) {
-							$entryid = $_POST['_wfb_frm_edt'];
+							// phpcs:ignore WordPress.Security.NonceVerification.Missing
+							$entryid = absint( wp_unslash( $_POST['_wfb_frm_edt'] ) );
 						} else {
-							return new WP_Error('error', __("Permission denied.", 'qcformbuilder-forms'));
+							return new WP_Error('error', __("Permission denied.", 'conversational-forms'));
 						}
 					}
 
@@ -923,8 +939,10 @@ class Qcformbuilder_Forms
 		try {
 			$phpmailer->Send();
 		} catch (phpmailerException $e) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			print_r($phpmailer->ErrorInfo);
 		}
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		print_r($phpmailer);
 		$phpmailer->SMTPDebug = 0;
 		$result = ob_get_clean();
@@ -1016,7 +1034,7 @@ class Qcformbuilder_Forms
 						), 10, 2);
 
 						//passback urls
-						$referrer = parse_url($referrer);
+						$referrer = wp_parse_url($referrer);
 						$query_vars = array();
 						if (!empty($referrer['query'])) {
 							parse_str($referrer['query'], $referrer['query']);
@@ -1027,7 +1045,7 @@ class Qcformbuilder_Forms
 						}
 						// get vars in url
 						$base_redirect = self::do_magic_tags($processor['config']['url']);
-						$redirect = parse_url($base_redirect);
+						$redirect = wp_parse_url($base_redirect);
 
 						if (!empty($redirect['query'])) {
 							parse_str($redirect['query'], $redirect['query']);
@@ -1089,7 +1107,7 @@ class Qcformbuilder_Forms
 		}
 
 		if (!$html) {
-			$message = strip_tags($message);
+			$message = wp_strip_all_tags($message);
 		}
 
 		// setup mailer
@@ -1218,30 +1236,30 @@ class Qcformbuilder_Forms
 	{
 		$internal_processors = array(
 			'auto_responder' => array(
-				"name" => __('Auto Responder', 'qcformbuilder-forms'),
-				"description" => __('Sends out an auto response e-mail', 'qcformbuilder-forms'),
+				"name" => __('Auto Responder', 'conversational-forms'),
+				"description" => __('Sends out an auto response e-mail', 'conversational-forms'),
 				"post_processor" => array($this, 'send_auto_response'),
 				"template" => WFBCORE_PATH . "processors/auto_responder/config.php",
 				"default" => array(
-					'subject' => __('Thank you for contacting us', 'qcformbuilder-forms')
+					'subject' => __('Thank you for contacting us', 'conversational-forms')
 				),
 			),
 			'form_redirect' => array(
-				"name" => __('Redirect', 'qcformbuilder-forms'),
-				"description" => __('Redirects user to URL on successful submit', 'qcformbuilder-forms'),
+				"name" => __('Redirect', 'conversational-forms'),
+				"description" => __('Redirects user to URL on successful submit', 'conversational-forms'),
 				"template" => WFBCORE_PATH . "processors/redirect/config.php",
 				"single" => false
 			),
 			'conditional_recipient' => array(
-				"name" => __('Conditional Recipient', 'qcformbuilder-forms'),
-				"description" => __('Send email to different recipients depending on conditions', 'qcformbuilder-forms'),
+				"name" => __('Conditional Recipient', 'conversational-forms'),
+				"description" => __('Send email to different recipients depending on conditions', 'conversational-forms'),
 				"template" => WFBCORE_PATH . "processors/conditional_recipient/config.php",
 				'post_processor' => array('Qcformbuilder_Forms_Processor_Conditional_Recipient', 'post_processor'),
 				"single" => false
 			),
 			'increment_capture' => array(
-				"name" => __('Increment Value', 'qcformbuilder-forms'),
-				"description" => __('Increment a value per entry.', 'qcformbuilder-forms'),
+				"name" => __('Increment Value', 'conversational-forms'),
+				"description" => __('Increment a value per entry.', 'conversational-forms'),
 				"processor" => array($this, 'increment_value'),
 				"template" => WFBCORE_PATH . "processors/increment/config.php",
 				"single" => true,
@@ -1255,8 +1273,8 @@ class Qcformbuilder_Forms
 		$wp_api_key = get_option('wordpress_api_key');
 		if (!empty($wp_api_key)) {
 			$internal_processors['akismet'] = array(
-				"name" => __('Akismet', 'qcformbuilder-forms'),
-				"description" => __('Anti-spam filtering', 'qcformbuilder-forms'),
+				"name" => __('Akismet', 'conversational-forms'),
+				"description" => __('Anti-spam filtering', 'conversational-forms'),
 				"pre_processor" => array($this, 'akismet_scanner'),
 				"template" => WFBCORE_PATH . "processors/akismet/config.php",
 				"single" => false,
@@ -1340,7 +1358,7 @@ class Qcformbuilder_Forms
 
 		$wp_api_key = get_option('wordpress_api_key');
 		if (empty($wp_api_key)) {
-			return array('type' => 'error', 'note' => __('Akismet not setup.'));
+			return array('type' => 'error', 'note' => __('Akismet not setup.', 'conversational-forms'));
 		}
 		// set permalink
 		if ($post->ID) {
@@ -1358,9 +1376,9 @@ class Qcformbuilder_Forms
 		// Call to comment check
 		$data = array(
 			'blog' => get_home_url(),
-			'user_ip' => $_SERVER['REMOTE_ADDR'],
-			'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-			'referrer' => $_SERVER['HTTP_REFERER'],
+			'user_ip' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '',
+			'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '',
+			'referrer' => isset($_SERVER['HTTP_REFERER']) ? sanitize_url(wp_unslash($_SERVER['HTTP_REFERER'])) : '',
 			'permalink' => $permalink,
 			'comment_type' => $type,
 			'comment_author' => self::do_magic_tags($config['sender_name']),
@@ -1374,35 +1392,13 @@ class Qcformbuilder_Forms
 			$data['comment_content'] = self::do_magic_tags($config['content']);
 		};
 
-		$request = http_build_query($data);
+		$response = wp_remote_post( "http://{$wp_api_key}.rest.akismet.com/1.1/comment-check", array(
+			'body'       => $data,
+			'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . ' | Akismet/3.1.5',
+			'timeout'    => 10,
+		) );
 
-		$host = $http_host = $wp_api_key . '.rest.akismet.com';
-		$path = '/1.1/comment-check';
-		$port = 80;
-		$akismet_ua = "WordPress/3.8.1 | Akismet/2.5.9";
-		$content_length = strlen($request);
-		$http_request = "POST $path HTTP/1.0\r\n";
-		$http_request .= "Host: $host\r\n";
-		$http_request .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$http_request .= "Content-Length: {$content_length}\r\n";
-		$http_request .= "User-Agent: {$akismet_ua}\r\n";
-		$http_request .= "\r\n";
-		$http_request .= $request;
-		$response = '';
-		if (false != ($fs = @fsockopen($http_host, $port, $errno, $errstr, 10))) {
-
-			fwrite($fs, $http_request);
-
-			while (!feof($fs)) {
-				$response .= fgets($fs, 1160);
-			} // One TCP-IP packet
-			fclose($fs);
-
-			$response = explode("\r\n\r\n", $response, 2);
-
-		}
-
-		if ('true' == $response[1]) {
+		if ( ! is_wp_error( $response ) && 'true' === wp_remote_retrieve_body( $response ) ) {
 			return array('type' => 'error', 'note' => self::do_magic_tags($config['error']));
 		}
 
@@ -1439,20 +1435,290 @@ class Qcformbuilder_Forms
 	}
 
 	/**
-	 * Calculation based on create_function() ( deprecated since PHP 7.2.0 )
+	 * Calculation evaluator without eval() or create_function()
 	 * 
 	 * @since 1.8.5
 	 * 
 	 * @param string $formula that needs to be parsed and processed as a calculation
 	 * 
-	 * @return result of calculation
+	 * @return float|int result of calculation
 	 */
 	static public function original_calculation_job( $formula )
 	{
-		$total_function = create_function(null, 'return ' . $formula . ';');
-		$total = $total_function();
+		return self::evaluate_math_formula( $formula );
+	}
 
-		return $total;
+	/**
+	 * Safely parse and evaluate a mathematical formula without eval().
+	 *
+	 * @param string $expression Formula string.
+	 * @return float|int
+	 */
+	public static function evaluate_math_formula( $expression )
+	{
+		$expression = trim( (string) $expression );
+		if ( '' === $expression ) {
+			return 0;
+		}
+
+		$expression = str_replace( '**', '^', $expression );
+
+		// Tokenize
+		$tokens = array();
+		$len = strlen( $expression );
+		$i = 0;
+
+		while ( $i < $len ) {
+			$char = $expression[ $i ];
+
+			if ( ctype_space( $char ) ) {
+				$i++;
+				continue;
+			}
+
+			if ( is_numeric( $char ) || '.' === $char ) {
+				$num = '';
+				while ( $i < $len && ( is_numeric( $expression[ $i ] ) || '.' === $expression[ $i ] || 'e' === strtolower( $expression[ $i ] ) ) ) {
+					if ( 'e' === strtolower( $expression[ $i ] ) && $i + 1 < $len && ( '+' === $expression[ $i + 1 ] || '-' === $expression[ $i + 1 ] ) ) {
+						$num .= $expression[ $i ] . $expression[ $i + 1 ];
+						$i += 2;
+						continue;
+					}
+					$num .= $expression[ $i ];
+					$i++;
+				}
+				$tokens[] = array( 'type' => 'number', 'value' => (float) $num );
+				continue;
+			}
+
+			if ( ctype_alpha( $char ) || '_' === $char ) {
+				$ident = '';
+				while ( $i < $len && ( ctype_alnum( $expression[ $i ] ) || '_' === $expression[ $i ] ) ) {
+					$ident .= $expression[ $i ];
+					$i++;
+				}
+				$tokens[] = array( 'type' => 'ident', 'value' => strtolower( $ident ) );
+				continue;
+			}
+
+			if ( in_array( $char, array( '+', '-', '*', '/', '%', '^', '(', ')', ',' ), true ) ) {
+				$tokens[] = array( 'type' => 'op', 'value' => $char );
+				$i++;
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ( empty( $tokens ) ) {
+			return 0;
+		}
+
+		$pos = 0;
+		return self::parse_math_expression( $tokens, $pos );
+	}
+
+	/**
+	 * Parse addition and subtraction.
+	 *
+	 * @param array $tokens List of tokens.
+	 * @param int   $pos    Current token index (by reference).
+	 * @return float|int
+	 */
+	private static function parse_math_expression( array $tokens, &$pos )
+	{
+		$result = self::parse_math_mul_div( $tokens, $pos );
+		while ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && in_array( $tokens[ $pos ]['value'], array( '+', '-' ), true ) ) {
+			$op = $tokens[ $pos ]['value'];
+			$pos++;
+			$right = self::parse_math_mul_div( $tokens, $pos );
+			if ( '+' === $op ) {
+				$result += $right;
+			} else {
+				$result -= $right;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Parse multiplication, division, and modulo.
+	 *
+	 * @param array $tokens List of tokens.
+	 * @param int   $pos    Current token index (by reference).
+	 * @return float|int
+	 */
+	private static function parse_math_mul_div( array $tokens, &$pos )
+	{
+		$result = self::parse_math_power( $tokens, $pos );
+		while ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && in_array( $tokens[ $pos ]['value'], array( '*', '/', '%' ), true ) ) {
+			$op = $tokens[ $pos ]['value'];
+			$pos++;
+			$right = self::parse_math_power( $tokens, $pos );
+			if ( '*' === $op ) {
+				$result *= $right;
+			} elseif ( '/' === $op ) {
+				$result = ( 0 != $right ) ? ( $result / $right ) : 0;
+			} elseif ( '%' === $op ) {
+				$result = ( 0 != $right ) ? fmod( $result, $right ) : 0;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Parse power exponentiation (^).
+	 *
+	 * @param array $tokens List of tokens.
+	 * @param int   $pos    Current token index (by reference).
+	 * @return float|int
+	 */
+	private static function parse_math_power( array $tokens, &$pos )
+	{
+		$result = self::parse_math_unary( $tokens, $pos );
+		while ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && '^' === $tokens[ $pos ]['value'] ) {
+			$pos++;
+			$right = self::parse_math_unary( $tokens, $pos );
+			$result = pow( $result, $right );
+		}
+		return $result;
+	}
+
+	/**
+	 * Parse unary + and -.
+	 *
+	 * @param array $tokens List of tokens.
+	 * @param int   $pos    Current token index (by reference).
+	 * @return float|int
+	 */
+	private static function parse_math_unary( array $tokens, &$pos )
+	{
+		if ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && in_array( $tokens[ $pos ]['value'], array( '+', '-' ), true ) ) {
+			$op = $tokens[ $pos ]['value'];
+			$pos++;
+			$val = self::parse_math_unary( $tokens, $pos );
+			return ( '-' === $op ) ? -$val : $val;
+		}
+		return self::parse_math_primary( $tokens, $pos );
+	}
+
+	/**
+	 * Parse numbers, parentheses, and math functions.
+	 *
+	 * @param array $tokens List of tokens.
+	 * @param int   $pos    Current token index (by reference).
+	 * @return float|int
+	 */
+	private static function parse_math_primary( array $tokens, &$pos )
+	{
+		if ( ! isset( $tokens[ $pos ] ) ) {
+			return 0;
+		}
+
+		$tok = $tokens[ $pos ];
+
+		if ( 'number' === $tok['type'] ) {
+			$pos++;
+			return $tok['value'];
+		}
+
+		if ( 'op' === $tok['type'] && '(' === $tok['value'] ) {
+			$pos++; // consume '('
+			$val = self::parse_math_expression( $tokens, $pos );
+			if ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && ')' === $tokens[ $pos ]['value'] ) {
+				$pos++; // consume ')'
+			}
+			return $val;
+		}
+
+		if ( 'ident' === $tok['type'] ) {
+			$pos++;
+			$func_name = $tok['value'];
+
+			if ( 'pi' === $func_name ) {
+				return M_PI;
+			}
+			if ( 'e' === $func_name ) {
+				return M_E;
+			}
+
+			if ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && '(' === $tokens[ $pos ]['value'] ) {
+				$pos++; // consume '('
+				$args = array();
+				if ( ! ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && ')' === $tokens[ $pos ]['value'] ) ) {
+					$args[] = self::parse_math_expression( $tokens, $pos );
+					while ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && ',' === $tokens[ $pos ]['value'] ) {
+						$pos++; // consume ','
+						$args[] = self::parse_math_expression( $tokens, $pos );
+					}
+				}
+				if ( isset( $tokens[ $pos ] ) && 'op' === $tokens[ $pos ]['type'] && ')' === $tokens[ $pos ]['value'] ) {
+					$pos++; // consume ')'
+				}
+
+				return self::call_math_function( $func_name, $args );
+			}
+
+			return 0;
+		}
+
+		$pos++;
+		return 0;
+	}
+
+	/**
+	 * Evaluate supported mathematical functions safely.
+	 *
+	 * @param string $name Function name.
+	 * @param array  $args Function arguments.
+	 * @return float|int
+	 */
+	private static function call_math_function( $name, array $args )
+	{
+		$a = isset( $args[0] ) ? $args[0] : 0;
+		$b = isset( $args[1] ) ? $args[1] : 0;
+
+		switch ( $name ) {
+			case 'abs':
+				return abs( $a );
+			case 'ceil':
+				return ceil( $a );
+			case 'floor':
+				return floor( $a );
+			case 'round':
+				return round( $a, isset( $args[1] ) ? (int) $args[1] : 0 );
+			case 'sqrt':
+				return ( $a >= 0 ) ? sqrt( $a ) : 0;
+			case 'pow':
+				return pow( $a, $b );
+			case 'min':
+				return ! empty( $args ) ? min( $args ) : 0;
+			case 'max':
+				return ! empty( $args ) ? max( $args ) : 0;
+			case 'log':
+				return ( $a > 0 ) ? log( $a ) : 0;
+			case 'exp':
+				return exp( $a );
+			case 'sin':
+				return sin( $a );
+			case 'cos':
+				return cos( $a );
+			case 'tan':
+				return tan( $a );
+			case 'asin':
+				return ( $a >= -1 && $a <= 1 ) ? asin( $a ) : 0;
+			case 'acos':
+				return ( $a >= -1 && $a <= 1 ) ? acos( $a ) : 0;
+			case 'atan':
+				return atan( $a );
+			case 'atan2':
+				return atan2( $a, $b );
+			case 'random':
+			case 'rand':
+				return ( isset( $args[0] ) && isset( $args[1] ) ) ? wp_rand( (int) $args[0], (int) $args[1] ) : ( wp_rand( 0, 1000000 ) / 1000000 );
+			default:
+				return 0;
+		}
 	}
 
 	/**
@@ -1472,7 +1738,7 @@ class Qcformbuilder_Forms
 			$message = sprintf(
 				'"%s" %s',
 				$deprecated,
-				__('has been deprecated in calculation fields for compatibility with PHP 7.2 or later', 'qcformbuilder-forms')
+				__('has been deprecated in calculation fields for compatibility with PHP 7.2 or later', 'conversational-forms')
 			);
 
 			/**
@@ -1551,7 +1817,7 @@ class Qcformbuilder_Forms
 
 		if (false !== strpos($formula, '/0')) {
 			return new WP_Error($field['ID'] . '-calculation',
-				__('Calculation is invalid (division by zero)', 'qcformbuilder-forms'));
+				__('Calculation is invalid (division by zero)', 'conversational-forms'));
 		}
 	
 		//If PHP version is less than 7.2.0, continue using old function
@@ -1580,7 +1846,7 @@ class Qcformbuilder_Forms
 
 				} catch( Exception $e) {
 					//Return to old process if an Exception was returned and display a warning for admins
-					$total = self::calculation_deprecated_caught_process( $formula, __('A symbol in the formula', 'qcformbuilder_forms') );
+					$total = self::calculation_deprecated_caught_process( $formula, __('A symbol in the formula', 'conversational-forms') );
 				}
 				
 			} else {
@@ -1591,7 +1857,7 @@ class Qcformbuilder_Forms
 		}
 
 		if (is_infinite($total) || !is_numeric($total)) {
-			return new WP_Error($field['ID'] . '-calculation', __('Calculation is invalid', 'qcformbuilder-forms'));
+			return new WP_Error($field['ID'] . '-calculation', __('Calculation is invalid', 'conversational-forms'));
 		}
 
 		$total = Qcformbuilder_Forms_Field_Util::format_calc_field($field, $total);
@@ -1802,8 +2068,8 @@ class Qcformbuilder_Forms
 					 * @param array $form Form config
 					 */
 					$args = apply_filters('qcformbuilder_forms_autopopulate_taxonomy_args', $args);
-
-					$terms = get_terms($field['config']['taxonomy'], $args);
+					$args['taxonomy'] = $field['config']['taxonomy'];
+					$terms = get_terms($args);
 
 					/**
 					 * Filter which field is used for the VALUE when getting autopopulate option values when autopopulating options from post types
@@ -2105,7 +2371,7 @@ class Qcformbuilder_Forms
 		);
 
 		$tags['system'] = array(
-			'type' => __('System Tags', 'qcformbuilder-forms'),
+			'type' => __('System Tags', 'conversational-forms'),
 			'tags' => $system_tags,
 			'wrap' => array('{', '}')
 		);
@@ -2471,12 +2737,16 @@ class Qcformbuilder_Forms
 
 			// check condition to see if field should be there first.
 			// check if conditions match first. ignore vailators if not part of condition
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if (isset($_POST[$field_id])) {
-				$entry = stripslashes_deep($_POST[$field_id]);
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$entry = wp_unslash($_POST[$field_id]);
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			} elseif (isset($_POST[$field['slug']])) {
 				// is slug maybe?
-				$entry = stripslashes_deep($_POST[$field['slug']]);
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$entry = wp_unslash($_POST[$field['slug']]);
 			}
 			// apply field filter
 			if (has_filter('qcformbuilder_forms_process_field_' . $field['type'])) {
@@ -2683,7 +2953,7 @@ class Qcformbuilder_Forms
 					if ($meta['process_id'] == '_debug_log') {
 						$meta['meta_value'] = '<pre>' . $meta['meta_value'] . '</pre>';
 						$entry_meta['debug'] = array(
-							'name' => __('Mailer Debug', 'qcformbuilder-forms'),
+							'name' => __('Mailer Debug', 'conversational-forms'),
 							'data' => array(
 								'_debug_log' => array(
 									'entry' => array(
@@ -2718,7 +2988,7 @@ class Qcformbuilder_Forms
 								$meta_name = $processors[$form['processors'][$meta['process_id']]['type']]['name'];
 							} else {
 								if ($meta['process_id'] == '_debug_log') {
-									$meta_name = __('Mailer Debug', 'qcformbuilder-forms');
+									$meta_name = __('Mailer Debug', 'conversational-forms');
 								} else {
 									$meta_name = $meta['process_id'];
 								}
@@ -2790,7 +3060,7 @@ class Qcformbuilder_Forms
 			$form_id = $form;
 			$form = Qcformbuilder_Forms_Forms::get_form($form);
 			if (!isset($form['ID']) || $form['ID'] !== $form_id) {
-				return new WP_Error('fail', __('Invalid form ID', 'qcformbuilder-forms'));
+				return new WP_Error('fail', __('Invalid form ID', 'conversational-forms'));
 			}
 		}
 
@@ -2847,11 +3117,14 @@ class Qcformbuilder_Forms
 		global $referrer;
 
 		// clean out referrer
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if (empty($_POST['_wp_http_referer_true'])) {
-			$_POST['_wp_http_referer_true'] = $_SERVER['HTTP_REFERER'];
+			$_POST['_wp_http_referer_true'] = isset($_SERVER['HTTP_REFERER']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 		}
 
-		$referrer = parse_url($_POST['_wp_http_referer_true']);
+		$raw_referer = sanitize_text_field(wp_unslash($_POST['_wp_http_referer_true']));
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		$referrer = wp_parse_url($raw_referer);
 		if (!empty($referrer['query'])) {
 			parse_str($referrer['query'], $referrer['query']);
 			if (isset($referrer['query']['wfb_er'])) {
@@ -2861,23 +3134,29 @@ class Qcformbuilder_Forms
 				unset($referrer['query']['wfb_su']);
 			}
 		}
-		if ((isset($_POST['_wfb_cr_pst']) && !is_object($post)) || (isset($_POST['_wfb_cr_pst']) && $post->ID !== (int)$_POST['_wfb_cr_pst'])) {
-			$post = get_post((int)$_POST['_wfb_cr_pst']);
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ((isset($_POST['_wfb_cr_pst']) && !is_object($post)) || (isset($_POST['_wfb_cr_pst']) && $post->ID !== absint($_POST['_wfb_cr_pst']))) {
+			$post = get_post(absint(wp_unslash($_POST['_wfb_cr_pst'])));
 		}
 		// get form and check
-		$form = Qcformbuilder_Forms_Forms::get_form($_POST['_wfb_frm_id']);
-		if (empty($form['ID']) || $form['ID'] != $_POST['_wfb_frm_id']) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$form_id_post = isset($_POST['_wfb_frm_id']) ? sanitize_text_field(wp_unslash($_POST['_wfb_frm_id'])) : '';
+		$form = Qcformbuilder_Forms_Forms::get_form($form_id_post);
+		if (empty($form['ID']) || $form['ID'] != $form_id_post) {
 			return;
 		}
 
 		// instance number
 		$form_instance_number = 1;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_ct'])) {
-			$form_instance_number = $_POST['_wfb_frm_ct'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$form_instance_number = absint(wp_unslash($_POST['_wfb_frm_ct']));
 		}
 
 		// check honeypot
 		if (Qcformbuilder_Forms_Field_Honey::active($form)) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$passed = Qcformbuilder_Forms_Field_Honey::check($_POST, $form);
 			if (!$passed) {
 				$url = Qcformbuilder_Forms_Field_Honey::redirect_url($referrer, $form_instance_number, $process_id);
@@ -2916,7 +3195,8 @@ class Qcformbuilder_Forms
 		}
 
 		// check source is ajax to overide
-		if (!empty($_POST['cfajax']) && $_POST['cfajax'] == $form['ID']) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if (!empty($_POST['cfajax']) && sanitize_text_field(wp_unslash($_POST['cfajax'])) == $form['ID']) {
 			$form['form_ajax'] = 1;
 		}
 
@@ -2942,13 +3222,18 @@ class Qcformbuilder_Forms
 		}
 
 		// SET process ID
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if (isset($_GET['wfb_er'])) {
-			$_POST['_wfb_frm_tr'] = $_GET['wfb_er'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$_POST['_wfb_frm_tr'] = sanitize_text_field(wp_unslash($_GET['wfb_er']));
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_tr'])) {
-			$pretransient = Qcformbuilder_Forms_Transient::get_transient($_POST['_wfb_frm_tr']);
-			if (!empty($pretransient['transient']) && $pretransient['transient'] === $_POST['_wfb_frm_tr']) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$frm_tr = sanitize_text_field(wp_unslash($_POST['_wfb_frm_tr']));
+			$pretransient = Qcformbuilder_Forms_Transient::get_transient($frm_tr);
+			if (!empty($pretransient['transient']) && $pretransient['transient'] === $frm_tr) {
 				$transdata = $pretransient;
 				$process_id = $transdata['transient'];
 
@@ -2974,8 +3259,10 @@ class Qcformbuilder_Forms
 
 		// initialize data
 		$entry_id = false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_edt'])) {
-			$entry_id = (int)$_POST['_wfb_frm_edt'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$entry_id = absint(wp_unslash($_POST['_wfb_frm_edt']));
 		}
 
 		$data = self::get_submission_data($form);
@@ -2986,6 +3273,7 @@ class Qcformbuilder_Forms
 				'transient' => $process_id,
 				'form_instance' => $form_instance_number,
 				'expire' => 600,
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
 				'data' => array_merge($_POST, $data),
 			);
 		}
@@ -3021,19 +3309,23 @@ class Qcformbuilder_Forms
 		}
 
 		// check submit type (new or update)
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_edt'])) {
 			// is edit
 			//check user can edit this item.
-			$transdata['edit'] = (int)$_POST['_wfb_frm_edt'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$transdata['edit'] = absint(wp_unslash($_POST['_wfb_frm_edt']));
 			// set entry_id
 			self::set_field_data('_entry_id', $transdata['edit'], $form);
-			$details = self::get_entry_detail($_POST['_wfb_frm_edt'], $form);
+			$details = self::get_entry_detail($transdata['edit'], $form);
 			$user_id = get_current_user_id();
 
 			// check token
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if (isset($_POST['_wfb_frm_edt_tkn'])) {
 
-				$validated = Qcformbuilder_Forms_Entry_Token::verify_token($_POST['_wfb_frm_edt_tkn'], $entry_id, $form['ID']);
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$validated = Qcformbuilder_Forms_Entry_Token::verify_token(sanitize_text_field(wp_unslash($_POST['_wfb_frm_edt_tkn'])), $entry_id, $form['ID']);
 				if (is_wp_error($validated)) {
 					return $validated;
 				} else {
@@ -3044,19 +3336,19 @@ class Qcformbuilder_Forms
 
 				if (empty($user_id)) {
 					$transdata['error'] = true;
-					$transdata['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+					$transdata['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 				} else {
 
 					if (empty($details)) {
 						$transdata['error'] = true;
-						$transdata['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+						$transdata['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 					} else {
 						// check user can edit
 						if (current_user_can('edit_posts') || absint($details['user_id'] ) === $user_id) {
 							// can edit.
 						} else {
 							$transdata['error'] = true;
-							$transdata['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+							$transdata['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 						}
 					}
 
@@ -3067,10 +3359,12 @@ class Qcformbuilder_Forms
 
 		//check if we added the field to indicate fields from pages not needed
 		//@see https://github.com/QcformbuilderWP/Qcformbuilder-Forms/issues/1579
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (empty($_POST['_wfb_future'])) {
 			$future_fields = '';
 		} else {
-			$future_fields = $_POST['_wfb_future'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$future_fields = sanitize_text_field(wp_unslash($_POST['_wfb_future']));
 		}
 
 
@@ -3136,7 +3430,7 @@ class Qcformbuilder_Forms
 					if (is_wp_error($entry)) {
 						$transdata['fields'][$field_id] = $entry->get_error_message();
 					} elseif ($entry === null) {
-						$transdata['fields'][$field_id] = $field['label'] . ' ' . __('is required', 'qcformbuilder-forms');
+						$transdata['fields'][$field_id] = $field['label'] . ' ' . __('is required', 'conversational-forms');
 					}
 				}
 			}
@@ -3185,7 +3479,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 */
 		do_action('qcformbuilder_forms_submit_pre_process_start', $form, $referrer, $process_id);
@@ -3316,7 +3610,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 */
 		do_action('qcformbuilder_forms_submit_pre_process_end', $form, $referrer, $process_id);
@@ -3377,7 +3671,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 * @param int|false $entryid Current entry ID or false if not set or being saved.
 		 */
@@ -3467,7 +3761,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 * @param int|false $entryid Current entry ID or false if not set or being saved.
 		 */
@@ -3480,7 +3774,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 * @param int|false $entryid Current entry ID or false if not set or being saved.
 		 */
@@ -3537,7 +3831,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 * @param int|false $entryid Current entry ID or false if not set or being saved.
 		 */
@@ -3549,7 +3843,7 @@ class Qcformbuilder_Forms
 		 * @since unknown
 		 *
 		 * @param array $form Form config
-		 * @param array $referrer URL form was submitted via -- is passed through parse_url() before this point.
+		 * @param array $referrer URL form was submitted via -- is passed through wp_parse_url() before this point.
 		 * @param string $process_id Unique ID for this processing
 		 * @param int|false $entryid Current entry ID or false if not set or being saved.
 		 */
@@ -3592,6 +3886,7 @@ class Qcformbuilder_Forms
 	 */
 	static public function wfb_init_preview()
 	{
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if (!isset($_GET, $_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY])) {
 			return;
 		}
@@ -3599,7 +3894,8 @@ class Qcformbuilder_Forms
 		global $post, $form;
 
 
-		$preview_id = trim($_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY]);
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$preview_id = isset($_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY]) ? sanitize_text_field(wp_unslash($_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY])) : '';
 		if (!empty($preview_id)) {
 			$form = Qcformbuilder_Forms_Forms::get_form($preview_id);
 
@@ -3611,7 +3907,13 @@ class Qcformbuilder_Forms
 				}
 
 				if (empty($post) || $post->post_title !== 'Qcformbuilder Forms Preview') {
-					$temp_page = get_page_by_title('Qcformbuilder Forms Preview');
+					$preview_pages = get_posts(array(
+						'title'       => 'Qcformbuilder Forms Preview',
+						'post_type'   => 'page',
+						'post_status' => 'any',
+						'numberposts' => 1,
+					));
+					$temp_page = !empty($preview_pages) ? $preview_pages[0] : null;
 					if (empty($temp_page)) {
 						// create page
 						$post = array(
@@ -3631,9 +3933,11 @@ class Qcformbuilder_Forms
 
 						), home_url());
 
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						if (isset($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])) {
 							$url = add_query_arg(Qcformbuilder_Forms_Admin::REVISION_KEY,
-								absint($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY]), $url);
+								// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+								absint(wp_unslash($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])), $url);
 						}
 
 						wp_safe_redirect($url);
@@ -3651,9 +3955,11 @@ class Qcformbuilder_Forms
 
 					), home_url());
 
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					if (isset($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])) {
 						$url = add_query_arg(Qcformbuilder_Forms_Admin::REVISION_KEY,
-							absint($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY]), $url);
+							// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+							absint(wp_unslash($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])), $url);
 					}
 
 					wp_safe_redirect($url);
@@ -3661,10 +3967,12 @@ class Qcformbuilder_Forms
 				}
 
 				$post->post_title = $form['name'];
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if (isset($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])) {
-					$post->post_content = '[qcformbuilder_form id="' . $_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY] . ' revision="' . absint($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY]) . '"]';
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					$post->post_content = '[qcformbuilder_form id="' . esc_attr($preview_id) . ' revision="' . absint(wp_unslash($_GET[Qcformbuilder_Forms_Admin::REVISION_KEY])) . '"]';
 				} else {
-					$post->post_content = '[qcformbuilder_form id="' . $_GET[Qcformbuilder_Forms_Admin::PREVIEW_KEY] . '"]';
+					$post->post_content = '[qcformbuilder_form id="' . esc_attr($preview_id) . '"]';
 				}
 			}
 		}
@@ -3681,8 +3989,10 @@ class Qcformbuilder_Forms
 
 		if (isset($wp_query->query_vars[ 'wfb_api' ])) {
 			$form_id = qcformbuilder_forms_very_safe_string($wp_query->query_vars[ 'wfb_api' ]);
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		} elseif (isset($_GET, $_GET[ 'wfb-api' ])) {
-			$form_id = qcformbuilder_forms_very_safe_string($_GET[ 'wfb-api' ]);
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$form_id = qcformbuilder_forms_very_safe_string(sanitize_text_field(wp_unslash($_GET[ 'wfb-api' ])));
 		} else {
 			$form_id = null;
 		}
@@ -3696,8 +4006,10 @@ class Qcformbuilder_Forms
 				'id' => $form_id,
 				'ajax' => true,
 			];
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 			if (!empty($_REQUEST[ 'wfb_instance' ])) {
-				$atts[ 'instance' ] = $_REQUEST[ 'wfb_instance' ];
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+				$atts[ 'instance' ] = sanitize_text_field(wp_unslash($_REQUEST[ 'wfb_instance' ]));
 			}
 
 			//start buffering
@@ -3714,8 +4026,10 @@ class Qcformbuilder_Forms
 					if( !empty($wp_query->query_vars[ 'wfb_entry' ]) ){
 						$entry_id = $wp_query->query_vars[ 'wfb_entry' ];
 					}else{
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						if( isset($_GET, $_GET[ 'entry' ]) && absint($_GET[ 'entry' ]) ){
-							$entry_id = $_GET[ 'entry' ];
+							// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+							$entry_id = absint(wp_unslash($_GET[ 'entry' ]));
 						}else{
 							$entry_id =null;
 						}
@@ -3724,18 +4038,23 @@ class Qcformbuilder_Forms
 					if ($entry_id) {
 						$atts[ 'entry' ] = (int)$entry_id;
 					}
-					if ($_SERVER[ 'REQUEST_METHOD' ] === 'POST') {
+					if (isset($_SERVER[ 'REQUEST_METHOD' ]) && $_SERVER[ 'REQUEST_METHOD' ] === 'POST') {
 
+						// phpcs:ignore WordPress.Security.NonceVerification.Missing
 						if (!empty($_POST[ 'control' ])) {
 
-							$transient_name = sanitize_key($_POST[ 'control' ]);
+							// phpcs:ignore WordPress.Security.NonceVerification.Missing
+							$transient_name = sanitize_key(wp_unslash($_POST[ 'control' ]));
 							$transdata = Qcformbuilder_Forms_Transient::get_transient($transient_name);
 							if (false === $transdata) {
 								$transdata = [];
 							}
+							// phpcs:ignore WordPress.Security.NonceVerification.Missing
 							if (!empty($_FILES) && !empty($_POST[ 'field' ])) {
-								$field = Qcformbuilder_Forms_Field_Util::get_field($form[ 'fields' ][ $_POST[ 'field' ] ],
-									$form, true);
+								// phpcs:ignore WordPress.Security.NonceVerification.Missing
+								$post_field_key = sanitize_text_field(wp_unslash($_POST[ 'field' ]));
+								$field = isset($form[ 'fields' ][ $post_field_key ]) ? Qcformbuilder_Forms_Field_Util::get_field($form[ 'fields' ][ $post_field_key ],
+									$form, true) : null;
 								$data = wfb_handle_file_upload(true, $field, $form);
 								if (is_wp_error($data)) {
 									qcformbuilder_forms_send_json($data->get_error_message(), true);
@@ -3781,7 +4100,8 @@ class Qcformbuilder_Forms
 			$url = add_query_arg('wfb_api', $form_id, $url);
 		}
 		if (is_ssl()) {
-			if ($_SERVER['SERVER_NAME'] === parse_url(get_home_url(), PHP_URL_HOST)) {
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : '';
+			if ($server_name === wp_parse_url(get_home_url(), PHP_URL_HOST)) {
 				$url = set_url_scheme($url, 'https');
 			}
 		}
@@ -3804,12 +4124,16 @@ class Qcformbuilder_Forms
 	static public function wfb_init_system()
 	{
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if (!empty($_GET['wfb_tp'])) {
 
 			// process a transient stored entry
-			$data = Qcformbuilder_Forms_Transient::get_transient($_GET['wfb_tp']);
-			if (!empty($data) && $data['transient'] === $_GET['wfb_tp'] && isset($data['data'])) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$wfb_tp = sanitize_text_field(wp_unslash($_GET['wfb_tp']));
+			$data = Qcformbuilder_Forms_Transient::get_transient($wfb_tp);
+			if (!empty($data) && $data['transient'] === $wfb_tp && isset($data['data'])) {
 				// create post values
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
 				$_POST = array_merge($_POST, $data['data']);
 				// set transient id
 				$_POST['_wfb_frm_tr'] = $data['transient'];
@@ -3863,7 +4187,7 @@ class Qcformbuilder_Forms
 			$form_id = $form;
 			$form = Qcformbuilder_Forms_Forms::get_form($form);
 			if (!is_array($form) || !isset($form['ID']) || $form['ID'] !== $form_id) {
-				return new WP_Error('fail', esc_html__('Invalid form ID', 'qcformbuilder-forms'));
+				return new WP_Error('fail', esc_html__('Invalid form ID', 'conversational-forms'));
 			}
 		}
 
@@ -4280,15 +4604,17 @@ class Qcformbuilder_Forms
 
 		// is this form allowed to render ( check state )
 		if (!empty($form['form_draft'])) {
-			if (!isset($_GET['wfb_preview']) || $_GET['wfb_preview'] != $form['ID']) {
-				if (isset($_POST['action']) && $_POST['action'] == 'wfb_get_form_preview') {
-					echo '<p style="color: #cf0000;">' . esc_html__('Form is currently not active.', 'qcformbuilder-forms') . '</p>';
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if (!isset($_GET['wfb_preview']) || sanitize_text_field(wp_unslash($_GET['wfb_preview'])) != $form['ID']) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				if (isset($_POST['action']) && sanitize_text_field(wp_unslash($_POST['action'])) == 'wfb_get_form_preview') {
+					echo '<p style="color: #cf0000;">' . esc_html__('Form is currently not active.', 'conversational-forms') . '</p>';
 				} else {
 					return;
 				}
 
 			} else {
-				echo '<div class="qcformbuilder-grid"><p class="alert alert-error alert-danger">' . esc_html__('Form is currently not active.', 'qcformbuilder-forms') . '</p></div>';
+				echo '<div class="qcformbuilder-grid"><p class="alert alert-error alert-danger">' . esc_html__('Form is currently not active.', 'conversational-forms') . '</p></div>';
 			}
 		}
 
@@ -4452,8 +4778,10 @@ class Qcformbuilder_Forms
 		$field_errors = array();
 
 		// edit entry from url
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if (!empty($_GET['wfb_ee'])) {
-			$entry_id = $_GET['wfb_ee'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$entry_id = absint(wp_unslash($_GET['wfb_ee']));
 		}
 
 		// attr entry id
@@ -4465,11 +4793,13 @@ class Qcformbuilder_Forms
 			//check user can edit this item.
 			$user_id = get_current_user_id();
 			$details = self::get_entry_detail($entry_id, $form);
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (!empty($_GET['wfb_et'])) {
 				// build token
-				$validated = Qcformbuilder_Forms_Entry_Token::verify_token(trim($_GET['wfb_et']), $entry_id, $form['ID']);
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$validated = Qcformbuilder_Forms_Entry_Token::verify_token(trim(sanitize_text_field(wp_unslash($_GET['wfb_et']))), $entry_id, $form['ID']);
 				if (is_wp_error($validated)) {
-					$notices['error']['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+					$notices['error']['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 				} else {
 					$edit_token = Qcformbuilder_Forms_Entry_Token::create_entry_token($entry_id, $form);
 				}
@@ -4484,15 +4814,14 @@ class Qcformbuilder_Forms
 							// can edit.
 							$entry_id = (int)$details['id'];
 						} else {
-							$notices['error']['note'] = __('Permission denied or entry does not exist.',
-								'qcformbuilder-forms');
+							$notices['error']['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 						}
 					} else {
-						$notices['error']['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+						$notices['error']['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 					}
 
 				} else {
-					$notices['error']['note'] = __('Permission denied or entry does not exist.', 'qcformbuilder-forms');
+					$notices['error']['note'] = __('Permission denied or entry does not exist.', 'conversational-forms');
 				}
 			}
 
@@ -4517,11 +4846,14 @@ class Qcformbuilder_Forms
 		}
 
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if (!empty($_GET['wfb_er'])) {
-			$prev_post = Qcformbuilder_Forms_Transient::get_transient($_GET['wfb_er']);
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$wfb_er = sanitize_text_field(wp_unslash($_GET['wfb_er']));
+			$prev_post = Qcformbuilder_Forms_Transient::get_transient($wfb_er);
 			if (!empty($prev_post['transient'])) {
 
-				if ($prev_post['transient'] === $_GET['wfb_er']) {
+				if ($prev_post['transient'] === $wfb_er) {
 					foreach ($prev_post['data'] as $field_id => $field_entry) {
 
 						if (!isset($form['fields'][$field_id])) {
@@ -4555,7 +4887,8 @@ class Qcformbuilder_Forms
 			$prev_post = apply_filters('qcformbuilder_forms_render_get_transient', $prev_post, $form);
 
 		}
-		if (!empty($_GET['wfb_su']) && $current_form_count == $_GET['wfb_su']) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if (!empty($_GET['wfb_su']) && $current_form_count == absint(wp_unslash($_GET['wfb_su']))) {
 			if (empty($notices['success']['note'])) {
 				$notices['success']['note'] = $form['success'];
 			}
@@ -4568,8 +4901,10 @@ class Qcformbuilder_Forms
 		// insert page breaks
 		if (!empty($page_breaks)) {
 			$currentpage = 1;
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (isset($_GET['wfb_pg']) && !isset($prev_post['page'])) {
-				$currentpage = (int)$_GET['wfb_pg'];
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$currentpage = absint(wp_unslash($_GET['wfb_pg']));
 			} elseif (isset($prev_post['page'])) {
 				$currentpage = (int)$prev_post['page'];
 			}
@@ -4737,7 +5072,7 @@ class Qcformbuilder_Forms
 		// set debug notice
 		if (!empty($form['mailer']['enable_mailer']) && !empty($form['debug_mailer'])) {
 			$notices['error'] = array(
-				'note' => __('WARNING: Form is in Mailer Debug mode. Disable before going live.', 'qcformbuilder-forms')
+				'note' => __('WARNING: Form is in Mailer Debug mode. Disable before going live.', 'conversational-forms')
 			);
 		}
 
@@ -4745,8 +5080,10 @@ class Qcformbuilder_Forms
 		if (!empty($notices)) {
 			// do notices
 			// entry id
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (isset($_GET['wfb_id'])) {
-				$notice_entry_id = (int)$_GET['wfb_id'];
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$notice_entry_id = absint(wp_unslash($_GET['wfb_id']));
 			} elseif (!empty($entry_id)) {
 				$notice_entry_id = $entry_id;
 			} else {
@@ -4835,11 +5172,15 @@ class Qcformbuilder_Forms
 
 				// retain query string
 				$qurystr = array();
-				parse_str($_SERVER['QUERY_STRING'], $qurystr);
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$raw_query = isset($_SERVER['QUERY_STRING']) ? wp_unslash($_SERVER['QUERY_STRING']) : '';
+				parse_str($raw_query, $qurystr);
 				$out .= "<span class=\"qcformbuilder-grid\"><ol class=\"breadcrumb\" data-form=\"qcformbuilder_form_" . $current_form_count . "\" id=\"qcformbuilder-forms-breadcrumb_" . $current_form_count . "\">\r\n";
 				$current_page = 1;
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if (!empty($_GET['wfb_pg'])) {
-					$current_page = $_GET['wfb_pg'];
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					$current_page = absint(wp_unslash($_GET['wfb_pg']));
 				}
 				foreach ($form['page_names'] as $page_key => $page_name) {
 					$tabclass = null;
@@ -4850,8 +5191,9 @@ class Qcformbuilder_Forms
 					}
 
 					$qurystr['wfb_pg'] = $page_key + 1;
-					$out .= "<li" . $tabclass . "><a aria-controls=\"form_page_" . $current_form_count . "_pg_" . ($page_key + 1) . "\" aria-expanded=\"" . $expanded . "\" id=\"breadcrumb_" . $current_form_count . "_pg_" . ($page_key + 1) . "\" href=\"?" . http_build_query($qurystr) . "\" data-page=\"" . ($page_key + 1) . "\" data-pagenav=\"qcformbuilder_form_" . $current_form_count . "\" title=\"" . sprintf(__('Navigate to %s',
-							'qcformbuilder-forms'), $page_name) . "\">" . $page_name . "</a></li>\r\n";
+					/* translators: %s: form page name */
+					$page_title = sprintf( __( 'Navigate to %s', 'conversational-forms' ), $page_name );
+					$out .= "<li" . $tabclass . "><a aria-controls=\"form_page_" . $current_form_count . "_pg_" . ($page_key + 1) . "\" aria-expanded=\"" . $expanded . "\" id=\"breadcrumb_" . $current_form_count . "_pg_" . ($page_key + 1) . "\" href=\"?" . http_build_query($qurystr) . "\" data-page=\"" . ($page_key + 1) . "\" data-pagenav=\"qcformbuilder_form_" . $current_form_count . "\" title=\"" . esc_attr( $page_title ) . "\">" . esc_html( $page_name ) . "</a></li>\r\n";
 				}
 				$out .= "</ol></span>\r\n";
 			}
@@ -5194,10 +5536,14 @@ class Qcformbuilder_Forms
 	 */
 	public static function process_form_via_post()
 	{
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if (isset($_POST['_wfb_frm_id'])) {
 			qcformbuilder_forms_start_buffer();
-			if (isset($_POST['_wfb_verify']) && Qcformbuilder_Forms_Render_Nonce::verify_nonce($_POST['_wfb_verify'],
-					$_POST['_wfb_frm_id'])) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$wfb_frm_id = sanitize_text_field(wp_unslash($_POST['_wfb_frm_id']));
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$wfb_verify = isset($_POST['_wfb_verify']) ? sanitize_text_field(wp_unslash($_POST['_wfb_verify'])) : '';
+			if (!empty($wfb_verify) && Qcformbuilder_Forms_Render_Nonce::verify_nonce($wfb_verify, $wfb_frm_id)) {
 				$submission = Qcformbuilder_Forms::process_submission();
 				qcformbuilder_forms_send_json($submission);
 				exit;
@@ -5205,9 +5551,9 @@ class Qcformbuilder_Forms
 
 
 			status_header(400);
-			$form = Qcformbuilder_Forms_Forms::get_form($_POST['_wfb_frm_id']);
+			$form = Qcformbuilder_Forms_Forms::get_form($wfb_frm_id);
 			$notices = array();
-			$notices['error']['note'] = __('Submission rejected, token invalid', 'qcformbuilder-forms');
+			$notices['error']['note'] = __('Submission rejected, token invalid', 'conversational-forms');
 
 			$note_general_classes = Qcformbuilder_Forms_Render_Notices::get_note_general_classes($form);
 

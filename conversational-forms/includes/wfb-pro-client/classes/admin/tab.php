@@ -45,8 +45,8 @@ class tab
 	public function add_tab(array $panels = [])
 	{
 		$panels[ 'form_layout' ][ 'tabs' ][ 'wfb-pro' ] = [
-			'name' => __('Pro', 'qcformbuilder-forms'),
-			'label' => __('Qcformbuilder Forms Pro Settings For This Form', 'qcformbuilder-forms'),
+			'name' => __('Pro', 'conversational-forms'),
+			'label' => __('Qcformbuilder Forms Pro Settings For This Form', 'conversational-forms'),
 			'location' => 'lower',
 			'actions' => [],
 			'side_panel' => null,

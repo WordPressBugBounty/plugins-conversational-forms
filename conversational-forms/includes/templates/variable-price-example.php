@@ -18,9 +18,9 @@ return array (
 	'_last_updated' => 'Wed, 27 Feb 2019 11:25:09 +0000',
 	'ID' => 'variable_price_example',
 	'wfb_version' => '1.8.0',
-	'name' => __( 'Variable Price Example', 'qcformbuilder-forms' ),
+	'name' => __( 'Variable Price Example', 'conversational-forms'),
 	'scroll_top' => 0,
-	'success' => __( 'Form has been successfully submitted. Thank you.', 'qcformbuilder-forms' ),
+	'success' => __( 'Form has been successfully submitted. Thank you.', 'conversational-forms'),
 	'db_support' => 1,
 	'pinned' => 0,
 	'hide_form' => 1,
@@ -48,7 +48,7 @@ return array (
 				array(
 					'ID' => 'fld_4338248',
 					'type' => 'hidden',
-					'label' => __( 'One', 'qcformbuilder-forms' ),
+					'label' => __( 'One', 'conversational-forms'),
 					'slug' => 'one',
 					'conditions' =>
 						array(
@@ -67,7 +67,7 @@ return array (
 				array(
 					'ID' => 'fld_1316929',
 					'type' => 'hidden',
-					'label' => __( 'Value Big', 'qcformbuilder-forms' ),
+					'label' => __( 'Value Big', 'conversational-forms'),
 					'slug' => 'value_big',
 					'conditions' =>
 						array(
@@ -86,7 +86,7 @@ return array (
 				array(
 					'ID' => 'fld_6796077',
 					'type' => 'hidden',
-					'label' => __( 'Value Small', 'qcformbuilder-forms' ),
+					'label' => __( 'Value Small', 'conversational-forms'),
 					'slug' => 'value_small',
 					'conditions' =>
 						array(
@@ -105,7 +105,7 @@ return array (
 				array(
 					'ID' => 'fld_5987102',
 					'type' => 'hidden',
-					'label' => __( 'Base', 'qcformbuilder-forms' ),
+					'label' => __( 'Base', 'conversational-forms'),
 					'slug' => 'base',
 					'conditions' =>
 						array(
@@ -124,7 +124,7 @@ return array (
 				array(
 					'ID' => 'fld_3993413',
 					'type' => 'checkbox',
-					'label' => __( 'Want Option 1?', 'qcformbuilder-forms' ),
+					'label' => __( 'Want Option 1?', 'conversational-forms'),
 					'slug' => 'option_1',
 					'conditions' =>
 						array(
@@ -150,7 +150,7 @@ return array (
 										array(
 											'calc_value' => 'Yes',
 											'value' => 'Yes',
-											'label' => __( 'Yes', 'qcformbuilder-forms' ),
+											'label' => __( 'Yes', 'conversational-forms'),
 										),
 								),
 							'email_identifier' => 0,
@@ -161,7 +161,7 @@ return array (
 				array(
 					'ID' => 'fld_5161425',
 					'type' => 'dropdown',
-					'label' => __('Option 2 Type', 'qcformbuilder-forms' ),
+					'label' => __('Option 2 Type', 'conversational-forms'),
 					'slug' => 'option_2',
 					'conditions' =>
 						array(
@@ -187,13 +187,13 @@ return array (
 										array(
 											'calc_value' => 'Big',
 											'value' => 'Big',
-											'label' => __( 'Big', 'qcformbuilder-forms' ),
+											'label' => __( 'Big', 'conversational-forms'),
 										),
 									'opt1786217' =>
 										array(
 											'calc_value' => 'Small',
 											'value' => 'Small',
-											'label' => __( 'Small', 'qcformbuilder-forms' ),
+											'label' => __( 'Small', 'conversational-forms'),
 										),
 								),
 							'email_identifier' => 0,
@@ -204,7 +204,7 @@ return array (
 				array(
 					'ID' => 'fld_8997460',
 					'type' => 'calculation',
-					'label' => __( 'Total', 'qcformbuilder-forms' ),
+					'label' => __( 'Total', 'conversational-forms'),
 					'slug' => 'total',
 					'conditions' =>
 						array(
@@ -263,7 +263,7 @@ return array (
 				array(
 					'ID' => 'fld_1338703',
 					'type' => 'button',
-					'label' => __( 'Pay', 'qcformbuilder-forms' ),
+					'label' => __( 'Pay', 'conversational-forms'),
 					'slug' => 'pay',
 					'conditions' =>
 						array(
@@ -286,7 +286,7 @@ return array (
 	'mailer' =>
 		array(
 			'on_insert' => 1,
-			'sender_name' => __( 'Chatbot Forms Notification', 'qcformbuilder-forms' ),
+			'sender_name' => __( 'Chatbot Forms Notification', 'conversational-forms'),
 			'sender_email' => '',
 			'reply_to' => '',
 			'email_type' => 'html',

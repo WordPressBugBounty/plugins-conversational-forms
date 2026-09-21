@@ -22,7 +22,7 @@ foreach($form_processors as $processor=>$config){
 function processor_line_template($id = '{{id}}', $type = null){
 	global $form_processors;
 
-	$type_name = __('New Form Processor', 'qcformbuilder-forms');
+	$type_name = __('New Form Processor', 'conversational-forms');
 	if(!empty($type)){
 		if(empty($form_processors[$type])){
 			return;
@@ -52,7 +52,7 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 		);
 	}
 	
-	$type_name = __('New Form Processor', 'qcformbuilder-forms');
+	$type_name = __('New Form Processor', 'conversational-forms');
 	if(!empty($type) && $type != '{{type}}'){
 		if(empty($form_processors[$type])){
 			return;
@@ -103,25 +103,25 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 	<div class="qcformbuilder-editor-processor-config-wrapper qcformbuilder-editor-config-wrapper processor-<?php echo esc_attr( $type ); ?>" id="<?php echo esc_attr( $id ); ?>" data-type="<?php echo esc_attr( $type ); ?>" style="display:none;">
 
 		<div class="toggle_option_tab">
-			<a href="#<?php echo esc_attr( $id ); ?>_settings_pane" class="button button-primary"><?php echo esc_html__( 'Settings', 'qcformbuilder-forms' ); ?></a>
-			<a href="#<?php echo esc_attr( $id ); ?>_conditions_pane" class="button "><?php echo esc_html__( 'Conditions', 'qcformbuilder-forms' ); ?></a>
+			<a href="#<?php echo esc_attr( $id ); ?>_settings_pane" class="button button-primary"><?php echo esc_html__( 'Settings', 'conversational-forms'); ?></a>
+			<a href="#<?php echo esc_attr( $id ); ?>_conditions_pane" class="button "><?php echo esc_html__( 'Conditions', 'conversational-forms'); ?></a>
 		</div>
-		<h3 data-title="<?php esc_html_e( 'New Form Processor', 'qcformbuilder-forms'); ?>" class="qcformbuilder-editor-processor-title"><?php echo esc_html( $type_name ); ?></h3>
+		<h3 data-title="<?php esc_html_e( 'New Form Processor', 'conversational-forms'); ?>" class="qcformbuilder-editor-processor-title"><?php echo esc_html( $type_name ); ?></h3>
 		<div id="<?php echo esc_attr( $id ); ?>_settings_pane" class="wrapper-instance-pane">
 			<div class="toggle_processor_event">
 
-				<label title="<?php echo esc_attr( __('Enable / Disable Processor', 'qcformbuilder-forms') ); ?>" class="button button-small <?php if( !empty( $run_times['insert'] )){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo esc_attr( $id ); ?>][runtimes][insert]" <?php if( !empty( $run_times['insert'] )){ echo 'checked="checked"'; } ?>>
-				<span class="is_active" style="<?php if( empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Disable Processor', 'qcformbuilder-forms' ); ?></span>
-				<span class="not_active" style="<?php if( !empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Enable Processor', 'qcformbuilder-forms' ); ?></span>
+				<label title="<?php echo esc_attr( __('Enable / Disable Processor', 'conversational-forms') ); ?>" class="button button-small <?php if( !empty( $run_times['insert'] )){ echo 'activated'; } ?>"><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo esc_attr( $id ); ?>][runtimes][insert]" <?php if( !empty( $run_times['insert'] )){ echo 'checked="checked"'; } ?>>
+				<span class="is_active" style="<?php if( empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Disable Processor', 'conversational-forms'); ?></span>
+				<span class="not_active" style="<?php if( !empty( $run_times ) ){ ?> display:none;<?php } ?>"><?php esc_html_e( 'Enable Processor', 'conversational-forms'); ?></span>
 				</label>
 				<?php /*<label title="<?php echo esc_attr( __('Run processor on Update', 'qcformbuilder-forms') ); ?>" class="button button-small <?php if( !empty( $run_times['update'] )){ echo 'button-primary'; } ?> "><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo $id; ?>][runtimes][update]" <?php if( !empty( $run_times['update'] )){ echo 'checked="checked"'; } ?>>Update</label>
 				<label class="button button-small <?php if( !empty( $run_times['delete'] )){ echo 'button-primary'; } ?> "><input type="checkbox" style="display:none;" value="1" name="config[processors][<?php echo $id; ?>][runtimes][delete]" <?php if( !empty( $run_times['delete'] )){ echo 'checked="checked"'; } ?>>Delete</label> */ ?>
 			</div>
 			<div class="qcformbuilder-config-processor-notice" style="<?php if( !empty( $run_times ) ){ ?> display:none;<?php } ?>clear: both; padding: 20px 0px 0px;">
-				<p style="padding:12px; text-align:center;background:#e7e7e7;" class="description"><?php esc_html_e('Processor is currently disabled', 'qcformbuilder-forms'); ?></p>
+				<p style="padding:12px; text-align:center;background:#e7e7e7;" class="description"><?php esc_html_e('Processor is currently disabled', 'conversational-forms'); ?></p>
 			</div>
 			<div class="qcformbuilder-config-group" style="display:none;">
-				<label for="<?php echo esc_attr( $id ); ?>_type"><?php esc_html_e( 'Processor Type', 'qcformbuilder-forms'); ?></label>
+				<label for="<?php echo esc_attr( $id ); ?>_type"><?php esc_html_e( 'Processor Type', 'conversational-forms'); ?></label>
 				<div class="qcformbuilder-config-field">
 					<select class="block-input qcformbuilder-select-processor-type" id="<?php echo esc_attr( $id ); ?>_type" name="config[processors][<?php echo esc_attr( $id ); ?>][type]" data-type="<?php echo esc_attr( $type ); ?>">					
 						<?php
@@ -137,16 +137,16 @@ function processor_wrapper_template($id = '{{id}}', $type = '{{type}}', $config_
 			<br>
 			<br>
 
-			<button class="button block-button delete-processor" data-confirm="<?php esc_html_e( 'Are you sure you want to remove this processor?', 'qcformbuilder-forms'); ?>" type="button"><?php esc_html_e( 'Remove Processor', 'qcformbuilder-forms'); ?></button>
+			<button class="button block-button delete-processor" data-confirm="<?php esc_html_e( 'Are you sure you want to remove this processor?', 'conversational-forms'); ?>" type="button"><?php esc_html_e( 'Remove Processor', 'conversational-forms'); ?></button>
 		</div>
 		<div id="<?php echo esc_attr( $id ); ?>_conditions_pane" style="display:none;" class="wrapper-instance-pane">
 		<p>
 			<select name="config[processors][<?php echo esc_attr( $id ); ?>][conditions][type]" data-id="<?php echo esc_attr( $id ); ?>" class="qcformbuilder-conditionals-usetype">
 				<option value=""></option>
-				<option value="use" <?php if($condition_type == 'use'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Use', 'qcformbuilder-forms'); ?></option>
-				<option value="not" <?php if($condition_type == 'not'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Don\'t Use', 'qcformbuilder-forms'); ?></option>
+				<option value="use" <?php if($condition_type == 'use'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Use', 'conversational-forms'); ?></option>
+				<option value="not" <?php if($condition_type == 'not'){ echo 'selected="selected"'; } ?>><?php esc_html_e( 'Don\'t Use', 'conversational-forms'); ?></option>
 			</select>
-			<button id="<?php echo esc_attr( $id ); ?>_condition_group_add" style="display:none;" type="button" data-id="<?php echo esc_attr( $id ); ?>" class="pull-right button button-small add-conditional-group ajax-trigger" data-type="processors" data-template="#conditional-group-tmpl" data-target-insert="append" data-request="new_conditional_group" data-callback="rebuild_field_binding" data-target="#<?php echo esc_attr( $id ); ?>_conditional_wrap"><?php esc_html_e( 'Add Conditional Group', 'qcformbuilder-forms'); ?></button>
+			<button id="<?php echo esc_attr( $id ); ?>_condition_group_add" style="display:none;" type="button" data-id="<?php echo esc_attr( $id ); ?>" class="pull-right button button-small add-conditional-group ajax-trigger" data-type="processors" data-template="#conditional-group-tmpl" data-target-insert="append" data-request="new_conditional_group" data-callback="rebuild_field_binding" data-target="#<?php echo esc_attr( $id ); ?>_conditional_wrap"><?php esc_html_e( 'Add Conditional Group', 'conversational-forms'); ?></button>
 		</p>
 		<div class="qcformbuilder-conditionals-wrapper" id="<?php echo esc_attr( $id ); ?>_conditional_wrap"></div>
 		<?php do_action('qcformbuilder_forms_processor_conditionals_template', $id); ?>
@@ -186,12 +186,12 @@ function build_processor_types($default = null){
 		data-request="new_form_processor" 
 		data-modal="form_processor"
 		data-load-class="none"
-		data-modal-title="<?php esc_html_e( 'Form Processors', 'qcformbuilder-forms'); ?>"
+		data-modal-title="<?php esc_html_e( 'Form Processors', 'conversational-forms'); ?>"
 		data-modal-height="700"
 		data-modal-width="600"
 		data-template="#form-processors-tmpl"
 		data-callback="hide_single_processors"
-		><?php esc_html_e( 'Add Processor', 'qcformbuilder-forms'); ?></button>
+		><?php esc_html_e( 'Add Processor', 'conversational-forms'); ?></button>
 		<ul class="active-processors-list">
 			<?php
 				// build processors list
@@ -255,12 +255,12 @@ function build_processor_types($default = null){
 			}
 
 			echo '<div class="form-modal-add-line'. ( !empty($processor['single']) ? ' is_single_processor' : null ) . '" data-type="' . esc_attr( $processor_id ) . '">';
-				echo '<button type="button" class="button info-button add-new-processor" data-type="' . esc_attr( $processor_id ) . '">' . esc_html__('Use Processor', 'qcformbuilder-forms') . '</button>';
+				echo '<button type="button" class="button info-button add-new-processor" data-type="' . esc_attr( $processor_id ) . '">' . esc_html__('Use Processor', 'conversational-forms') . '</button>';
 				echo '<img src="'. esc_url( $icon ) .'" class="form-modal-lgo" width="45" height="45">';
 				echo '<strong>' . esc_html( $processor['name'] ) .'</strong> ';
 				if(!empty($processor['author'])){
 					echo '<small><span class="description">';
-					echo '&nbsp' . esc_html__( 'by', 'qcformbuilder-forms' ) . '&nbsp';
+					echo '&nbsp' . esc_html__( 'by', 'conversational-forms') . '&nbsp';
 					if(!empty($processor['author_url'])){
 						echo '<a href="' . esc_url( $processor[ 'author_url' ] ) .'" target="_blank">';
 						echo esc_html( $processor[ 'author' ] );
@@ -318,7 +318,7 @@ foreach($form_processors as $processor=>$config){
 	if(isset($config['template'])){
 		include $config['template'];
 	}else{
-		echo '<p>' . esc_html__('This processor has no configurable options.', 'qcformbuilder-forms') . '</p>';
+		echo '<p>' . esc_html__('This processor has no configurable options.', 'conversational-forms') . '</p>';
 	}
 	echo "\r\n</script>\r\n";
 

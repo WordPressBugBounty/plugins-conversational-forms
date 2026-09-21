@@ -105,8 +105,8 @@ class Qcformbuilder_Forms_Field_Localizer {
 	 */
 	protected static function error_strings(){
 		$strings = array(
-			'mixed_protocol' => __( 'Submission URL and current URL protocols do not match. Form may not function properly.', 'qcformbuilder-forms' ),
-			'jquery_old'     => __( 'An out of date version of jQuery is loaded on the page. Form may not function properly.', 'qcformbuilder-forms' )
+			'mixed_protocol' => __( 'Submission URL and current URL protocols do not match. Form may not function properly.', 'conversational-forms'),
+			'jquery_old'     => __( 'An out of date version of jQuery is loaded on the page. Form may not function properly.', 'conversational-forms')
 		);
 
 		if( ! current_user_can( Qcformbuilder_Forms::get_manage_cap( 'admin' )) ){

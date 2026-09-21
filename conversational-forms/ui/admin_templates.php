@@ -1,11 +1,11 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <script type="text/html" id="bulk-actions-active-tmpl">
 	<option selected="selected" value="">
-		<?php esc_html_e( 'Bulk Actions', 'qcformbuilder-forms' ); ?>
+		<?php esc_html_e( 'Bulk Actions', 'conversational-forms'); ?>
 	</option>
 
 	<?php if( current_user_can( Qcformbuilder_Forms::get_manage_cap( 'manage' ) ) ){ ?>
-		<option value="trash"><?php esc_html_e( 'Move to Trash', 'qcformbuilder-forms' ); ?></option><?php } ?>
+		<option value="trash"><?php esc_html_e( 'Move to Trash', 'conversational-forms'); ?></option><?php } ?>
 </script>
 
 <script type="text/html" id="wfb-export-template">
@@ -14,23 +14,23 @@
 
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-export-format">
-				<?php echo esc_html__( 'Export Type', 'qcformbuilder-forms' ); ?>
+				<?php echo esc_html__( 'Export Type', 'conversational-forms'); ?>
 			</label>
 			<div class="qcformbuilder-config-field">
 				<select class="form-export-type" name="format" id="wfb-export-format" style="width: 230px;">
-					<option value="json"><?php esc_html_e('Backup / Importable (json)' , 'qcformbuilder-forms' ); ?></option>
-					<option value="php"><?php esc_html_e('PHP include File' , 'qcformbuilder-forms' ); ?></option>
+					<option value="json"><?php esc_html_e('Backup / Importable (json)' , 'conversational-forms'); ?></option>
+					<option value="php"><?php esc_html_e('PHP include File' , 'conversational-forms'); ?></option>
 				</select>
 			</div>
 		</div>
 
 		<p class="description" id="json_export_option">
-			<?php esc_html_e( 'This gives you a .json file that can be imported into Qcformbuilder Forms.', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'This gives you a .json file that can be imported into Qcformbuilder Forms.', 'conversational-forms'); ?>
 		</p>
 		<div style="display:none;" id="php_export_options">
 			<div class="qcformbuilder-config-group">
 				<label for="wfb-export-form-id">
-					<?php echo esc_html__( 'Form ID', 'qcformbuilder-forms' ); ?>
+					<?php echo esc_html__( 'Form ID', 'conversational-forms'); ?>
 				</label>
 				<div class="qcformbuilder-config-field">
 					<input type="text" id="wfb-export-form-id" class="block-input field-config" data-format="slug" name="form_id" value="{{formslug}}" required="required">
@@ -39,33 +39,33 @@
 
 			<div class="qcformbuilder-config-group">
 				<label for="wfb-export-pin-menu">
-					<?php echo esc_html__( 'Create sub-menu entry viewer', 'qcformbuilder-forms' ); ?>
+					<?php echo esc_html__( 'Create sub-menu entry viewer', 'conversational-forms'); ?>
 				</label>
 				<div class="qcformbuilder-config-field">
 					<label><input type="checkbox" name="pin_menu" id="wfb-export-pin-menu" value="1">
-						<?php esc_html_e( 'Creates a sub-menu item of the Qcformbuilder Forms menu and a page to show entries for this form.', 'qcformbuilder-forms' ); ?>
+						<?php esc_html_e( 'Creates a sub-menu item of the Qcformbuilder Forms menu and a page to show entries for this form.', 'conversational-forms'); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="qcformbuilder-config-group">
 				<label for="wfb-export-convert-ids">
-					<?php echo esc_html__( 'Field Slugs', 'qcformbuilder-forms' ); ?>
+					<?php echo esc_html__( 'Field Slugs', 'conversational-forms'); ?>
 				</label>
 				<div class="qcformbuilder-config-field">
 					<label>
 						<input type="checkbox" name="convert_slugs" value="1" id="wfb-export-convert-ids">
-						<?php esc_html_e( "Convert Field ID's to use field slugs", 'qcformbuilder-forms' ); ?>
+						<?php esc_html_e( "Convert Field ID's to use field slugs", 'conversational-forms'); ?>
 					</label>
 				</div>
 			</div>
 
 			<hr>
 			<p class="description">
-				<?php esc_html_e('This gives you a hardcoded .php file that can be included in projects. It includes the correct filter for the ID specific form allowing you to easily use the form by simply including the file.', 'qcformbuilder-forms'); ?>
+				<?php esc_html_e('This gives you a hardcoded .php file that can be included in projects. It includes the correct filter for the ID specific form allowing you to easily use the form by simply including the file.', 'conversational-forms'); ?>
 			</p>
 			<p class="description">
-				<?php esc_html_e('This is not a backup and cannot be imported.', 'qcformbuilder-forms'); ?>
+				<?php esc_html_e('This is not a backup and cannot be imported.', 'conversational-forms'); ?>
 			</p>
 
 		</div>
@@ -89,14 +89,14 @@
 </script>
 <script type="text/html" id="bulk-actions-trash-tmpl">
 	<option selected="selected" value="">
-		<?php esc_html_e( 'Bulk Actions', 'qcformbuilder-forms' ); ?>
+		<?php esc_html_e( 'Bulk Actions', 'conversational-forms'); ?>
 	</option>
 
 	<?php if( current_user_can( 'delete_others_posts' ) ){ ?>
 		<option value="active">
-			<?php esc_html_e( 'Restore', 'qcformbuilder-forms' ); ?>
+			<?php esc_html_e( 'Restore', 'conversational-forms'); ?>
 		</option>
-	<option value="delete"><?php esc_html_e( 'Delete Permanently', 'qcformbuilder-forms' ); ?></option><?php } ?>
+	<option value="delete"><?php esc_html_e( 'Delete Permanently', 'conversational-forms'); ?></option><?php } ?>
 </script>
 <script type="text/html" id="import-form-tmpl">
 	<form class="new-form-form" action="admin.php?page=qcformbuilder-forms&import=true" enctype="multipart/form-data" method="POST">
@@ -106,7 +106,7 @@
 		?>
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-new-form-name">
-				<?php esc_html_e( 'Form Name', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Form Name', 'conversational-forms'); ?>
 			</label>
 			<div class="qcformbuilder-config-field">
 				<input
@@ -122,7 +122,7 @@
 		</div>
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-wfb-new-form-file">
-				<?php esc_html_e( 'Form File', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Form File', 'conversational-forms'); ?>
 			</label>
 			<div class="qcformbuilder-config-field">
 				<input
@@ -138,7 +138,7 @@
 
         <div class="qcformbuilder-config-group">
             <label for="wfb-new-form-trusted">
-                <?php esc_html_e( 'Trusted Source', 'qcformbuilder-forms' ); ?>
+                <?php esc_html_e( 'Trusted Source', 'conversational-forms'); ?>
             </label>
             <div class="qcformbuilder-config-field">
                 <input
@@ -151,7 +151,7 @@
                     id="wfb-new-form-trusted-desc"
                     class="description"
                 >
-                    <?php esc_html_e( 'Is this file from a trusted source?','qcformbuilder-forms' ); ?>
+                    <?php esc_html_e( 'Is this file from a trusted source?', 'conversational-forms'); ?>
 
                 </p>
             </div>
@@ -160,7 +160,7 @@
 		<div class="baldrick-modal-footer" style="display: block; clear: both; position: relative; height: 24px; width: 100%; margin: 0px -12px;">
 
 			<button type="submit" class="button" style="float:right;">
-                <?php esc_html_e( 'Import Form', 'qcformbuilder-forms' ); ?>
+                <?php esc_html_e( 'Import Form', 'conversational-forms'); ?>
             </button>
 
 		</div>
@@ -193,12 +193,12 @@
 	?>
 	<div class="qcformbuilder-settings-group">
 		<div class="qcformbuilder-settings">
-			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=alert" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'qcformbuilder-forms'  ); ?>"></a>
+			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=alert" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'conversational-forms'); ?>"></a>
 			<strong>
-				<?php esc_html_e( 'Alert Styles' , 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Alert Styles' , 'conversational-forms'); ?>
 			</strong>
 			<p class="description">
-				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form alert notices', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form alert notices', 'conversational-forms'); ?>
 			</p>
 			<div class="clear"></div>
 		</div>
@@ -213,12 +213,12 @@
 
 	<div class="qcformbuilder-settings-group">
 		<div class="qcformbuilder-settings">
-			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=form" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'qcformbuilder-forms'  ); ?>"></a>
+			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=form" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'conversational-forms'); ?>"></a>
 			<strong>
-				<?php esc_html_e( 'Form Styles' , 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Form Styles' , 'conversational-forms'); ?>
 			</strong>
 			<p class="description">
-				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form fields and buttons', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form fields and buttons', 'conversational-forms'); ?>
 			</p>
 			<div class="clear"></div>
 		</div>
@@ -233,12 +233,12 @@
 
 	<div class="qcformbuilder-settings-group">
 		<div class="qcformbuilder-settings">
-			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=grid" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'qcformbuilder-forms'  ); ?>"></a>
+			<a href="https://quantumcloud.com/doc/global-email-general-settings/?utm_source=wp-admin&utm_medium=general-settings&utm_content=grid" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about General and Email Settings.', 'conversational-forms'); ?>"></a>
 			<strong>
-				<?php esc_html_e( 'Grid Structures' , 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Grid Structures' , 'conversational-forms'); ?>
 			</strong>
 			<p class="description">
-				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form grid layouts', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Includes Bootstrap 3 styles on the frontend for form grid layouts', 'conversational-forms'); ?>
 			</p>
 			<div class="clear"></div>
 		</div>
@@ -254,12 +254,12 @@
 
 	<div class="qcformbuilder-settings-group">
 		<div class="qcformbuilder-settings">
-			<a href="https://quantumcloud.com/doc/improving-qcformbuilder-performance-free-cdn?utm_source=wp-admin&utm_medium=general-settings&utm_content=cdn_enable" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about the free CDN and usage sharing.', 'qcformbuilder-forms'  ); ?>"></a>
+			<a href="https://quantumcloud.com/doc/improving-qcformbuilder-performance-free-cdn?utm_source=wp-admin&utm_medium=general-settings&utm_content=cdn_enable" target="_blank" class="dashicons dashicons-editor-help" style="float:right;" data-toggle="tooltip" data-placement="bottom"  title="<?php esc_attr_e( 'Learn more about the free CDN and usage sharing.', 'conversational-forms'); ?>"></a>
 			<strong>
-				<?php esc_html_e( 'Enable Free CDN' , 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Enable Free CDN' , 'conversational-forms'); ?>
 			</strong>
 			<p class="description">
-				<?php esc_html_e( 'Some usage data will be shared with CDN providers.', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Some usage data will be shared with CDN providers.', 'conversational-forms'); ?>
 
 			</p>
 
@@ -291,7 +291,7 @@
 		{{#if clone}}
 		<div class="qcformbuilder-config-group">
 			<label for="wfb-clone-form-name">
-				<?php esc_html_e( 'Form Name', 'qcformbuilder-forms' ); ?>
+				<?php esc_html_e( 'Form Name', 'conversational-forms'); ?>
 			</label>
 			<div class="qcformbuilder-config-field">
 				<input type="text" id="wfb-clone-form-name" class="new-form-name block-input field-config" name="name" value="" required="required">

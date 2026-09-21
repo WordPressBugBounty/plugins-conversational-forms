@@ -10,7 +10,7 @@ class Qcformbuilder_Forms_API_Response_Factory {
      * @return Qcformbuilder_Forms_API_Error
      */
 	public static function error_form_not_found(){
-		return new Qcformbuilder_Forms_API_Error( 'form-not-found', __( 'Form not found', 'qcformbuilder-forms' ) );
+		return new Qcformbuilder_Forms_API_Error( 'form-not-found', __( 'Form not found', 'conversational-forms') );
 	}
 
     /**
@@ -21,7 +21,7 @@ class Qcformbuilder_Forms_API_Response_Factory {
      * @return Qcformbuilder_Forms_API_Error
      */
     public static function error_form_not_created(){
-        return new Qcformbuilder_Forms_API_Error( 'form-not-created', __( 'Form not created', 'qcformbuilder-forms' ) );
+        return new Qcformbuilder_Forms_API_Error( 'form-not-created', __( 'Form not created', 'conversational-forms') );
     }
 
     /**
@@ -32,7 +32,7 @@ class Qcformbuilder_Forms_API_Response_Factory {
      * @return Qcformbuilder_Forms_API_Error
      */
     public static function error_entry_not_found(){
-		  return new Qcformbuilder_Forms_API_Error( 'form-entry-not-found', __( 'Form entry not found', 'qcformbuilder-forms' ) );
+		  return new Qcformbuilder_Forms_API_Error( 'form-entry-not-found', __( 'Form entry not found', 'conversational-forms') );
 	}
 
     /**

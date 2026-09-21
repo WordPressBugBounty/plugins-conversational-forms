@@ -88,19 +88,19 @@ class Qcformbuilder_Forms_API_Forms extends  Qcformbuilder_Forms_API_CRUD {
             'emailIdentifiers' => array(
                 'type' => 'array',
                 'required' => false,
-                'description' => esc_html__( 'Array of fields that can be used to find personally identifying information saved with this form.', 'qcformbuilder-forms' ),
+                'description' => esc_html__( 'Array of fields that can be used to find personally identifying information saved with this form.', 'conversational-forms'),
                 'sanitize_callback' => array( 'Qcformbuilder_Forms_API_Util', 'validate_array_of_field_ids' )
             ),
             'piiFields' => array(
                 'type' => 'array',
                 'required' => false,
-                'description' => esc_html__( 'Array of fields that contain personally identifying information', 'qcformbuilder-forms' ),
+                'description' => esc_html__( 'Array of fields that contain personally identifying information', 'conversational-forms'),
                 'sanitize_callback' => array( 'Qcformbuilder_Forms_API_Util', 'validate_array_of_field_ids' )
             ),
             'privacyExporterEnabled' => array(
                 'type' => 'boolean',
                 'required' => false,
-                'description' => esc_html__( 'Array of fields that contain personally identifying information', 'qcformbuilder-forms' ),
+                'description' => esc_html__( 'Array of fields that contain personally identifying information', 'conversational-forms'),
                 'sanitize_callback' => 'rest_sanitize_boolean'
             )
         );
@@ -237,7 +237,7 @@ class Qcformbuilder_Forms_API_Forms extends  Qcformbuilder_Forms_API_CRUD {
 		    );
 	    }
 	    if( empty( $response_data ) ){
-		    return new Qcformbuilder_Forms_API_Response( array( 'message' => __( 'No Revisions Found For This Form', 'qcformbuilder-forms' ) ) );
+		    return new Qcformbuilder_Forms_API_Response( array( 'message' => __( 'No Revisions Found For This Form', 'conversational-forms') ) );
 
 	    }
 	    return new Qcformbuilder_Forms_API_Response( $response_data );
@@ -406,21 +406,21 @@ class Qcformbuilder_Forms_API_Forms extends  Qcformbuilder_Forms_API_CRUD {
         return [
             'ID' => [
                 'type' => 'string',
-                'description' => __( 'The desired form ID', 'qcformbuilder-forms' ),
+                'description' => __( 'The desired form ID', 'conversational-forms'),
                 'required' => false,
                 'default' => '',
                 'sanitize_callback' => 'qcformbuilder_forms_very_safe_string'
             ],
             'name' => [
                 'type' => 'string',
-                'description' => __( 'The name for the form', 'qcformbuilder-forms' ),
+                'description' => __( 'The name for the form', 'conversational-forms'),
                 'required' => false,
                 'default' => '',
                 'sanitize_callback' => 'qcformbuilder_forms_very_safe_string'
             ],
             'type' => [
                 'type' => 'string',
-                'description' => __( 'The type of form to create', 'qcformbuilder-forms' ),
+                'description' => __( 'The type of form to create', 'conversational-forms'),
                 'required' => true,
                 'default' => 'primary',
                 'enum' => [
@@ -429,13 +429,13 @@ class Qcformbuilder_Forms_API_Forms extends  Qcformbuilder_Forms_API_CRUD {
                 ]
             ],
             'template' => [
-                'description' => __( 'The form template to use', 'qcformbuilder-forms' ),
+                'description' => __( 'The form template to use', 'conversational-forms'),
                 'type' => 'string',
                 'required' => false,
                 'enum' => array_keys($templates)
             ],
             'clone' => [
-                'description' => __( 'The ID of a form to clone', 'qcformbuilder-forms' ),
+                'description' => __( 'The ID of a form to clone', 'conversational-forms'),
                 'type' => 'string',
                 'required' => false,
             ]
@@ -509,11 +509,11 @@ class Qcformbuilder_Forms_API_Forms extends  Qcformbuilder_Forms_API_CRUD {
 	    $entry_list_defaults = array(
 	    	'id' => array(
 	    		'id' => 'id',
-			    'label' => __( 'ID', 'qcformbuilder-forms' )
+			    'label' => __( 'ID', 'conversational-forms')
 		    ),
 		    'datestamp' => array(
 			    'id' => 'datestamp',
-			    'label' => __( 'Submitted', 'qcformbuilder-forms' )
+			    'label' => __( 'Submitted', 'conversational-forms')
 		    ),
 	    );
 

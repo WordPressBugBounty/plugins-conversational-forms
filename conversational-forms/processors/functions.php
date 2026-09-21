@@ -18,12 +18,12 @@ function qcformbuilder_forms_get_ip() {
 
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 		//check ip from share internet
-		$ip = $_SERVER['HTTP_CLIENT_IP'];
+		$ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
 	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 		//to check ip is pass from proxy
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		$ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
 	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 	}
 
 	return $ip;
@@ -38,14 +38,14 @@ function qcformbuilder_forms_get_ip() {
  * @return string Current URL
  */
 function qcformbuilder_forms_get_current_url(){
-	$url = 'http';
+	$url = ( is_ssl() || ( isset( $_SERVER['HTTPS'] ) && 'off' !== $_SERVER['HTTPS'] && 0 != $_SERVER['HTTPS'] ) ) ? 'https' : 'http';
 
-	if ( isset( $_SERVER[ 'HTTPS' ] ) && 'off' != $_SERVER[ 'HTTPS' ] && 0 != $_SERVER[ 'HTTPS' ] )
-		$url = 'https';
+	$host = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
-	$url .= '://' . $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'REQUEST_URI' ];
+	$url .= '://' . $host . $request_uri;
 
-	return $url;
+	return esc_url_raw( $url );
 
 }
 
@@ -61,14 +61,14 @@ function qcformbuilder_forms_conditional_recipients_fields(){
 		array(
 			'id'    => 'conditional-recipient',
 			'type'  => 'email',
-			'label' => __( 'Email Address', 'qcformbuilder-forms' ),
+			'label' => __( 'Email Address', 'conversational-forms'),
 			'magic' => true
 		),
 		array(
 			'id'    => 'remove-default',
 			'type'  => 'checkbox',
-			'label' => __( 'Remove Default?', 'qcformbuilder-forms' ),
-			'description' => __( 'If this conditional is used, default recipient will be removed from recipients', 'qcformbuilder-forms' )
+			'label' => __( 'Remove Default?', 'conversational-forms'),
+			'description' => __( 'If this conditional is used, default recipient will be removed from recipients', 'conversational-forms')
 		)
 	);
 

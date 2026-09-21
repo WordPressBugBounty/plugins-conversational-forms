@@ -100,7 +100,7 @@ if( !class_exists('QcPluginUpgradeToProNoticeconversational') )
 		function func_show_conversational_upgrade_link_with_action_links( $links )
 		{
 			$links = array_merge( $links, array(
-				'<a title="'.$this->link_text.'" class="'.$this->link_class.'" style="font-weight: bold; color: '.$this->link_color.';" href="' . esc_url( $this->upgrade_link ) . '" target="'.$this->link_target.'">' . __( $this->link_text, 'quantumcloud' ) . '</a>'
+				'<a title="'.esc_attr($this->link_text).'" class="'.esc_attr($this->link_class).'" style="font-weight: bold; color: '.esc_attr($this->link_color).';" href="' . esc_url( $this->upgrade_link ) . '" target="'.esc_attr($this->link_target).'">' . esc_html( $this->link_text, 'quantumcloud' ) . '</a>'
 			) );
 			
 			return $links;
@@ -137,7 +137,7 @@ if( !class_exists('QcPluginUpgradeToProNoticeconversational') )
 			if ( strpos( $file, "$this->plugin_main_file" ) !== false ) {
 			
 				$new_links = array(
-					'<a class="'.$this->link_class.'" style="font-weight: bold; color: '.$this->link_color.';" href="' . esc_url( $this->upgrade_link ) . '" title="'.$this->link_text.'" target="'.$this->link_target.'">' . __( $this->link_text, 'quantumcloud' ) . '</a>'
+					'<a class="'.esc_attr($this->link_class).'" style="font-weight: bold; color: '.esc_attr($this->link_color).';" href="' . esc_url( $this->upgrade_link ) . '" title="'.esc_attr($this->link_text).'" target="'.esc_attr($this->link_target).'">' . esc_html( $this->link_text, 'quantumcloud' ) . '</a>'
 				);
 				
 				$links = array_merge( $links, $new_links );
@@ -174,7 +174,7 @@ if( !class_exists('QcPluginUpgradeToProNoticeconversational') )
 		     return;
 		    }
 		   
-		    $link_text = '<span class="qc-up-pro-link" style="font-weight: bold; color: '.$this->link_color.'">'.$this->link_text.'</span>';
+		    $link_text = '<span class="qc-up-pro-link" style="font-weight: bold; color: '.esc_attr($this->link_color).'">'. esc_html( $this->link_text, 'quantumcloud' ).'</span>';
 			if($current_user->roles[0]!='subscriber')
 				$submenu["$this->plugin_menu_slug"][300] = array( $link_text, 'activate_plugins' , $this->upgrade_link );
 			

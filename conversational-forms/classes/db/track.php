@@ -20,11 +20,11 @@ class Qcformbuilder_Forms_DB_Track extends Qcformbuilder_Forms_DB_Base {
 	protected $primary_fields = array(
 		'form_id'    => array(
 			'%s',
-			'strip_tags'
+			'wp_strip_all_tags'
 		),
 		'process_id' => array(
 			'%s',
-			'strip_tags'
+			'wp_strip_all_tags'
 		)
 
 	);
@@ -43,11 +43,11 @@ class Qcformbuilder_Forms_DB_Track extends Qcformbuilder_Forms_DB_Base {
 		),
 		'meta_key'   => array(
 			'%s',
-			'strip_tags',
+			'wp_strip_all_tags',
 		),
 		'meta_value' => array(
 			'%s',
-			'strip_tags',
+			'wp_strip_all_tags',
 		),
 	);
 
@@ -61,15 +61,15 @@ class Qcformbuilder_Forms_DB_Track extends Qcformbuilder_Forms_DB_Base {
 	protected $meta_keys = array(
 		'event' => array(
 			'%s',
-			'strip_tags',
+			'wp_strip_all_tags',
 		),
 		'time'  => array(
 			'%s',
-			'strip_tags',
+			'wp_strip_all_tags',
 		),
 		'recipients_set' => array(
 			'%s',
-			'strip_tags',
+			'wp_strip_all_tags',
 		),
 		'referrer' => array(
 			'%s',
@@ -255,7 +255,7 @@ class Qcformbuilder_Forms_DB_Track extends Qcformbuilder_Forms_DB_Base {
 				'form_id' => $form[ 'ID' ],
 				'process_id' => $process_id,
 				'time' => current_time( 'mysql' ),
-				'method' => strip_tags( $method ),
+				'method' => wp_strip_all_tags( $method ),
 				'recipients_set' => self::recipients_set( $mail )
 			));
 			

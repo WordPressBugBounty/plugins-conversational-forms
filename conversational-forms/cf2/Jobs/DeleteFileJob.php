@@ -39,11 +39,18 @@ class DeleteFileJob extends Job
 	public function handle()
 	{
 		if ( file_exists($this->path) ) {
-			unlink($this->path);
+			wp_delete_file($this->path);
 		}
 
 		if( file_exists( $this->dirName() ) && $this->isEmptyDir() ){
-			rmdir(dirname($this->path));
+			global $wp_filesystem;
+			if ( empty( $wp_filesystem ) ) {
+				require_once ABSPATH . '/wp-admin/includes/file.php';
+				WP_Filesystem();
+			}
+			if ( $wp_filesystem ) {
+				$wp_filesystem->rmdir( dirname( $this->path ) );
+			}
 		}
 
 	}

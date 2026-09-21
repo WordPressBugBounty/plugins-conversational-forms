@@ -293,7 +293,7 @@ abstract class Qcformbuilder_Forms_API_CRUD implements Qcformbuilder_Forms_API_R
 	 * @return Qcformbuilder_Forms_API_Response
 	 */
 	protected function not_yet_response() {
-		$error =  new Qcformbuilder_Forms_API_Error( 'not-implemented-yet', __( 'Route Not Yet Implemented :(', 'qcformbuilder-forms' )  );
+		$error =  new Qcformbuilder_Forms_API_Error( 'not-implemented-yet', __( 'Route Not Yet Implemented :(', 'conversational-forms')  );
 		return new Qcformbuilder_Forms_API_Response( $error, 501, array() );
 	}
 

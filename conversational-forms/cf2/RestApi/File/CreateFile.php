@@ -24,26 +24,26 @@ class CreateFile extends File
             'permission_callback' => [$this, 'permissionsCallback' ],
             'args' => [
                 'hashes' => [
-                    'description' => __('MD5 has of files to upload, should have same order as files arg', 'qcformbuilder-forms')
+                    'description' => __('MD5 has of files to upload, should have same order as files arg', 'conversational-forms')
                 ],
                 'verify' => [
                     'type' => 'string',
-                    'description' => __('Verification token (nonce) for form', 'qcformbuilder-forms'),
+                    'description' => __('Verification token (nonce) for form', 'conversational-forms'),
                     'required' => true,
                 ],
                 'formId' => [
                     'type' => 'string',
-                    'description' => __('ID for form field belongs to', 'qcformbuilder-forms'),
+                    'description' => __('ID for form field belongs to', 'conversational-forms'),
                     'required' => true,
                 ],
                 'fieldId' => [
                     'type' => 'string',
-                    'description' => __('ID for field files are submitted to', 'qcformbuilder-forms'),
+                    'description' => __('ID for field files are submitted to', 'conversational-forms'),
                     'required' => true,
                 ],
                 'control' => [
                     'type' => 'string',
-                    'description' => __('Unique control string for field', 'qcformbuilder-forms'),
+                    'description' => __('Unique control string for field', 'conversational-forms'),
                     'required' => true,
                 ]
             ]

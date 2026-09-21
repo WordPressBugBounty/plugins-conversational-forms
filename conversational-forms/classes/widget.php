@@ -13,7 +13,7 @@ class Qcformbuilder_Forms_Widget extends WP_Widget {
 	 */
 	function __construct() {
 		// Instantiate the parent object
-		parent::__construct( false, __('Qcformbuilder Form', 'qcformbuilder-forms' ) );
+		parent::__construct( false, __('Qcformbuilder Form', 'conversational-forms') );
 
 		/**
 		 * Runs after Qcformbuilder Forms widget is initialized
@@ -74,16 +74,16 @@ class Qcformbuilder_Forms_Widget extends WP_Widget {
 	function form( $instance ) {
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
-		$title = strip_tags($instance['title']);
+		$title = wp_strip_all_tags($instance['title']);
 		
 		do_action( 'qcformbuilder_forms_widget_form_start', $instance );
 
-		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Title', 'qcformbuilder-forms') . ": <input class=\"widefat\" id=\"" . esc_attr( $this->get_field_id('title') ) . "\" name=\"" . esc_attr( $this->get_field_name('title') ) . "\" type=\"text\" value=\"" . esc_attr($title). "\" /></label></p>\r\n" );
+		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Title', 'conversational-forms') . ": <input class=\"widefat\" id=\"" . esc_attr( $this->get_field_id('title') ) . "\" name=\"" . esc_attr( $this->get_field_name('title') ) . "\" type=\"text\" value=\"" . esc_attr($title). "\" /></label></p>\r\n" );
 
 		// get forms
 		$forms = Qcformbuilder_Forms_Forms::get_forms( true );
 
-		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Form', 'qcformbuilder-forms') . ": </label><select style=\"width:100%;\" name=\"" . esc_attr( $this->get_field_name('form') ) . "\">\r\n" );
+		echo wp_kses_post( "<p><label for=\" " . esc_attr( $this->get_field_id('title') ) . "\">" . esc_html__('Form', 'conversational-forms') . ": </label><select style=\"width:100%;\" name=\"" . esc_attr( $this->get_field_name('form') ) . "\">\r\n" );
 		echo "<option value=\"\"></option>\r\n";
 		if(!empty($forms)){
 
