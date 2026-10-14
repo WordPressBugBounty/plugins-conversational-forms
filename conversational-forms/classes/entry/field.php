@@ -113,7 +113,12 @@ class Qcformbuilder_Forms_Entry_Field  extends Qcformbuilder_Forms_Entry_Object 
 		if( is_array( $value ) ){
 			$this->value = $value;
 		}elseif( is_serialized( $value  ) ){
-			$this->value = maybe_unserialize( $value );
+			// Use unserialize() with allowed_classes => false instead of
+			// maybe_unserialize() to prevent PHP object injection: no class
+			// will be instantiated regardless of what the serialized string
+			// contains. Objects are returned as __PHP_Incomplete_Class and
+			// treated safely downstream as non-objects.
+			$this->value = unserialize( $value, array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 		}elseif( 0 === strpos( $value, '{' ) && is_object( $_value = json_decode( $value ) ) ){
 			$this->value = (array) $_value;
 		}else{
@@ -131,7 +136,9 @@ class Qcformbuilder_Forms_Entry_Field  extends Qcformbuilder_Forms_Entry_Object 
 	protected function value_get(){
 		
 		if ( is_serialized( $this->value ) ) {
-			$this->value = maybe_unserialize( $this->value );
+			// Same restriction as value_set(): never instantiate arbitrary
+			// classes when decoding a stored serialized string.
+			$this->value = unserialize( $this->value, array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 		} elseif ( is_string( $this->value ) && 0 === strpos( $this->value, '{' ) && is_object( $_value = json_decode( $this->value ) ) ) {
 			$this->value = (array) $_value;
 		}

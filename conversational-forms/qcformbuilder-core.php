@@ -5,14 +5,14 @@
  * Description: ChatBot Conversational Forms for Lead Generation
  * Author: ChatBot for WordPress - WPBot
  * @author    QuantumCloud
- * Version: 1.5.1
+ * Version: 1.5.2
  * Donate link: https://www.wpbot.pro/
  * @author    QuantumCloud
  * Author URI: https://www.wpbot.pro/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 5.2
- * Tested up to: 7.1.1
+ * Tested up to: 7.1.3
  * Text Domain: conversational-forms
  * Domain Path: /languages/
 */
@@ -368,10 +368,42 @@ if(!function_exists('wpbot_capture_form_value')){
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$formid  = isset( $_POST['formid'] ) ? sanitize_text_field( wp_unslash( $_POST['formid'] ) ) : '';
 		$fieldid = isset( $_POST['fieldid'] ) ? sanitize_text_field( wp_unslash( $_POST['fieldid'] ) ) : '';
-		$answer  = isset( $_POST['answer'] ) ? ( is_array( $_POST['answer'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['answer'] ) ) : sanitize_text_field( wp_unslash( $_POST['answer'] ) ) ) : '';
-		$entry   = isset( $_POST['entry'] ) ? sanitize_text_field( wp_unslash( $_POST['entry'] ) ) : '';
-		$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+
+		// Security: reject any answer that contains a serialized PHP string to prevent object injection.
+		if ( isset( $_POST['answer'] ) ) {
+			$raw_answer = wp_unslash( $_POST['answer'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( is_array( $raw_answer ) ) {
+				foreach ( $raw_answer as $raw_item ) {
+					if ( is_serialized( $raw_item ) ) {
+						wp_send_json_error( array( 'message' => 'Invalid answer value.' ), 400 );
+					}
+				}
+				$answer = array_map( 'sanitize_text_field', $raw_answer );
+			} else {
+				if ( is_serialized( $raw_answer ) ) {
+					wp_send_json_error( array( 'message' => 'Invalid answer value.' ), 400 );
+				}
+				$answer = sanitize_text_field( $raw_answer );
+			}
+		} else {
+			$answer = '';
+		}
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$entry        = isset( $_POST['entry'] ) ? sanitize_text_field( wp_unslash( $_POST['entry'] ) ) : '';
+		$name         = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+		$entry_nonce  = isset( $_POST['entry_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['entry_nonce'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+		// Security: tie every continuation request to the per-entry nonce that
+		// was minted when this entry row was first created and returned to the
+		// client.  An attacker who knows (or guesses) another visitor's entry ID
+		// cannot insert values into it without also possessing a valid nonce.
+		if ( $entry != 0 ) {
+			if ( ! wp_verify_nonce( $entry_nonce, 'wpbot_entry_' . absint( $entry ) ) ) {
+				wp_send_json_error( array( 'message' => 'Invalid or expired session token.' ), 403 );
+			}
+		}
 	
 		if($entry==0){
 
@@ -388,17 +420,35 @@ if(!function_exists('wpbot_capture_form_value')){
 
 			$entry = $wpdb->insert_id;
 
+			// Mint a nonce scoped to this entry so the client can prove
+			// it created the entry on subsequent continuation requests.
+			$entry_nonce = wp_create_nonce( 'wpbot_entry_' . absint( $entry ) );
+
 		}
-		if($answer!=''){
+		if ( $answer !== '' ) {
+
+			// Encode the answer to a safe scalar string before storage so that
+			// no raw PHP structure (array, object, serialized data) is ever
+			// written directly to the database column.
+			if ( is_array( $answer ) ) {
+				// Flatten multi-select / checkbox answers to a readable CSV string.
+				// This keeps the stored value compatible with the plain-string
+				// comparisons and display logic that reads `value` back elsewhere.
+				$stored_answer = implode( ', ', $answer );
+			} else {
+				// wp_json_encode produces a quoted JSON string (e.g. "foo"),
+				// guaranteeing a well-formed, non-object scalar is stored.
+				$stored_answer = wp_json_encode( $answer );
+			}
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$wpdb->insert(
-				$wpdb->prefix."wfb_form_entry_values",
+				$wpdb->prefix . 'wfb_form_entry_values',
 				array(
-					'entry_id'  => $entry,
-					'field_id'   => $fieldid,
-					'slug'	=> '',
-					'value'	=> $answer
+					'entry_id' => $entry,
+					'field_id' => $fieldid,
+					'slug'     => '',
+					'value'    => $stored_answer,
 				)
 			);
 
@@ -429,6 +479,9 @@ if(!function_exists('wpbot_capture_form_value')){
 
 				$field = $fields[$nextfield];
 				$field['entry'] = $entry;
+				// Return the per-entry nonce so the client can prove ownership
+				// of this entry on every subsequent continuation request.
+				$field['entry_nonce'] = $entry_nonce;
 				
 				$field['status'] = 'incomplete';
 				echo json_encode($field);

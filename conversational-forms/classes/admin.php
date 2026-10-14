@@ -986,8 +986,16 @@ class Qcformbuilder_Forms_Admin {
 
 							if ( ! empty( $is_json ) ) {
 								$row->value = $is_json;
-							}else  {
-								$row->value = maybe_unserialize( $row->value );
+							} else {
+								// Security: use unserialize() with allowed_classes => false
+								// instead of maybe_unserialize() so that no PHP class is
+								// ever instantiated from a stored attacker-controlled string.
+								// Scalars and arrays decode normally; object tokens yield a
+								// harmless __PHP_Incomplete_Class rather than triggering
+								// __wakeup / __destruct gadget chains.
+								if ( is_serialized( $row->value ) ) {
+									$row->value = unserialize( $row->value, array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+								}
 							}
 
 							if( is_array( $row->value )  ) {
